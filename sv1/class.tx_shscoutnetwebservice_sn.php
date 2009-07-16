@@ -37,9 +37,9 @@ require_once(PATH_t3lib.'class.t3lib_svbase.php');
  * @package	TYPO3
  * @subpackage	tx_shscoutnetwebservice
  */
-class tx_shscoutnetwebservice_sv1 extends t3lib_svbase {
-				var $prefixId = 'tx_shscoutnetwebservice_sv1';		// Same as class name
-				var $scriptRelPath = 'sv1/class.tx_shscoutnetwebservice_sv1.php';	// Path to this script relative to the extension dir.
+class tx_shscoutnetwebservice_sn extends t3lib_svbase {
+				var $prefixId = 'tx_shscoutnetwebservice_sn';		// Same as class name
+				var $scriptRelPath = 'sn/class.tx_shscoutnetwebservice_sn.php';	// Path to this script relative to the extension dir.
 				var $extKey = 'sh_scoutnet_webservice';	// The extension key.
 	
 				/**
@@ -80,8 +80,8 @@ class tx_shscoutnetwebservice_sv1 extends t3lib_svbase {
 
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sh_scoutnet_webservice/sv1/class.tx_shscoutnetwebservice_sv1.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sh_scoutnet_webservice/sv1/class.tx_shscoutnetwebservice_sv1.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sh_scoutnet_webservice/sn/class.tx_shscoutnetwebservice_sn.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sh_scoutnet_webservice/sn/class.tx_shscoutnetwebservice_sn.php']);
 }
 
 ?>

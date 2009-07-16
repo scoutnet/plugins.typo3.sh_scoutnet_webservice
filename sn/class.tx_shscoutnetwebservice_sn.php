@@ -28,6 +28,7 @@
  */
 
 require_once(PATH_t3lib.'class.t3lib_svbase.php');
+require_once('class.tx_shscoutnetwebservice_jsonRPCClient.php');
 
 
 /**
@@ -38,29 +39,27 @@ require_once(PATH_t3lib.'class.t3lib_svbase.php');
  * @subpackage	tx_shscoutnetwebservice
  */
 class tx_shscoutnetwebservice_sn extends t3lib_svbase {
-				var $prefixId = 'tx_shscoutnetwebservice_sn';		// Same as class name
-				var $scriptRelPath = 'sn/class.tx_shscoutnetwebservice_sn.php';	// Path to this script relative to the extension dir.
-				var $extKey = 'sh_scoutnet_webservice';	// The extension key.
+	var $prefixId = 'tx_shscoutnetwebservice_sn';		// Same as class name
+	var $scriptRelPath = 'sn/class.tx_shscoutnetwebservice_sn.php';	// Path to this script relative to the extension dir.
+	var $extKey = 'sh_scoutnet_webservice';	// The extension key.
+
+	var $SN = null;
 	
-				/**
+	/**
 	 * [Put your description here]
 	 *
 	 * @return	[type]		...
 	 */
-				function init()	{
-					$available = parent::init();
-	
-					// Here you can initialize your class.
-	
-					// The class have to do a strict check if the service is available.
-					// The needed external programs are already checked in the parent class.
-	
-					// If there's no reason for initialization you can remove this function.
-	
-					return $available;
-				}
-	
-				/**
+	function init()	{
+		$available = parent::init();
+
+		ini_set('default_socket_timeout',1);
+		$this->SN = new tx_shscoutnetkalender_jsonRPCClient("http://www.scoutnet.de/jsonrpc/server.php");
+
+		return $available;
+	}
+
+	/**
 	 * [Put your description here]
 	 * performs the service processing
 	 *
@@ -69,13 +68,13 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 	 * @param	array		Configuration array
 	 * @return	boolean
 	 */
-				function process($content='', $type='', $conf=array())	{
+	function process($content='', $type='', $conf=array())	{
 	
-					// Depending on the service type there's not a process() function.
-					// You have to implement the API of that service type.
-	
-					return FALSE;
-				}
+		// Depending on the service type there's not a process() function.
+		// You have to implement the API of that service type.
+
+		return FALSE;
+	}
 }
 
 

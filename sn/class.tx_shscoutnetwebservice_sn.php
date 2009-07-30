@@ -92,6 +92,12 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 		return new SN_Model_Kalender(array());
 	}
 
+	function get_user_by_id($id) {
+		if (isset($this->cache["USER_".$id])){
+			return new SN_Model_User($this->cache['User_'.$id]['content']);
+		}
+		return new SN_Model_User(array());
+	}
 
 }
 

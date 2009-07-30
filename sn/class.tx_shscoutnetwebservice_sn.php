@@ -31,6 +31,8 @@ require_once(PATH_t3lib.'class.t3lib_svbase.php');
 require_once('class.tx_shscoutnetwebservice_jsonRPCClient.php');
 
 require_once('models/Stufe.php');
+require_once('models/Kalender.php');
+require_once('models/User.php');
 
 
 /**
@@ -81,6 +83,13 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 			return new SN_Model_Stufe($this->cache['STUFE_'.$id]['content']);
 		}
 		return new SN_Model_Stufe(array());
+	}
+
+	function get_kalender_by_id($id) {
+		if (isset($this->cache["KALENDER_".$id])){
+			return new SN_Model_Kalender($this->cache['KALENDER_'.$id]['content']);
+		}
+		return new SN_Model_Kalender(array());
 	}
 
 

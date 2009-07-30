@@ -70,7 +70,7 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 
 	function get_events_by_global_id($ids,$filter){
 		$res = array();
-		foreach ($this->SN->get_data_by_global_id($ids,array('events'=>$filter)) as $record) {
+		foreach ($this->get_data_by_global_id($ids,array('events'=>$filter)) as $record) {
 			if ($record['type'] === 'event') {
 				$res[] = $record['content'];
 			}

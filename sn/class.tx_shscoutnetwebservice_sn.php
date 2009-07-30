@@ -30,6 +30,8 @@
 require_once(PATH_t3lib.'class.t3lib_svbase.php');
 require_once('class.tx_shscoutnetwebservice_jsonRPCClient.php');
 
+require_once('models/Stufe.php');
+
 
 /**
  * Service "SN" for the "sh_scoutnet_webservice" extension.

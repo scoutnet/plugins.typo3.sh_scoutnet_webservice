@@ -59,7 +59,7 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 		$this->SN = new tx_shscoutnetwebservice_jsonRPCClient("http://www.scoutnet.de/jsonrpc/server.php");
 	}
 
-	function get_data_by_global_id($ids,$query){
+	function load_data_from_scoutnet($ids,$query){
 		$res = $this->SN->get_data_by_global_id($ids,$query);
 		$this->cache = array_merge ($this->cache, $res);
 
@@ -68,7 +68,7 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 
 	function get_events_by_global_id($ids,$filter){
 		$res = array();
-		foreach ($this->get_data_by_global_id($ids,array('events'=>$filter)) as $record) {
+		foreach ($this->load_data_from_scoutnet($ids,array('events'=>$filter)) as $record) {
 			if ($record['type'] === 'event') {
 				$res[] = $record['content'];
 			}

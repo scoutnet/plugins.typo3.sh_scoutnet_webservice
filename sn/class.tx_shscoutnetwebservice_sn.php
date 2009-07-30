@@ -94,7 +94,7 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 
 	function get_user_by_id($id) {
 		if (isset($this->cache["USER_".$id])){
-			return new SN_Model_User($this->cache['User_'.$id]['content']);
+			return new SN_Model_User($this->cache['USER_'.$id]['content']);
 		}
 		return null;
 	}

@@ -60,9 +60,11 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 	}
 
 	function get_data_by_global_id($ids,$query){
+		echo "foo";
 		$res = $this->SN->get_data_by_global_id($ids,$query);
 		$this->cache = array_merge ($this->cache, $res);
 
+		echo "baa";
 		return $res;
 	}
 

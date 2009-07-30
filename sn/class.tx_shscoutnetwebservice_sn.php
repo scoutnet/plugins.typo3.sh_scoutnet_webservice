@@ -78,9 +78,9 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 
 	function get_stufe_by_id($id) {
 		if (isset($cache["STUFE_".$id])){
-			return new Stufe($cache['STUFE_'.$id]['content']);
+			return new SN_Model_Stufe($cache['STUFE_'.$id]['content']);
 		}
-		return new Stufe();
+		return new SN_Model_Stufe();
 	}
 
 

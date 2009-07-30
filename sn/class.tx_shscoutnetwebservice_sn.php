@@ -60,7 +60,7 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 	}
 
 
-	function get_events_for_global_id($ids,$filter){
+	function get_events_by_global_id($ids,$filter){
 			return $this->SN->get_data_by_global_id($ids,array('events'=>$filter));
 	
 	}

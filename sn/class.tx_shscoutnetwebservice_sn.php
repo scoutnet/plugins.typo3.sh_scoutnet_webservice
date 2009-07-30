@@ -52,7 +52,7 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 	 */
 	function __construct()	{
 		ini_set('default_socket_timeout',1);
-		$this->SN = new tx_shscoutnetkalender_jsonRPCClient("http://www.scoutnet.de/jsonrpc/server.php");
+		$this->SN = new tx_shscoutnetwebservice_jsonRPCClient("http://www.scoutnet.de/jsonrpc/server.php");
 	}
 
 	function get_data_by_global_id($ids,$query){

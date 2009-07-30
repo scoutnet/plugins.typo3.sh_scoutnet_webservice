@@ -44,6 +44,8 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 	var $extKey = 'sh_scoutnet_webservice';	// The extension key.
 
 	var $SN = null;
+
+	var $cache = array();
 	
 	/**
 	 * [Put your description here]
@@ -56,13 +58,20 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 	}
 
 	function get_data_by_global_id($ids,$query){
-		return $this->SN->get_data_by_global_id($ids,$query);
+		$res = $this->SN->get_data_by_global_id($ids,$query);
+		$this->cache = array_merge ($this->cache, $res);
+
+		return $res;
 	}
 
-
 	function get_events_by_global_id($ids,$filter){
-			return $this->SN->get_data_by_global_id($ids,array('events'=>$filter));
-	
+		$res = array();
+		for ($this->SN->get_data_by_global_id($ids,array('events'=>$filter)) as $record) {
+			if ($record['type'] === 'event') {
+				$res[] = $record['content'];
+			}
+		}
+		return $res;
 	}
 
 

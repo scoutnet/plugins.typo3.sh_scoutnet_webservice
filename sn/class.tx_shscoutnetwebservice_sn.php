@@ -80,7 +80,7 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 		if (isset($cache["STUFE_".$id])){
 			return new SN_Model_Stufe($cache['STUFE_'.$id]['content']);
 		}
-		return new SN_Model_Stufe();
+		return new SN_Model_Stufe(array());
 	}
 
 

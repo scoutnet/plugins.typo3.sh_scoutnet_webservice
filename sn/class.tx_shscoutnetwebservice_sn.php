@@ -50,31 +50,16 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 	 *
 	 * @return	[type]		...
 	 */
-	function init()	{
-		$available = parent::init();
-
+	function __construct()	{
 		ini_set('default_socket_timeout',1);
 		$this->SN = new tx_shscoutnetkalender_jsonRPCClient("http://www.scoutnet.de/jsonrpc/server.php");
-
-		return $available;
 	}
 
-	/**
-	 * [Put your description here]
-	 * performs the service processing
-	 *
-	 * @param	string		Content which should be processed.
-	 * @param	string		Content type
-	 * @param	array		Configuration array
-	 * @return	boolean
-	 */
-	function process($content='', $type='', $conf=array())	{
-	
-		// Depending on the service type there's not a process() function.
-		// You have to implement the API of that service type.
-
-		return FALSE;
+	function get_data_by_global_id($ids,$query){
+		return $this->SN->get_data_by_global_id($ids,$query);
 	}
+
+
 }
 
 

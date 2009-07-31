@@ -50,8 +50,6 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 
 	var $SN = null;
 
-	var $cache = array();
-
 	var $user_cache = array();
 	var $stufen_cache = array();
 	var $kalender_cache = array();
@@ -68,7 +66,6 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 
 	protected function load_data_from_scoutnet($ids,$query){
 		$res = $this->SN->get_data_by_global_id($ids,$query);
-		$this->cache = array_merge ($this->cache, $res);
 
 		return $res;
 	}

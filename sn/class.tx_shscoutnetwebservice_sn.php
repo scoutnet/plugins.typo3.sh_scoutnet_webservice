@@ -98,7 +98,7 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 
 				$event['Stufen'] = $stufen;
 					
-
+				$event['Kalender'] = $this->get_kalender_by_id($event['Kalender']);
 
 
 				$events[] = $event;

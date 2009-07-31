@@ -33,6 +33,7 @@ require_once('class.tx_shscoutnetwebservice_jsonRPCClient.php');
 require_once('models/Stufe.php');
 require_once('models/Kalender.php');
 require_once('models/User.php');
+require_once('models/Events.php');
 
 
 /**
@@ -56,43 +57,47 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 	 *
 	 * @return	[type]		...
 	 */
-	function __construct()	{
+	public function __construct()	{
 		ini_set('default_socket_timeout',1);
 		$this->SN = new tx_shscoutnetwebservice_jsonRPCClient("http://www.scoutnet.de/jsonrpc/server.php");
 	}
 
-	function load_data_from_scoutnet($ids,$query){
+	protected function load_data_from_scoutnet($ids,$query){
 		$res = $this->SN->get_data_by_global_id($ids,$query);
 		$this->cache = array_merge ($this->cache, $res);
 
 		return $res;
 	}
 
-	function get_events_by_global_id($ids,$filter){
-		$res = array();
+	public function get_events_for_global_id_with_filter($ids,$filter){
+		$events = array();
 		foreach ($this->load_data_from_scoutnet($ids,array('events'=>$filter)) as $record) {
 			if ($record['type'] === 'event') {
-				$res[] = $record['content'];
+				$event = new SN_Model_Event($record['content']);
+
+
+
+				$events[] = $event;
 			}
 		}
-		return $res;
+		return $events;
 	}
 
-	function get_stufe_by_id($id) {
+	private function get_stufe_by_id($id) {
 		if (isset($this->cache["STUFE_".$id])){
 			return new SN_Model_Stufe($this->cache['STUFE_'.$id]['content']);
 		}
-		return new SN_Model_Stufe(array());
+		return null;
 	}
 
-	function get_kalender_by_id($id) {
+	private function get_kalender_by_id($id) {
 		if (isset($this->cache["KALENDER_".$id])){
 			return new SN_Model_Kalender($this->cache['KALENDER_'.$id]['content']);
 		}
-		return new SN_Model_Kalender(array());
+		return null;
 	}
 
-	function get_user_by_id($id) {
+	private function get_user_by_id($id) {
 		if (isset($this->cache["USER_".$id])){
 			return new SN_Model_User($this->cache['USER_'.$id]['content']);
 		}

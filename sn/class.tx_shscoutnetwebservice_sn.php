@@ -75,6 +75,16 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 			if ($record['type'] === 'event') {
 				$event = new SN_Model_Event($record['content']);
 
+				$author = $this->get_user_by_id($event['Last_Modified_By']);
+				if ($author == null) {
+					$author = $this->get_user_by_id($event['Created_By']);
+				}
+
+				if ($author != null) {
+					$event['Author'] = $author;
+				}	
+					
+
 
 
 				$events[] = $event;

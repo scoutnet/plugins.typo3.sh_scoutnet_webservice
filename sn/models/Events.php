@@ -5,8 +5,12 @@ class SN_Model_Event extends ArrayObject{
 	}
 
 
-	public function get_long_Name() {
-		return (string) htmlentities(utf8_decode($this['Ebene'])).(($this['Ebene_Id'] >= 7)?"<br>".htmlentities(utf8_decode($this['Name'])):"");
+	public function get_Author_name(){
+		if (isset($this['Author']) && $this['Author'] != null) {
+			return (string) $this['Author']->get_long_Name();
+		}
+
+		return (string) "";
 	}
 }
 

@@ -79,7 +79,7 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 
 			if ($record['type'] === 'user'){
 				$user = new SN_Model_User($record['content']);
-				$this->user_cache[$user['id']] = $user;
+				$this->user_cache[$user['userid']] = $user;
 			} elseif ($record['type'] === 'stufe'){
 				$stufe = new SN_Model_Stufe($record['content']);
 				$this->stufen_cache[$stufe['id']] = $stufe;

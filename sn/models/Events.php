@@ -7,7 +7,7 @@ class SN_Model_Event extends ArrayObject{
 
 	public function get_Author_name(){
 		if (isset($this['Author']) && $this['Author'] != null) {
-			return (string) utf8_encode(htmlentities($this['Author']->get_long_Name()));
+			return (string) "fnord". utf8_decode(htmlentities($this['Author']->get_long_Name()));
 		}
 
 		return (string) "";

@@ -122,25 +122,15 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 	}
 
 	private function get_stufe_by_id($id) {
-		if (isset($this->cache["STUFE_".$id])){
-			return new SN_Model_Stufe($this->cache['STUFE_'.$id]['content']);
-		}
-		return null;
+		return $this->stufen_cache[$id];
 	}
 
 	private function get_kalender_by_id($id) {
-		if (isset($this->cache["KALENDER_".$id])){
-			return new SN_Model_Kalender($this->cache['KALENDER_'.$id]['content']);
-		}
-		return null;
+		return $this->kalender_cache[$id];
 	}
 
 	private function get_user_by_id($id) {
 		return $this->user_cache[$id];
-		if (isset($this->cache["USER_".$id])){
-			return new SN_Model_User($this->cache['USER_'.$id]['content']);
-		}
-		return null;
 	}
 
 }

@@ -82,10 +82,10 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 				$this->user_cache[$user['userid']] = $user;
 			} elseif ($record['type'] === 'stufe'){
 				$stufe = new SN_Model_Stufe($record['content']);
-				$this->stufen_cache[$stufe['id']] = $stufe;
+				$this->stufen_cache[$stufe['Keywords_ID']] = $stufe;
 			} elseif ($record['type'] === 'kalender'){
 				$kalender = new SN_Model_Kalender($record['content']);
-				$this->kalender_cache[$kalender['id']] = $kalender;
+				$this->kalender_cache[$kalender['ID']] = $kalender;
 			} elseif ($record['type'] === 'event') {
 				$event = new SN_Model_Event($record['content']);
 

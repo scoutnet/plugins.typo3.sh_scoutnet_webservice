@@ -51,6 +51,10 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 	var $SN = null;
 
 	var $cache = array();
+
+	var $user_cache = array();
+	var $stufen_cache = array();
+	var $kalender_cache = array();
 	
 	/**
 	 * [Put your description here]
@@ -72,7 +76,17 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 	public function get_events_for_global_id_with_filter($ids,$filter){
 		$events = array();
 		foreach ($this->load_data_from_scoutnet($ids,array('events'=>$filter)) as $record) {
-			if ($record['type'] === 'event') {
+
+			if ($record['type'] === 'user'){
+				$user = new SN_Model_User($record['content']);
+				$this->user_cache[$user['id']] = $user;
+			} elseif ($record['type'] === 'stufe'){
+				$stufe = new SN_Model_Stufe($record['content']);
+				$this->stufen_cache[$stufe['id']] = $stufe;
+			} elseif ($record['type'] === 'kalender'){
+				$kalender = new SN_Model_Kalender($record['content']);
+				$this->kalender_cache[$kalender['id']] = $kalender;
+			} elseif ($record['type'] === 'event') {
 				$event = new SN_Model_Event($record['content']);
 
 				$author = $this->get_user_by_id($event['Last_Modified_By']);
@@ -108,6 +122,7 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 	}
 
 	private function get_stufe_by_id($id) {
+		var_dump($this->user_cache);
 		if (isset($this->cache["STUFE_".$id])){
 			return new SN_Model_Stufe($this->cache['STUFE_'.$id]['content']);
 		}

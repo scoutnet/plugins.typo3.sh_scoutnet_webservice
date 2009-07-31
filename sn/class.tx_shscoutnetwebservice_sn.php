@@ -88,15 +88,15 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 
 
 				if (isset($event['Stufen'])){
-				foreach ($event['Stufen'] as $stufenId) {
-					$stufe = $this->get_stufe_by_id($stufenId);
-					if ($stufe != null) {
-						$stufen[] = $stufe;
+					foreach ($event['Stufen'] as $stufenId) {
+						$stufe = $this->get_stufe_by_id($stufenId);
+						if ($stufe != null) {
+							$stufen[] = $stufe;
+						}
 					}
 				}
-				}
 
-				$this['Stufen'] = $stufe;
+				$event['Stufen'] = $stufen;
 					
 
 

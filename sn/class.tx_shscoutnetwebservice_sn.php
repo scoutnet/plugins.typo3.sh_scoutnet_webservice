@@ -33,7 +33,7 @@ require_once('class.tx_shscoutnetwebservice_jsonRPCClient.php');
 require_once('models/SN_Model_Stufe.php');
 require_once('models/SN_Model_Kalender.php');
 require_once('models/SN_Model_User.php');
-require_once('models/SN_Model_Events.php');
+require_once('models/SN_Model_Event.php');
 
 
 /**

@@ -118,6 +118,19 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 		return $events;
 	}
 
+	private function get_kalender_by_global_id($ids) {
+		$kalenders = array();
+		foreach ($this->load_data_from_scoutnet($ids,array('kalenders'=>array())) as $record) {
+			if ($record['type'] === 'kalender'){
+				$kalender = new SN_Model_Kalender($record['content']);
+				$this->kalender_cache[$kalender['ID']] = $kalender;
+				$kalenders[] = $kalender;
+			}
+		}
+
+		return $kalenders;
+	}
+
 	private function get_stufe_by_id($id) {
 		return $this->stufen_cache[$id];
 	}

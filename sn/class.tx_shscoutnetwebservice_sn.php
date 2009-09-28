@@ -118,7 +118,7 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 		return $events;
 	}
 
-	private function get_kalender_by_global_id($ids) {
+	public function get_kalender_by_global_id($ids) {
 		$kalenders = array();
 		foreach ($this->load_data_from_scoutnet($ids,array('kalenders'=>array())) as $record) {
 			if ($record['type'] === 'kalender'){

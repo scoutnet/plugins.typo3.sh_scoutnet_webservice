@@ -11,17 +11,17 @@
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'Scoutnet Webservice class',
+	'title' => 'Official Scoutnet Webservice class',
 	'description' => 'This class is needed to comunicate with the scoutnet server.',
 	'category' => 'services',
-	'author' => 'Stefan Horst',
-	'author_email' => 's.horst@dpsg-koeln.de',
+	'author' => 'Stefan "Muetze" Horst',
+	'author_email' => 'muetze@scoutnet.de',
 	'shy' => '',
 	'dependencies' => '',
 	'conflicts' => '',
 	'priority' => '',
 	'module' => '',
-	'state' => 'alpha',
+	'state' => 'beta',
 	'internal' => '',
 	'uploadfolder' => 0,
 	'createDirs' => '',
@@ -29,7 +29,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearCacheOnLoad' => 1,
 	'lockType' => '',
 	'author_company' => '',
-	'version' => '0.9',
+	'version' => '0.8.0',
 	'constraints' => array(
 		'depends' => array(
 		),

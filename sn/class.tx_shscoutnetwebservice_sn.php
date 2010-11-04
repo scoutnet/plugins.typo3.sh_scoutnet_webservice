@@ -118,6 +118,54 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 		return $events;
 	}
 
+	public function get_event_by_id($id){
+		$events = array();
+		foreach ($this->load_data_from_scoutnet($id,array('event'=>array())) as $record) {
+
+			if ($record['type'] === 'user'){
+				$user = new SN_Model_User($record['content']);
+				$this->user_cache[$user['userid']] = $user;
+			} elseif ($record['type'] === 'stufe'){
+				$stufe = new SN_Model_Stufe($record['content']);
+				$this->stufen_cache[$stufe['Keywords_ID']] = $stufe;
+			} elseif ($record['type'] === 'kalender'){
+				$kalender = new SN_Model_Kalender($record['content']);
+				$this->kalender_cache[$kalender['ID']] = $kalender;
+			} elseif ($record['type'] === 'event') {
+				$event = new SN_Model_Event($record['content']);
+
+				$author = $this->get_user_by_id($event['Last_Modified_By']);
+				if ($author == null) {
+					$author = $this->get_user_by_id($event['Created_By']);
+				}
+
+				if ($author != null) {
+					$event['Author'] = $author;
+				}	
+
+				$stufen = Array();
+
+
+				if (isset($event['Stufen'])){
+					foreach ($event['Stufen'] as $stufenId) {
+						$stufe = $this->get_stufe_by_id($stufenId);
+						if ($stufe != null) {
+							$stufen[] = $stufe;
+						}
+					}
+				}
+
+				$event['Stufen'] = $stufen;
+					
+				$event['Kalender'] = $this->get_kalender_by_id($event['Kalender']);
+
+
+				$events[] = $event;
+			}
+		}
+		return $events[0];
+	}
+
 	public function get_kalender_by_global_id($ids) {
 		$kalenders = array();
 		foreach ($this->load_data_from_scoutnet($ids,array('kalenders'=>array())) as $record) {

@@ -9,3 +9,6 @@ ScoutnetLoginPage = https://www.scoutnet.de/community/scoutnetConnect.html
 
 # cat=plugin.tx_shscoutnetwebservice//; type=string+; label= Scoutnet Provider name
 ScoutnetProviderName = www.dpsg-koeln.de
+
+# cat=plugin.tx_shscoutnetwebservice//; type=int; label= Scoutnet SSID
+ScoutnetSSID = 4

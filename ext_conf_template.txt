@@ -1,0 +1,11 @@
+# cat=plugin.tx_shscoutnetfeauth//; type=string+; label= AES Key
+AES_key = 8p9igw0sWpUIBqAb0Nyh1pDkFms8zsGt
+
+# cat=plugin.tx_shscoutnetfeauth//; type=string+; label= AES IV
+AES_iv = XES2zPkI53R7iPVY
+
+# cat=plugin.tx_shscoutnetfeauth//; type=string+; label= Scoutnet Login Page
+ScoutnetLoginPage = https://www.scoutnet.de/community/scoutnetConnect.html
+
+# cat=plugin.tx_shscoutnetfeauth//; type=string+; label= Scoutnet Provider name
+ScoutnetProviderName = www.dpsg-koeln.de

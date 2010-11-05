@@ -3,6 +3,12 @@ if (!defined ('TYPO3_MODE')) {
  	die ('Access denied.');
 }
 
+$_EXTCONF = unserialize($_EXTCONF);
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['AES_key']=$_EXTCONF['AES_key'];
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['AES_iv']=$_EXTCONF['AES_iv'];
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['ScoutnetLoginPage']=$_EXTCONF['ScoutnetLoginPage'];
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['ScoutnetProviderName']=$_EXTCONF['ScoutnetProviderName'];
+
 t3lib_extMgm::addService($_EXTKEY,  'webservice' /* sv type */,  'tx_shscoutnetwebservice_sv1' /* sv key */,
 		array(
 

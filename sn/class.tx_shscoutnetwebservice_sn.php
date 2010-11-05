@@ -29,6 +29,7 @@
 
 require_once(PATH_t3lib.'class.t3lib_svbase.php');
 require_once('class.tx_shscoutnetwebservice_jsonRPCClient.php');
+require_once('class.tx_shscoutnetwebservice_AES.php');
 
 require_once('models/SN_Model_Stufe.php');
 require_once('models/SN_Model_Kalender.php');

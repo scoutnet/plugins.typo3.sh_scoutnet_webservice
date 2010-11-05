@@ -61,7 +61,7 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 	 */
 	public function __construct()	{
 		ini_set('default_socket_timeout',1);
-		$this->SN = new tx_shscoutnetwebservice_jsonRPCClient("http://www.scoutnet.de/jsonrpc/server.php");
+		$this->SN = new tx_shscoutnetwebservice_jsonRPCClient("https://www.scoutnet.de/jsonrpc/server.php");
 	}
 
 	protected function load_data_from_scoutnet($ids,$query){

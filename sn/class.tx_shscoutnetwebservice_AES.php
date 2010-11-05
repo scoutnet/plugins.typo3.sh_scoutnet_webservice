@@ -20,7 +20,7 @@
 *  Comments, Questions? Contact the author at cody [at] wshost [dot] net
 */
 
-class class.tx_shscoutnetwebservice_AES {
+class tx_shscoutnetwebservice_AES {
         // The number of 32-bit words comprising the plaintext and columns comrising the state matrix of an AES cipher.
         private static $Nb = 4;
         // The number of 32-bit words comprising the cipher key in this AES cipher.

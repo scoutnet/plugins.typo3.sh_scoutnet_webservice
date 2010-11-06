@@ -148,6 +148,65 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 		return $this->user_cache[$id];
 	}
 
+	public function write_event($id,$data,$user,$api_key) {
+		$type = 'event';
+		$auth = $type.$id.serialize($data).$user;
+
+		$md5 = md5($auth);
+		$sha1 = sha1($auth);
+
+		$iv = '1234567890123456';
+
+		$aes = new AES($api_key,"CBC",$iv);
+
+		$auth = array(
+			'sha1' => $sha1,
+			'md5' => $md5,
+			'time' => time(),
+		);
+		$auth = serialize($auth);
+
+		// this is done since we use the same iv all the time
+		$first_block = '';
+		for ($i=0;$i<16;$i++) {
+			$first_block .= chr(rand(0,255));
+		}
+
+		$auth = strtr(base64_encode($aes->encrypt($first_block.$auth)), '+/=', '-_~');
+
+		return $this->SN->setData($type,$id,$data,$user,$auth);
+	}
+
+	public function delete_event($id,$user,$api_key) {
+		$type = 'event';
+		$auth = $type.$id.$user;
+
+		$md5 = md5($auth);
+		$sha1 = sha1($auth);
+
+		$iv = '1234567890123456';
+
+		$aes = new AES($api_key,"CBC",$iv);
+
+		$auth = array(
+			'sha1' => $sha1,
+			'md5' => $md5,
+			'time' => time(),
+		);
+		$auth = serialize($auth);
+
+		// this is done since we use the same iv all the time
+		$first_block = '';
+		for ($i=0;$i<16;$i++) {
+			$first_block .= chr(rand(0,255));
+		}
+
+		$auth = strtr(base64_encode($aes->encrypt($first_block.$auth)), '+/=', '-_~');
+
+		return $this->SN->deleteObject($type,$id,$user,$auth);
+	}
+
+
 }
 
 

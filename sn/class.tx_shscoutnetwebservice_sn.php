@@ -157,7 +157,7 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 
 		$iv = '1234567890123456';
 
-		$aes = new AES($api_key,"CBC",$iv);
+		$aes = new tx_shscoutnetwebservice_AES($api_key,"CBC",$iv);
 
 		$auth = array(
 			'sha1' => $sha1,
@@ -186,7 +186,7 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 
 		$iv = '1234567890123456';
 
-		$aes = new AES($api_key,"CBC",$iv);
+		$aes = new tx_shscoutnetwebservice_AES($api_key,"CBC",$iv);
 
 		$auth = array(
 			'sha1' => $sha1,

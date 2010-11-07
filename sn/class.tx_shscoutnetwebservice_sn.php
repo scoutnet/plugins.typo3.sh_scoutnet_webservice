@@ -48,6 +48,7 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 	var $prefixId = 'tx_shscoutnetwebservice_sn';		// Same as class name
 	var $scriptRelPath = 'sn/class.tx_shscoutnetwebservice_sn.php';	// Path to this script relative to the extension dir.
 	var $extKey = 'sh_scoutnet_webservice';	// The extension key.
+	var $iv = '1234567890123456';
 
 	var $SN = null;
 
@@ -150,47 +151,31 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 
 	public function write_event($id,$data,$user,$api_key) {
 		$type = 'event';
-		$auth = $type.$id.serialize($data).$user;
-
-		$md5 = md5($auth);
-		$sha1 = sha1($auth);
-
-		$iv = '1234567890123456';
-
-		$aes = new tx_shscoutnetwebservice_AES($api_key,"CBC",$iv);
-
-		$auth = array(
-			'sha1' => $sha1,
-			'md5' => $md5,
-			'time' => time(),
-		);
-		$auth = serialize($auth);
-
-		// this is done since we use the same iv all the time
-		$first_block = '';
-		for ($i=0;$i<16;$i++) {
-			$first_block .= chr(rand(0,255));
-		}
-
-		$auth = strtr(base64_encode($aes->encrypt($first_block.$auth)), '+/=', '-_~');
+		$auth = $this->_generate_auth($api_key,$type.$id.serialize($data).$user);
 
 		return $this->SN->setData($type,$id,$data,$user,$auth);
 	}
 
 	public function delete_event($id,$user,$api_key) {
 		$type = 'event';
-		$auth = $type.$id.$user;
+		$auth = $this->_generate_auth($api_key,$type.$id.$user);
 
-		$md5 = md5($auth);
-		$sha1 = sha1($auth);
+		return $this->SN->deleteObject($type,$id,$user,$auth);
+	}
 
-		$iv = '1234567890123456';
+	public function has_write_permission_to_calender($ssid,$user,$api_key) {
+		$type = 'event';
+		$auth = $this->_generate_auth($api_key,$type.$ssid.$user);
 
-		$aes = new tx_shscoutnetwebservice_AES($api_key,"CBC",$iv);
+		return $this->SN->checkPermission($type,$ssid,$user,$auth);
+	}
+
+	private function _generate_auth($api_key,$checkValue){
+		$aes = new tx_shscoutnetwebservice_AES($api_key,"CBC",$this->iv);
 
 		$auth = array(
-			'sha1' => $sha1,
-			'md5' => $md5,
+			'sha1' => sha1($checkValue),
+			'md5' => md5($checkValue),
 			'time' => time(),
 		);
 		$auth = serialize($auth);
@@ -202,10 +187,8 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 		}
 
 		$auth = strtr(base64_encode($aes->encrypt($first_block.$auth)), '+/=', '-_~');
-
-		return $this->SN->deleteObject($type,$id,$user,$auth);
+		return $auth;
 	}
-
 
 }
 

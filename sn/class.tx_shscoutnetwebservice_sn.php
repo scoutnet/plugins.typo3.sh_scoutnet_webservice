@@ -170,6 +170,13 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 		return $this->SN->checkPermission($type,$ssid,$user,$auth);
 	}
 
+	public function request_write_permissions_for_calender($ssid,$user,$api_key) {
+		$type = 'event';
+		$auth = $this->_generate_auth($api_key,$type.$ssid.$user);
+
+		return $this->SN->requestPermission($type,$ssid,$user,$auth);
+	}
+
 	private function _generate_auth($api_key,$checkValue){
 		$aes = new tx_shscoutnetwebservice_AES($api_key,"CBC",$this->iv);
 

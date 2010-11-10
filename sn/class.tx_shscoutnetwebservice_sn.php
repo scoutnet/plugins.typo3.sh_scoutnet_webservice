@@ -202,8 +202,8 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 		}    
 
 		if (!isset($_GET['auth'])) {
-			throw new Exception('no Auth send. Maybe you are not allowed');
-		}    
+			return false;
+		}
 
 		$z = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['AES_key'];
 		$iv = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['AES_iv'];

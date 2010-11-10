@@ -1,11 +1,12 @@
 # cat=plugin.tx_shscoutnetwebservice//; type=string+; label= AES Key (please concact muetze@scoutnet.de to get one)
-AES_key = 
+AES_key =
 
 # cat=plugin.tx_shscoutnetwebservice//; type=string+; label= AES IV (please concact muetze@scoutnet.de to get one)
-AES_iv = XES2zPkI53R7iPVY
-
-# cat=plugin.tx_shscoutnetwebservice//; type=string+; label= Scoutnet Login Page
-ScoutnetLoginPage = https://www.scoutnet.de/community/scoutnetConnect.html
+AES_iv =
 
 # cat=plugin.tx_shscoutnetwebservice//; type=string+; label= Scoutnet Provider name
-ScoutnetProviderName = www.dpsg-koeln.de
+ScoutnetProviderName =
+
+# cat=plugin.tx_shscoutnetwebservice//; type=string+; label= Scoutnet Login Page (this should not be altered)
+ScoutnetLoginPage = https://www.scoutnet.de/community/scoutnetConnect.html
+

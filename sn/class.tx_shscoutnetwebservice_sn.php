@@ -177,6 +177,24 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 		return $this->SN->requestPermission($type,$ssid,$user,$auth);
 	}
 
+	public function get_scoutnetConnectLoginButton($returnUrl = '',$requestApiKey = false){
+		$button = '<form action="'.$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['ScoutnetLoginPage'].'" id="scoutnetLogin" method="post" target="_self">';
+
+		$button .= $returnUrl == ''?'':'<input type="hidden" name="redirect_url" value="'.$returnUrl.'" />';
+		$button .= '<input type="hidden" name="provider" value="'.$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['ScoutnetProviderName'].'" />';
+		$button .= $requestApiKey?'<input type="hidden" name="createApiKey" value="1" />':'';
+		
+		$button .= '<a href="#" onclick="document.getElementById(\'scoutnetLogin\').submit(); return false;">';
+		$button .= '<img src="'.t3lib_extMgm::extRelPath('sh_scoutnet_webservice').'res/scoutnetConnect.png" title="scoutnet" alt="scoutnet"/>';
+		$button .= '</a>';
+		
+		$button .= '</form>';
+
+		return $button;
+	}
+
+
+
 	private function _generate_auth($api_key,$checkValue){
 		$aes = new tx_shscoutnetwebservice_AES($api_key,"CBC",$this->iv);
 

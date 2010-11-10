@@ -585,4 +585,7 @@ class tx_shscoutnetwebservice_AES {
 	       $w &= 0x00000000FFFFFFFF;
         }
 }
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sh_scoutnet_webservice/sn/class.tx_shscoutnetwebservice_AES.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sh_scoutnet_webservice/sn/class.tx_shscoutnetwebservice_AES.php']);
+}
 ?>

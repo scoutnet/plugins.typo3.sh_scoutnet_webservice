@@ -180,6 +180,7 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 	}
 
 	public function get_scoutnetConnectLoginButton($returnUrl = '',$requestApiKey = false){
+		$this->_check_for_all_configValues();
 		$button = '<form action="'.$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['ScoutnetLoginPage'].'" id="scoutnetLogin" method="post" target="_self">';
 
 		$button .= $returnUrl == ''?'':'<input type="hidden" name="redirect_url" value="'.$returnUrl.'" />';
@@ -204,6 +205,8 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 		if (!isset($_GET['auth'])) {
 			return false;
 		}
+
+		$this->_check_for_all_configValues();
 
 		$z = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['AES_key'];
 		$iv = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['AES_iv'];
@@ -245,11 +248,14 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 	}
 
 	private function _check_for_all_configValues(){
+		throw new Exception('not implemented');
 	}
 
 
 
 	private function _generate_auth($api_key,$checkValue){
+		$this->_check_for_all_configValues();
+
 		$aes = new tx_shscoutnetwebservice_AES($api_key,"CBC",$this->iv);
 
 		$auth = array(

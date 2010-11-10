@@ -158,11 +158,11 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 		return $this->SN->setData($type,$id,$data,$user,$auth);
 	}
 
-	public function delete_event($id,$user,$api_key) {
+	public function delete_event($ssid,$id,$user,$api_key) {
 		$type = 'event';
-		$auth = $this->_generate_auth($api_key,$type.$id.$user);
+		$auth = $this->_generate_auth($api_key,$type.$ssid.$id.$user);
 
-		return $this->SN->deleteObject($type,$id,$user,$auth);
+		return $this->SN->deleteObject($type,$ssid,$id,$user,$auth);
 	}
 
 	public function has_write_permission_to_calender($ssid,$user,$api_key) {

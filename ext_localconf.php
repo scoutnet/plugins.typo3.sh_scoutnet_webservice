@@ -8,7 +8,6 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['AES_key']=$_E
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['AES_iv']=$_EXTCONF['AES_iv'];
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['ScoutnetLoginPage']=$_EXTCONF['ScoutnetLoginPage'];
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['ScoutnetProviderName']=$_EXTCONF['ScoutnetProviderName'];
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['ScoutnetSSID']=$_EXTCONF['ScoutnetSSID'];
 
 t3lib_extMgm::addService($_EXTKEY,  'webservice' /* sv type */,  'tx_shscoutnetwebservice_sv1' /* sv key */,
 		array(

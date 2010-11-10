@@ -55,6 +55,8 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 	var $user_cache = array();
 	var $stufen_cache = array();
 	var $kalender_cache = array();
+
+	var $snData;
 	
 	/**
 	 * [Put your description here]
@@ -191,6 +193,58 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 		$button .= '</form>';
 
 		return $button;
+	}
+
+
+	public function getApiKeyFromData(){
+		if (isset($this->snData)) {
+			return $this->snData;
+		}    
+
+		if (!isset($_GET['auth'])) {
+			throw new Exception('no Auth send. Maybe you are not allowed');
+		}    
+
+		$z = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['AES_key'];
+		$iv = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['AES_iv'];
+
+		$aes = new tx_shscoutnetwebservice_AES($z,"CBC",$iv);
+
+		$base64 = base64_decode(strtr($_GET['auth'], '-_~','+/='));
+
+		if (trim($base64) == "")  
+			throw new Exception('the auth is empty');
+
+		$data = unserialize(substr($aes->decrypt($base64),strlen($iv)));
+
+
+		$md5 = $data['md5']; unset($data['md5']);
+		$sha1 = $data['sha1']; unset($data['sha1']);
+
+		if (md5(serialize($data)) != $md5) {
+			throw new Exception('the auth is broken');
+		}    
+
+		if (sha1(serialize($data)) != $sha1) {
+			throw new Exception('the auth is broken');
+		}    
+
+
+		if (time() - $data['time'] > 3600) {
+			throw new Exception('the auth is too old. Try again');
+		}    
+
+		$your_domain = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['ScoutnetProviderName'];
+
+		if ($data['your_domain'] != $your_domain)
+			throw new Exception('the auth is for the wrong site!. Try again');
+
+		$this->snData = $data;
+
+		return $data;
+	}
+
+	private function _check_for_all_configValues(){
 	}
 
 

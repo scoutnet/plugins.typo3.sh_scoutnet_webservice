@@ -254,7 +254,8 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 
 
 	private function _generate_auth($api_key,$checkValue){
-		$this->_check_for_all_configValues();
+		if ($api_key == '')
+			throw new Exception('your Api Key is empty');
 
 		$aes = new tx_shscoutnetwebservice_AES($api_key,"CBC",$this->iv);
 

@@ -248,9 +248,14 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 	}
 
 	private function _check_for_all_configValues(){
-		throw new Exception('not implemented');
-	}
 
+		$configVars = array('AES_key','AES_iv','ScoutnetLoginPage','ScoutnetProviderName');
+
+		foreach ($configVars as $configVar) {
+			if (trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice'][$configVar]) == '')
+				throw new tx_shscoutnetwebservice_sn_Exception_MissingConfVar($configVar);
+		}
+	}
 
 
 	private function _generate_auth($api_key,$checkValue){
@@ -277,6 +282,15 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 	}
 
 }
+
+class tx_shscoutnetwebservice_sn_Exception extends Exception{}
+
+class tx_shscoutnetwebservice_sn_Exception_MissingConfVar extends tx_shscoutnetwebservice_sn_Exception{
+	public function __construct( $var ){
+		parent::__construct( "Missing '$var'. Please Contact your Typo3 Admin to enter a valid AES key. You can request one from <a href=\"mailto:muetze@scoutnet.de\">M&uuml;tze</a>." );
+	}
+}
+
 
 
 

@@ -125,9 +125,7 @@ class tx_shscoutnetwebservice_jsonRPCClient {
 
 
 		global $TYPO3_CONF_VARS;
-		echo ($TYPO3_CONF_VARS['SYS']['curlUse']);
 		if ($TYPO3_CONF_VARS['SYS']['curlUse'] && extension_loaded( 'curl' ) ) {
-			echo "foo";
 			// performs the HTTP POST by use of libcurl
 			$options = array(
 				CURLOPT_URL		=> $this->url,
@@ -143,8 +141,8 @@ class tx_shscoutnetwebservice_jsonRPCClient {
 			curl_setopt_array( $ch, $options );
 			$response = trim( curl_exec( $ch ) );
 
-			$this->debug = " foo ";
 			$this->debug && $this->debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
+			echo "foo";
 			$response = json_decode( $response, true );
 			curl_close( $ch );
 		} else {

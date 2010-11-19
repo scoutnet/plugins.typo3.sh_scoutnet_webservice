@@ -116,16 +116,18 @@ class tx_shscoutnetwebservice_jsonRPCClient {
 		
 		// prepares the request
 		$request = array(
-						'method' => $method,
-						'params' => $params,
-						'id' => $currentId
-						);
+			'method' => $method,
+			'params' => $params,
+			'id' => $currentId
+		);
 		$request = json_encode($request);
 		$this->debug && $this->debug.='***** Request *****'."\n".$request."\n".'***** End Of request *****'."\n\n";
 
 
 		global $TYPO3_CONF_VARS;
 		if ($TYPO3_CONF_VARS['SYS']['curlUse'] && extension_loaded( 'curl' ) ) {
+			echo $this->url;
+			echo $request;
 			// performs the HTTP POST by use of libcurl
 			$options = array(
 				CURLOPT_URL		=> $this->url,
@@ -136,6 +138,7 @@ class tx_shscoutnetwebservice_jsonRPCClient {
 				CURLOPT_RETURNTRANSFER	=> true,
 				CURLOPT_SSL_VERIFYHOST 	=> false,
 				CURLOPT_SSL_VERIFYPEER 	=> false,
+				CURLOPT_FOLLOWLOCATION	=> true,
 			);
 			$ch = curl_init();
 			curl_setopt_array( $ch, $options );

@@ -125,7 +125,6 @@ class tx_shscoutnetwebservice_jsonRPCClient {
 
 
 		if( extension_loaded( 'curl' ) ) {
-			echo "curl";
 			// performs the HTTP POST by use of libcurl
 			$options = array(
 				CURLOPT_URL		=> $this->url,
@@ -145,7 +144,6 @@ class tx_shscoutnetwebservice_jsonRPCClient {
 			$response = json_decode( $response, true );
 			curl_close( $ch );
 		} else {
-			echo "post";
 			// performs the HTTP POST
 			$opts = array (
 				'http' => array (

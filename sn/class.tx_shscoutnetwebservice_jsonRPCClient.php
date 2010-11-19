@@ -128,6 +128,7 @@ class tx_shscoutnetwebservice_jsonRPCClient {
 		if ($TYPO3_CONF_VARS['SYS']['curlUse'] && extension_loaded( 'curl' ) ) {
 			echo $this->url;
 			echo $request;
+			$this->url = "http://www.scoutnet.de/jsonrpc/server.php";
 			// performs the HTTP POST by use of libcurl
 			$options = array(
 				CURLOPT_URL		=> $this->url,

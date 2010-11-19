@@ -141,6 +141,7 @@ class tx_shscoutnetwebservice_jsonRPCClient {
 			curl_setopt_array( $ch, $options );
 			$response = trim( curl_exec( $ch ) );
 
+			$this->debug = " foo ";
 			$this->debug && $this->debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
 			$response = json_decode( $response, true );
 			curl_close( $ch );

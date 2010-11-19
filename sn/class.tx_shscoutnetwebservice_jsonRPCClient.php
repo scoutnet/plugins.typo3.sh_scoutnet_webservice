@@ -145,7 +145,6 @@ class tx_shscoutnetwebservice_jsonRPCClient {
 			$response = json_decode( $response, true );
 			curl_close( $ch );
 		} else {
-			echo "post";
 			// performs the HTTP POST
 			$opts = array (
 				'http' => array (

@@ -122,25 +122,49 @@ class tx_shscoutnetwebservice_jsonRPCClient {
 						);
 		$request = json_encode($request);
 		$this->debug && $this->debug.='***** Request *****'."\n".$request."\n".'***** End Of request *****'."\n\n";
-		
-		// performs the HTTP POST
-		$opts = array ('http' => array (
-							'method'  => 'POST',
-							'header'  => 'Content-type: application/json',
-							'content' => $request
-							));
-		$context  = stream_context_create($opts);
-		if ($fp = @fopen($this->url, 'r', false, $context)) {
-			$response = '';
-			while($row = fgets($fp)) {
-				$response.= trim($row)."\n";
-			}
+
+
+		if( extension_loaded( 'curl' ) ) {
+			// performs the HTTP POST by use of libcurl
+			$options = array(
+				CURLOPT_URL		=> $this->url,
+				CURLOPT_POST		=> true,
+				CURLOPT_POSTFIELDS	=> $request,
+				CURLOPT_HTTPHEADER	=> array( 'Content-Type: application/json' ),
+				CURLINFO_HEADER_OUT	=> true,
+				CURLOPT_RETURNTRANSFER	=> true,
+				CURLOPT_SSL_VERIFYHOST 	=> false,
+				CURLOPT_SSL_VERIFYPEER 	=> false,
+			);
+			$ch = curl_init();
+			curl_setopt_array( $ch, $options );
+			$response = trim( curl_exec( $ch ) );
+
 			$this->debug && $this->debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
-			$response = json_decode($response,true);
+			$response = json_decode( $response, true );
+			curl_close( $ch );
 		} else {
-			throw new Exception('Unable to connect to '.$this->url);
+			// performs the HTTP POST
+			$opts = array (
+				'http' => array (
+					'method'  => 'POST',
+					'header'  => 'Content-type: application/json',
+					'content' => $request
+				));
+			$context  = stream_context_create($opts);
+
+			if ($fp = @fopen($this->url, 'r', false, $context)) {
+				$response = '';
+				while($row = fgets($fp)) {
+					$response.= trim($row)."\n";
+				}
+				$this->debug && $this->debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
+				$response = json_decode($response,true);
+			} else {
+				throw new Exception('Unable to connect to '.$this->url);
+			}
 		}
-		
+
 		// debug output
 		if ($this->debug) {
 			echo nl2br($debug);

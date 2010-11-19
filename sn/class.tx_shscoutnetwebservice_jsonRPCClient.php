@@ -124,11 +124,7 @@ class tx_shscoutnetwebservice_jsonRPCClient {
 		$this->debug && $this->debug.='***** Request *****'."\n".$request."\n".'***** End Of request *****'."\n\n";
 
 
-		global $TYPO3_CONF_VARS;
-		if ($TYPO3_CONF_VARS['SYS']['curlUse'] && extension_loaded( 'curl' ) ) {
-			echo $this->url;
-			echo $request;
-			$this->url = "http://www.scoutnet.de/jsonrpc/server.php";
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] && extension_loaded( 'curl' ) ) {
 			// performs the HTTP POST by use of libcurl
 			$options = array(
 				CURLOPT_URL		=> $this->url,
@@ -143,12 +139,23 @@ class tx_shscoutnetwebservice_jsonRPCClient {
 			);
 			$ch = curl_init();
 			curl_setopt_array( $ch, $options );
+
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'])	{
+				curl_setopt($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
+
+				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel'])	{
+					curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']);
+				}
+				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass'])	{
+					curl_setopt($ch, CURLOPT_PROXYUSERPWD, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']);
+				}
+			}
+
+
+
 			$response = trim( curl_exec( $ch ) );
 
 			$this->debug && $this->debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
-			echo $response;
-			echo curl_exec($ch);
-			echo "..";
 			$response = json_decode( $response, true );
 			curl_close( $ch );
 		} else {

@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "sh_scoutnet_webservice".
 #
-# Auto generated 19-11-2010 16:48
+# Auto generated 19-11-2010 16:50
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -29,7 +29,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearCacheOnLoad' => 1,
 	'lockType' => '',
 	'author_company' => '',
-	'version' => '1.0.1',
+	'version' => '1.0.2',
 	'constraints' => array(
 		'depends' => array(
 		),

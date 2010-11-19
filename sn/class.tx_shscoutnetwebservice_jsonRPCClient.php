@@ -125,7 +125,7 @@ class tx_shscoutnetwebservice_jsonRPCClient {
 
 
 		global $TYPO3_CONF_VARS;
-		echo "foo";
+		print_r($TYPO3_CONF_VARS['SYS']);
 		if ($TYPO3_CONF_VARS['SYS']['curlUse'] && extension_loaded( 'curl' ) ) {
 			// performs the HTTP POST by use of libcurl
 			$options = array(

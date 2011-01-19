@@ -1,7 +1,7 @@
-# cat=plugin.tx_shscoutnetwebservice//; type=string+; label= AES Key (please concact scoutnetconnect@scoutnet.de to get one)
+# cat=plugin.tx_shscoutnetwebservice//; type=string+; label= AES Key (please contact scoutnetconnect@scoutnet.de to get one)
 AES_key =
 
-# cat=plugin.tx_shscoutnetwebservice//; type=string+; label= AES IV (please concact scoutnetconnect@scoutnet.de to get one)
+# cat=plugin.tx_shscoutnetwebservice//; type=string+; label= AES IV (please contact scoutnetconnect@scoutnet.de to get one)
 AES_iv =
 
 # cat=plugin.tx_shscoutnetwebservice//; type=string+; label= Scoutnet Provider name

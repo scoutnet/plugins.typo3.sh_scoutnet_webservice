@@ -181,7 +181,6 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 
 	public function get_scoutnetConnectLoginButton($returnUrl = '',$requestApiKey = false){
 		$lang = 'de';
-		print_r($GLOBALS['TYPO3_CONF_VARS']);
 
 		$this->_check_for_all_configValues();
 		$button = '<form action="'.$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['ScoutnetLoginPage'].'" id="scoutnetLogin" method="post" target="_self">';

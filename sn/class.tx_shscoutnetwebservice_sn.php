@@ -183,7 +183,7 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 		$lang = 'de';
 
 		$button = "<pre>";
-		$button .= print_r($GLOBALS['BE_USER'],true);
+		$button .= print_r($GLOBALS['BE_USER']->lang,true);
 		$botton .= "</pre>";
 
 		$this->_check_for_all_configValues();

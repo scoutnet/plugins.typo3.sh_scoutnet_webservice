@@ -183,7 +183,7 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 		$lang = 'de';
 
 		echo "<pre>";
-		print_r($GLOBALS['TSBE']);
+		print_r($GLOBALS['BE_USER']);
 		echo "</pre>";
 
 		$this->_check_for_all_configValues();

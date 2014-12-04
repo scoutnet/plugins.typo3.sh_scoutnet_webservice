@@ -43,7 +43,7 @@ require_once('models/SN_Model_Event.php');
  * @package	TYPO3
  * @subpackage	tx_shscoutnetwebservice
  */
-class tx_shscoutnetwebservice_sn extends t3lib_svbase {
+class tx_shscoutnetwebservice_sn extends \TYPO3\CMS\Core\Service\AbstractService {
 	var $prefixId = 'tx_shscoutnetwebservice_sn';		// Same as class name
 	var $scriptRelPath = 'sn/class.tx_shscoutnetwebservice_sn.php';	// Path to this script relative to the extension dir.
 	var $extKey = 'sh_scoutnet_webservice';	// The extension key.
@@ -193,7 +193,7 @@ class tx_shscoutnetwebservice_sn extends t3lib_svbase {
 		$button .= $requestApiKey?'<input type="hidden" name="createApiKey" value="1" />':'';
 		
 		$button .= '<a href="#" onclick="document.getElementById(\'scoutnetLogin\').submit(); return false;">';
-		$button .= '<img src="'.t3lib_extMgm::extRelPath('sh_scoutnet_webservice').'res/scoutnetConnect.png" title="scoutnet" alt="scoutnet"/>';
+		$button .= '<img src="'.\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('sh_scoutnet_webservice').'res/scoutnetConnect.png" title="scoutnet" alt="scoutnet"/>';
 		$button .= '</a>';
 		
 		$button .= '</form>';

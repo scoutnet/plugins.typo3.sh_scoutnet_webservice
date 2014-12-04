@@ -9,7 +9,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['AES_iv']=$_EX
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['ScoutnetLoginPage']=$_EXTCONF['ScoutnetLoginPage'];
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_shscoutnetwebservice']['ScoutnetProviderName']=$_EXTCONF['ScoutnetProviderName'];
 
-t3lib_extMgm::addService($_EXTKEY,  'webservice' /* sv type */,  'tx_shscoutnetwebservice_sv1' /* sv key */,
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService($_EXTKEY,  'webservice' /* sv type */,  'tx_shscoutnetwebservice_sv1' /* sv key */,
 		array(
 
 			'title' => 'SN',
@@ -24,7 +24,7 @@ t3lib_extMgm::addService($_EXTKEY,  'webservice' /* sv type */,  'tx_shscoutnetw
 			'os' => '',
 			'exec' => '',
 
-			'classFile' => t3lib_extMgm::extPath($_EXTKEY).'sv1/class.tx_shscoutnetwebservice_sv1.php',
+			'classFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'sv1/class.tx_shscoutnetwebservice_sv1.php',
 			'className' => 'tx_shscoutnetwebservice_sv1',
 		)
 	);

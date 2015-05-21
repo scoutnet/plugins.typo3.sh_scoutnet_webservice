@@ -6,11 +6,11 @@ class SN_Model_Kalender extends ArrayObject{
 
 
 	public function get_long_Name() {
-		return (string) htmlentities($this['Ebene']).(($this['Ebene_Id'] >= 7)?"<br>".htmlentities($this['Name']):"");
+		return (string) htmlentities($this['Ebene'], ENT_COMPAT|ENT_HTML401, 'UTF-8').(($this['Ebene_Id'] >= 7)?"<br>".htmlentities($this['Name'], ENT_COMPAT|ENT_HTML401, 'UTF-8'):"");
 	}
 
 	public function get_Name() {
-		return (string) htmlentities($this['Ebene']).(($this['Ebene_Id'] >= 7)?"&nbsp;".htmlentities($this['Name']):"");
+		return (string) htmlentities($this['Ebene'], ENT_COMPAT|ENT_HTML401, 'UTF-8').(($this['Ebene_Id'] >= 7)?"&nbsp;".htmlentities($this['Name'], ENT_COMPAT|ENT_HTML401, 'UTF-8'):"");
 	}
 }
 

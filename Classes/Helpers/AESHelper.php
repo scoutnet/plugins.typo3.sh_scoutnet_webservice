@@ -1,5 +1,5 @@
 <?php
-namespace ScoutNet\ShScoutnetCommunity\Helpers;
+namespace ScoutNet\ShScoutnetWebservice\Helpers;
 
 /***************************************************************
  *

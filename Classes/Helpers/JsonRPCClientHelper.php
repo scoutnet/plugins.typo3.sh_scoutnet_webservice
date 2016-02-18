@@ -1,34 +1,35 @@
 <?php
-/*
-					COPYRIGHT
+namespace ScoutNet\ShScoutnetWebservice\Helpers;
 
-Copyright 2007 Sergio Vaccaro <sergio@inservibile.org>
-
-This file is part of JSON-RPC PHP.
-
-JSON-RPC PHP is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-JSON-RPC PHP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with JSON-RPC PHP; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+/***************************************************************
+ *
+ *  Copyright notice
+ *
+ *  (c) 2015 Stefan "Mütze" Horst <muetze@scoutnet.de>, ScoutNet
+ *
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
- * The object of this class are generic jsonRPC 1.0 clients
- * http://json-rpc.org/wiki/specification
- *
- * @author sergio <jsonrpcphp@inservibile.org>
+ * JsonRPCClientHelper
  */
-
-class tx_shscoutnetwebservice_jsonRPCClient {
+class JsonRPCClientHelper {
 	
 	/**
 	 * Debug state
@@ -203,8 +204,3 @@ class tx_shscoutnetwebservice_jsonRPCClient {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sh_scoutnet_webservice/sn/class.tx_shscoutnetwebservice_jsonRPCClient.php']) {
-	  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sh_scoutnet_webservice/sn/class.tx_shscoutnetwebservice_jsonRPCClient.php']);
-}
-
-?>

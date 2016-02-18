@@ -1,26 +1,35 @@
 <?php
-/*
-*  Author: Cody Phillips
-*  Company: Phillips Data
-*  Website: www.phpaes.com, www.phillipsdata.com
-*  File: AES.class.php
-*  October 1, 2007
-*
-*  This software is sold as-is without any warranties, expressed or implied,
-*  including but not limited to performance and/or merchantability. No
-*  warranty of fitness for a particular purpose is offered. This script can
-*  be used on as many servers as needed, as long as the servers are owned
-*  by the purchaser. (Contact us if you want to distribute it as part of
-*  another project) The purchaser cannot modify, rewrite, edit, or change any
-*  of this code and then resell it, which would be copyright infringement.
-*  This code can be modified for personal use only.
-*
-*  Edited to allow CBC by muetze@scoutnet.de
-*
-*  Comments, Questions? Contact the author at cody [at] wshost [dot] net
-*/
+namespace ScoutNet\ShScoutnetCommunity\Helpers;
 
-class tx_shscoutnetwebservice_AES {
+/***************************************************************
+ *
+ *  Copyright notice
+ *
+ *  (c) 2015 Stefan "Mütze" Horst <muetze@scoutnet.de>, ScoutNet
+ *
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
+/**
+ * AESHelper
+ */
+class AESHelper {
         // The number of 32-bit words comprising the plaintext and columns comrising the state matrix of an AES cipher.
         private static $Nb = 4;
         // The number of 32-bit words comprising the cipher key in this AES cipher.
@@ -584,8 +593,5 @@ class tx_shscoutnetwebservice_AES {
                 // Reduce this 64-bit word to 32-bits on 64-bit machines
 	       $w &= 0x00000000FFFFFFFF;
         }
-}
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sh_scoutnet_webservice/sn/class.tx_shscoutnetwebservice_AES.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sh_scoutnet_webservice/sn/class.tx_shscoutnetwebservice_AES.php']);
 }
 ?>

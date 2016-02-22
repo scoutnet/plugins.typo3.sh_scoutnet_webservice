@@ -30,7 +30,7 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
  * Kalender
  *
  */
-class Kalender extends ArrayObject{
+class Kalender extends \ArrayObject{
 	function __construct( $array ){
 		parent::__construct($array);
 	}

@@ -29,7 +29,7 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
 /**
  * Stufe
  */
-class Stufe extends ArrayObject{
+class Stufe extends \ArrayObject{
 	function __construct( $array ){
 		parent::__construct($array);
 	}
@@ -37,7 +37,7 @@ class Stufe extends ArrayObject{
 
 	public function get_Image_URL(){
 		if (isset($this['id'])) {
-			return (string) "<img src='http://kalender.scoutnet.de/2.0/images/".$this['id'].".gif' alt='".htmlentities($this['bezeichnung'], ENT_COMPAT|ENT_HTML401, 'UTF-8')."' />";
+			return (string) "<img src='https://kalender.scoutnet.de/2.0/images/".$this['id'].".gif' alt='".htmlentities($this['bezeichnung'], ENT_COMPAT|ENT_HTML401, 'UTF-8')."' />";
 		} 
 
 		return (string) "";

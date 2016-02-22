@@ -26,6 +26,8 @@ namespace ScoutNet\ShScoutnetWebservice\Helpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Exception;
+
 /**
  * JsonRPCClientHelper
  */
@@ -122,7 +124,7 @@ class JsonRPCClientHelper {
 			'id' => $currentId
 		);
 		$request = json_encode($request);
-		$this->debug && $this->debug.='***** Request *****'."\n".$request."\n".'***** End Of request *****'."\n\n";
+		$this->debug && $debug.='***** Request *****'."\n".$request."\n".'***** End Of request *****'."\n\n";
 
 
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] && extension_loaded( 'curl' ) ) {
@@ -156,7 +158,7 @@ class JsonRPCClientHelper {
 
 			$response = trim( curl_exec( $ch ) );
 
-			$this->debug && $this->debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
+			$this->debug && $debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
 			$response = json_decode( $response, true );
 			curl_close( $ch );
 		} else {
@@ -174,7 +176,7 @@ class JsonRPCClientHelper {
 				while($row = fgets($fp)) {
 					$response.= trim($row)."\n";
 				}
-				$this->debug && $this->debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
+				$this->debug && $debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
 				$response = json_decode($response,true);
 			} else {
 				throw new Exception('Unable to connect to '.$this->url);

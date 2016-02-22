@@ -29,7 +29,7 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
 /**
  * User
  */
-class User extends ArrayObject{
+class User extends \ArrayObject{
 	function __construct( $array ){
 		if(isset($array['id'])){
 			$array['userid'] = $array['id'];

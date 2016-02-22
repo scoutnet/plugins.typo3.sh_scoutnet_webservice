@@ -1,4 +1,6 @@
 <?php
+namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -21,29 +23,15 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- * Hint: use extdeveval to insert/update function index above.
- */
-
-require_once('class.tx_shscoutnetwebservice_jsonRPCClient.php');
-require_once('class.tx_shscoutnetwebservice_AES.php');
-
-require_once('models/SN_Model_Stufe.php');
-require_once('models/SN_Model_Kalender.php');
-require_once('models/SN_Model_User.php');
-require_once('models/SN_Model_Event.php');
-
 
 /**
  * Service "SN" for the "sh_scoutnet_webservice" extension.
  *
- * @author	Stefan Horst <s.horst@dpsg-koeln.de>
+ * @author	Stefan Horst <muetze@scoutnet.de>
  * @package	TYPO3
  * @subpackage	tx_shscoutnetwebservice
  */
-class tx_shscoutnetwebservice_sn extends \TYPO3\CMS\Core\Service\AbstractService {
+class AbstractRepository { //extends \TYPO3\CMS\Core\Service\AbstractService {
 	var $prefixId = 'tx_shscoutnetwebservice_sn';		// Same as class name
 	var $scriptRelPath = 'sn/class.tx_shscoutnetwebservice_sn.php';	// Path to this script relative to the extension dir.
 	var $extKey = 'sh_scoutnet_webservice';	// The extension key.
@@ -57,14 +45,9 @@ class tx_shscoutnetwebservice_sn extends \TYPO3\CMS\Core\Service\AbstractService
 
 	var $snData;
 	
-	/**
-	 * [Put your description here]
-	 *
-	 * @return	[type]		...
-	 */
 	public function __construct()	{
 		ini_set('default_socket_timeout',1);
-		$this->SN = new tx_shscoutnetwebservice_jsonRPCClient("https://www.scoutnet.de/jsonrpc/server.php");
+		$this->SN = new \ScoutNet\ShScoutnetWebservice\Helpers\JsonRPCClientHelper("http://api.scoutnet.dev/jsonrpc/");//, true); // TODO: configure this and configure debug
 	}
 
 	protected function load_data_from_scoutnet($ids,$query){
@@ -78,16 +61,16 @@ class tx_shscoutnetwebservice_sn extends \TYPO3\CMS\Core\Service\AbstractService
 		foreach ($this->load_data_from_scoutnet($ids,array('events'=>$filter)) as $record) {
 
 			if ($record['type'] === 'user'){
-				$user = new SN_Model_User($record['content']);
+				$user = new \ScoutNet\ShScoutnetWebservice\Domain\Model\User($record['content']);
 				$this->user_cache[$user['userid']] = $user;
 			} elseif ($record['type'] === 'stufe'){
-				$stufe = new SN_Model_Stufe($record['content']);
+				$stufe = new \ScoutNet\ShScoutnetWebservice\Domain\Model\Stufe($record['content']);
 				$this->stufen_cache[$stufe['Keywords_ID']] = $stufe;
 			} elseif ($record['type'] === 'kalender'){
-				$kalender = new SN_Model_Kalender($record['content']);
+				$kalender = new \ScoutNet\ShScoutnetWebservice\Domain\Model\Kalender($record['content']);
 				$this->kalender_cache[$kalender['ID']] = $kalender;
 			} elseif ($record['type'] === 'event') {
-				$event = new SN_Model_Event($record['content']);
+				$event = new \ScoutNet\ShScoutnetWebservice\Domain\Model\Event($record['content']);
 
 				$author = $this->get_user_by_id($event['Last_Modified_By']);
 				if ($author == null) {
@@ -129,7 +112,7 @@ class tx_shscoutnetwebservice_sn extends \TYPO3\CMS\Core\Service\AbstractService
 		$kalenders = array();
 		foreach ($this->load_data_from_scoutnet($ids,array('kalenders'=>array())) as $record) {
 			if ($record['type'] === 'kalender'){
-				$kalender = new SN_Model_Kalender($record['content']);
+				$kalender = new \ScoutNet\ShScoutnetWebservice\Domain\Model\Kalender($record['content']);
 				$this->kalender_cache[$kalender['ID']] = $kalender;
 				$kalenders[] = $kalender;
 			}
@@ -288,7 +271,7 @@ class tx_shscoutnetwebservice_sn extends \TYPO3\CMS\Core\Service\AbstractService
 
 }
 
-class tx_shscoutnetwebservice_sn_Exception extends Exception{}
+class tx_shscoutnetwebservice_sn_Exception extends \Exception{}
 
 class tx_shscoutnetwebservice_sn_Exception_MissingConfVar extends tx_shscoutnetwebservice_sn_Exception{
 	public function __construct( $var ){

@@ -31,9 +31,12 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
  *
  */
 //class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
-class Event extends ArrayObject{
+class Event extends \ArrayObject{
 	function __construct( $array ){
 		parent::__construct($array);
+
+		$this['Start'] = isset($array['Start'])?\DateTime::createFromFormat('U',$array['Start']):null;
+		$this['End'] = isset($array['End'])?\DateTime::createFromFormat('U',$array['End']):null;
 	}
 
 

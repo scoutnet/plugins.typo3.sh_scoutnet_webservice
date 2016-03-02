@@ -7,7 +7,7 @@ config.tx_extbase{
 					BackendUser = ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser
 				}
 			}
-			ScoutNet\ShScoutnetKalender\Domain\Model\BackendUser {
+			ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser {
 				mapping {
 					tableName = be_users
 				}

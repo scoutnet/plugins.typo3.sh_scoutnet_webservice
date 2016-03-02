@@ -143,6 +143,10 @@ class JsonRPCClientHelper {
 			$ch = curl_init();
 			curl_setopt_array( $ch, $options );
 
+			if (isset($_COOKIE['XDEBUG_SESSION'])) {
+				curl_setopt($ch, CURLOPT_COOKIE, 'XDEBUG_SESSION: '.urlencode($_COOKIE['XDEBUG_SESSION']));
+			}
+
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'])	{
 				curl_setopt($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
 

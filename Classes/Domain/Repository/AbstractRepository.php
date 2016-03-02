@@ -72,7 +72,7 @@ class AbstractRepository { //extends \TYPO3\CMS\Core\Service\AbstractService {
 
 	public function __construct()	{
 		//ini_set('default_socket_timeout',1);
-		$this->SN = new \ScoutNet\ShScoutnetWebservice\Helpers\JsonRPCClientHelper("http://api.scoutnet.dev/jsonrpc/?XDEBUG_SESSION_START=13676");//, true); // TODO: configure this and configure debug
+		$this->SN = new \ScoutNet\ShScoutnetWebservice\Helpers\JsonRPCClientHelper("http://api.scoutnet.dev/jsonrpc/");//, true); // TODO: configure this and configure debug
 	}
 
 	protected function load_data_from_scoutnet($ids,$query){

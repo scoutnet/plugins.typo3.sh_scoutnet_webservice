@@ -36,9 +36,21 @@ class EventRepository extends AbstractRepository {
      */
     protected $kalenderRepository = null;
 
+    /**
+     * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\BackendUserRepository
+     * @inject
+     */
+    protected $backendUserRepository = null;
+
+    /**
+     * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\CategorieRepository
+     * @inject
+     */
+    protected $categorieRepository = null;
+
+
     private $user_cache = array();
     private $stufen_cache = array();
-    private $kalender_cache = array();
     private $event_cache = array();
 
     public function findByStructureAndFilter(\ScoutNet\ShScoutnetWebservice\Domain\Model\Structure $structure, $filter) {
@@ -102,25 +114,59 @@ class EventRepository extends AbstractRepository {
         return $this->user_cache[$id];
     }
 
-    public function write_event($id,$data,$user,$api_key) {
-        $type = 'event';
-        $auth = $this->authHelper->generateAuth($api_key,$type.$id.serialize($data).$user);
+    /**
+     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public function delete(\ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event) {
+		/** @var \ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser $be_user */
+        $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user["uid"]);
 
-        return $this->SN->setData($type,$id,$data,$user,$auth);
+        $type = 'event';
+        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetkalenderScoutnetApikey(),$type.$event->getStructure()->getUid().$event->getUid().$be_user->getTxShscoutnetkalenderScoutnetUsername());
+
+        return $this->SN->deleteObject($type,$event->getStructure()->getUid(),$event->getUid(),$be_user->getTxShscoutnetkalenderScoutnetUsername(),$auth);
     }
 
-    public function delete_event($ssid,$id,$user,$api_key) {
-        $type = 'event';
-        $auth = $this->authHelper->generateAuth($api_key,$type.$ssid.$id.$user);
-
-        return $this->SN->deleteObject($type,$ssid,$id,$user,$auth);
-    }
-
+    /**
+     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event
+     *
+     * @return mixed
+     * @throws \Exception
+     */
     public function update(\ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event){
-        $type = 'event';
-        $auth = $this->authHelper->generateAuth($api_key,$type.$id.serialize($data).$user);
+		/** @var \ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser $be_user */
+        $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user["uid"]);
 
-        return $this->SN->setData($type,$id,$data,$user,$auth);
+
+        $data = $this->convertFromEvent($event);
+        $id = $event->getUid();
+        $type = 'event';
+        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetkalenderScoutnetApikey(),$type.$id.serialize($data).$be_user->getTxShscoutnetkalenderScoutnetUsername());
+
+        return $this->SN->setData($type,$id,$data,$be_user->getTxShscoutnetkalenderScoutnetUsername(),$auth);
+    }
+
+    /**
+     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public function add(\ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event){
+        /** @var \ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser $be_user */
+        $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user["uid"]);
+
+
+        $data = $this->convertFromEvent($event);
+        $data['ID'] = -1;
+        $id = -1;
+        $type = 'event';
+        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetkalenderScoutnetApikey(),$type.$id.serialize($data).$be_user->getTxShscoutnetkalenderScoutnetUsername());
+
+        return $this->SN->setData($type,$id,$data,$be_user->getTxShscoutnetkalenderScoutnetUsername(),$auth);
     }
 
     public function convertToEvent($array){
@@ -130,10 +176,10 @@ class EventRepository extends AbstractRepository {
         $event->setUid($array['UID']);
         $event->setOrganizer($array['Organizer']);
         $event->setTargetGroup($array['Target_Group']);
-        $event->setStartDate(\DateTime::createFromFormat('Y-m-d H:i:s', strftime("%Y-%m-%d 00:00:00",$array['Start'])));
-        $event->setStartTime($array['All_Day']?null:strftime('%H:%M:00',$array['Start']));
-        $event->setEndDate($array['End'] == 0?null:\DateTime::createFromFormat('Y-m-d H:i:s', strftime("%Y-%m-%d 00:00:00",$array['End'])));
-        $event->setEndTime($array['All_Day']?null:strftime('%H:%M:00',$array['End']));
+        $event->setStartDate(\DateTime::createFromFormat('Y-m-d H:i:s', gmstrftime("%Y-%m-%d 00:00:00",$array['Start'])));
+        $event->setStartTime($array['All_Day']?null:gmstrftime('%H:%M:00',$array['Start']));
+        $event->setEndDate($array['End'] == 0?null:\DateTime::createFromFormat('Y-m-d H:i:s', gmstrftime("%Y-%m-%d 00:00:00",$array['End'])));
+        $event->setEndTime($array['All_Day']?null:gmstrftime('%H:%M:00',$array['End']));
 
 
 
@@ -163,7 +209,16 @@ class EventRepository extends AbstractRepository {
         //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($event);
 
         $event->setStructure($this->kalenderRepository->findByUid(intval($array['Kalender'])));
-        $event->setCategories($array['Keywords']);
+
+        if (isset($array['Keywords'])) {
+            foreach ($array['Keywords'] as $id => $text) {
+                $categorie = $this->categorieRepository->convertToCategorie(array('ID'=>$id,'Text'=>$text));
+                if ($categorie != null) {
+                    $event->addCategorie($categorie);
+                }
+            }
+        }
+        //$event->setCategories($array['Keywords']);
 
         //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->get_kalender_by_id($array['Kalender']));
         // save new object to cache
@@ -200,5 +255,41 @@ class EventRepository extends AbstractRepository {
         // save new object to cache
         $this->stufen_cache[$stufe->getCategorieId()] = $stufe;
         return $stufe;
+    }
+
+    public function convertFromEvent(\ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event) {
+        $array = array(
+            'ID' => $event->getUid() !== null?$event->getUid():-1,
+            'SSID' => $event->getStructure()->getUid(),
+            'Title' => $event->getTitle(),
+            'Organizer' => $event->getOrganizer(),
+            'Target_Group' => $event->getTargetGroup(),
+            'Start' => $event->getStartTimestamp() instanceof \DateTime?\DateTime::createFromFormat('d.m.Y H:i:s T',$event->getStartTimestamp()->format('d.m.Y H:i:s').' UTC')->format('U'):'',
+            'End' => $event->getEndTimestamp() instanceof \DateTime?\DateTime::createFromFormat('d.m.Y H:i:s T',$event->getEndTimestamp()->format('d.m.Y H:i:s').' UTC')->format('U'):'',
+            'All_Day' => $event->getAllDayEvent(),
+            'ZIP' => $event->getZip(),
+            'Location' => $event->getLocation(),
+            'URL_Text' => $event->getUrlText(),
+            'URL' => $event->getUrl(),
+            'Description' => $event->getDescription(),
+            'Stufen' => array(),
+            'Keywords' => array(),
+        );
+
+        $customKeywords = array();
+        /** @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Categorie $category */
+        foreach ($event->getCategories() as $category) {
+            if ($category->getUid() == null) {
+                $customKeywords[] = $category->getText();
+            } else {
+                $array['Keywords'][$category->getUid()] = $category->getText();
+            }
+        }
+
+        if (count($customKeywords) > 0) {
+            $array['Custom_Keywords'] = $customKeywords;
+        }
+
+        return $array;
     }
 }

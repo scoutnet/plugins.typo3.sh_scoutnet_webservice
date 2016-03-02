@@ -99,12 +99,12 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $description;
 
 	/**
-	 * @var array
+	 * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Stufe[]
 	 */
 	protected $stufen = array();
 
 	/**
-	 * @var array
+	 * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Categorie[]
 	 */
 	protected $categories = array();
 	
@@ -198,13 +198,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @param \DateTime $startDate
 	 */
 	public function setStartDate ($startDate) {
-		if ($startDate instanceof \DateTime) {
-			$this->startDate = $startDate;
-		} else {
-			$propertyMapper = $this->objectManager->get('\TYPO3\CMS\Extbase\Property\PropertyMapper');
-			$this->startDate = $propertyMapper->convert('12.5', 'float');
-
-		}
+		$this->startDate = $startDate;
 	}
 
 	/**
@@ -403,6 +397,12 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$this->categories = $categories;
 	}
 
+	/**
+	 * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Categorie $categorie
+     */
+	public function addCategorie(Categorie $categorie) {
+		$this->categories[$categorie->getUid()] = $categorie;
+	}
 
 
 	public function getAuthor() {
@@ -427,13 +427,26 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		return (string) "";
 	}
 
+	public function getStufenCategories() {
+		$categories = array();
+		foreach ($this->stufen as $stufe) {
+			$cat = new Categorie();
+			$cat->setUid($stufe->getCategorieId());
+			$cat->setText($stufe->getBezeichnung());
+
+			$categories[$cat->getUid()] = $cat;
+		}
+
+		return $categories;
+	}
+
 
 
 
 
 	public function getStartTimestamp() {
 		if ($this->startTime) {
-			$startTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' '.$this->startTime);
+			$startTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' '.$this->startTime.(substr_count($this->startTime,':') == 1?':00':''));
 		} else {
 			$startTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' 00:00:00');
 		}
@@ -443,9 +456,9 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	public function getEndTimestamp() {
 		if ($this->endDate && $this->endTime) {
-			$endTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s',$this->endDate->format('Y-m-d').' '.$this->endTime);
+			$endTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s',$this->endDate->format('Y-m-d').' '.$this->endTime.(substr_count($this->endTime,':') == 1?':00':''));
 		} elseif ($this->endTime) {
-			$endTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' '.$this->endTime);
+			$endTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' '.$this->endTime.(substr_count($this->endTime,':') == 1?':00':''));
 		} elseif ($this->endDate) {
 			$endTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s',$this->endDate->format('Y-m-d').' 00:00:00');
 		} else {
@@ -507,5 +520,13 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
      */
 	public function setUid ($uid) {
 		$this->uid = $uid;
+	}
+
+	public function copyProperties($event) {
+		$copyProperties = array( 'title', 'organizer', 'targetGroup', 'startDate', 'startTime', 'endDate', 'endTime', 'zip', 'location', 'urlText', 'url', 'description', 'structure', 'categories');
+
+		foreach ($copyProperties as $propertie) {
+			$this->{$propertie} = $event->{$propertie};
+		}
 	}
 }

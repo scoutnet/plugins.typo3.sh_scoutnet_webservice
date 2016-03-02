@@ -3,6 +3,10 @@ if (!defined ('TYPO3_MODE')) {
  	die ('Access denied.');
 }
 
+
+// add converter for our object
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter('ScoutNet\ShScoutnetWebservice\Property\TypeConverter\EventConverter');
+
 /*
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService($_EXTKEY,  'webservice' ,  'tx_shscoutnetwebservice_sv1',
 		array(

@@ -1,5 +1,5 @@
 <?php
-namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
+namespace ScoutNet\ShScoutnetWebservice\Helpers;
 
 /***************************************************************
 *  Copyright notice
@@ -31,19 +31,11 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
  * @package	TYPO3
  * @subpackage	tx_shscoutnetwebservice
  */
-class AbstractRepository { //extends \TYPO3\CMS\Core\Service\AbstractService {
-	/**
-	 * @var \ScoutNet\ShScoutnetWebservice\Helpers\AuthHelper
-	 * @inject
-	 */
-	protected $authHelper = null;
-
-
+class ScoutNetConnectHelper {
 	/**
 	 * @var array
 	 */
 	protected $settings;
-
 	protected $extConfig;
 
 	/**
@@ -61,25 +53,36 @@ class AbstractRepository { //extends \TYPO3\CMS\Core\Service\AbstractService {
 		$this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sh_scoutnet_webservice']);
 	}
 
+	public function getScoutNetConnectLoginButton($returnUrl = '',$requestApiKey = false){
+		$lang = $GLOBALS['LANG']->lang;
 
-	var $prefixId = 'tx_shscoutnetwebservice_sn';		// Same as class name
-	var $scriptRelPath = 'sn/class.tx_shscoutnetwebservice_sn.php';	// Path to this script relative to the extension dir.
-	var $extKey = 'sh_scoutnet_webservice';	// The extension key.
-	var $iv = '1234567890123456';
+		if ($lang == 'default') 
+			$lang = 'en';
 
-	var $SN = null;
+		$this->_checkConfigValues();
+		$button = '<form action="'.$this->extConfig['ScoutnetLoginPage'].'" id="scoutnetLogin" method="post" target="_self">';
 
+		$button .= $returnUrl == ''?'':'<input type="hidden" name="redirect_url" value="'.$returnUrl.'" />';
+		$button .= '<input type="hidden" name="lang" value="'.$lang.'"/>';
+		$button .= '<input type="hidden" name="provider" value="'.$this->extConfig['ScoutnetProviderName'].'" />';
+		$button .= $requestApiKey?'<input type="hidden" name="createApiKey" value="1" />':'';
+		
+		$button .= '<a href="#" onclick="document.getElementById(\'scoutnetLogin\').submit(); return false;">';
 
-	public function __construct()	{
-		//ini_set('default_socket_timeout',1);
-		$this->SN = new \ScoutNet\ShScoutnetWebservice\Helpers\JsonRPCClientHelper("http://api.scoutnet.dev/jsonrpc/?XDEBUG_SESSION_START=13676");//, true); // TODO: configure this and configure debug
+		$button .= '<img src="'.\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('sh_scoutnet_webservice').'Resources/Public/Images/scoutnetConnect.png" title="scoutnet" alt="scoutnet"/>';
+		$button .= '</a>';
+		
+		$button .= '</form>';
+
+		return $button;
 	}
 
-	protected function load_data_from_scoutnet($ids,$query){
-		$res = $this->SN->get_data_by_global_id($ids,$query);
+	private function _checkConfigValues(){
+		$configVars = array('AES_key','AES_iv','ScoutnetLoginPage','ScoutnetProviderName');
 
-		return $res;
+		foreach ($configVars as $configVar) {
+			if (trim($this->extConfig[$configVar]) == '')
+				throw new \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar($configVar);
+		}
 	}
-
 }
-

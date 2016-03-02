@@ -29,18 +29,131 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
 /**
  * Stufe
  */
-class Stufe extends \ArrayObject{
-	function __construct( $array ){
-		parent::__construct($array);
+class Stufe extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+
+	/**
+	 * @var String
+	 */
+	protected $verband;
+
+	/**
+	 * @var String
+	 */
+	protected $bezeichnung;
+
+	/**
+	 * @var String
+	 */
+	protected $farbe;
+
+	/**
+	 * @var Integer
+	 */
+	protected $startalter;
+
+	/**
+	 * @var Integer
+	 */
+	protected $endalter;
+
+	/**
+	 * @var String
+	 */
+	protected $categorieId;
+
+	/**
+	 * @param Int $uid
+     */
+	public function setUid($uid) {
+		$this->uid = $uid;
 	}
 
+	/**
+	 * @return String
+	 */
+	public function getVerband () {
+		return $this->verband;
+	}
 
-	public function get_Image_URL(){
-		if (isset($this['id'])) {
-			return (string) "<img src='https://kalender.scoutnet.de/2.0/images/".$this['id'].".gif' alt='".htmlentities($this['bezeichnung'], ENT_COMPAT|ENT_HTML401, 'UTF-8')."' />";
-		} 
+	/**
+	 * @param String $verband
+	 */
+	public function setVerband ($verband) {
+		$this->verband = $verband;
+	}
 
-		return (string) "";
+	/**
+	 * @return String
+	 */
+	public function getBezeichnung () {
+		return $this->bezeichnung;
+	}
+
+	/**
+	 * @param String $bezeichnung
+	 */
+	public function setBezeichnung ($bezeichnung) {
+		$this->bezeichnung = $bezeichnung;
+	}
+
+	/**
+	 * @return String
+	 */
+	public function getFarbe () {
+		return $this->farbe;
+	}
+
+	/**
+	 * @param String $farbe
+	 */
+	public function setFarbe ($farbe) {
+		$this->farbe = $farbe;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getStartalter () {
+		return $this->startalter;
+	}
+
+	/**
+	 * @param int $startalter
+	 */
+	public function setStartalter ($startalter) {
+		$this->startalter = $startalter;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getEndalter () {
+		return $this->endalter;
+	}
+
+	/**
+	 * @param int $endalter
+	 */
+	public function setEndalter ($endalter) {
+		$this->endalter = $endalter;
+	}
+
+	/**
+	 * @return String
+	 */
+	public function getCategorieId () {
+		return $this->categorieId;
+	}
+
+	/**
+	 * @param String $categorieId
+	 */
+	public function setCategorieId ($categorieId) {
+		$this->categorieId = $categorieId;
+	}
+
+	public function getImageURL(){
+		return (string) "<img src='https://kalender.scoutnet.de/2.0/images/".$this->getUid().".gif' alt='".htmlentities($this->getBezeichnung(), ENT_COMPAT|ENT_HTML401, 'UTF-8')."' />";
 	}
 
 }

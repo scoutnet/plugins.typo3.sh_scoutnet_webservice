@@ -29,93 +29,99 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
 /**
  * User
  */
-class User extends \ArrayObject{
-	function __construct( $array ){
-		if(isset($array['id'])){
-			$array['userid'] = $array['id'];
-		}elseif(isset($array['User_ID'])){
-			$array['userid'] = $array['User_ID'];
-		}elseif(empty($array['userid'])){
-			throw new Exception( "not a valid user record: ".print_r($array, true));
-		}
-		if(isset($array['Firstname'])){
-			$array['firstname'] = $array['Firstname'];
-		} 
-		if(array_key_exists('surname',$array)){
-			$array['Surname'] = $array['surname'];
-		}elseif(array_key_exists('lastname',$array)){
-			$array['Surname'] = $array['lastname'];
-		}elseif(array_key_exists('Lastname',$array)){
-			$array['Surname'] = $array['Lastname'];
-		}
-		
-		$array['User_ID'] = $array['userid'];
-		$array['id'] = $array['userid'];
-		
-		$array['Firstname'] = $array['firstname'];
-		
-		$array['surname'] = $array['Surname'];
-		$array['Lastname'] = $array['Surname'];
-		$array['lastname'] = $array['Surname'];
-		parent::__construct($array);
-	}
+class User extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
-	 * @deprecated 
+	 * @var string
+	 * @validate NotEmpty
+	 * @validate StringLength(minimum=2, maximum=80)
 	 */
-	public function readable_name(){
-		return $this->get_long_name();
+	protected $username = null;
+
+	/**
+	 * @var string
+	 * @validate NotEmpty
+	 * @validate StringLength(minimum=2, maximum=80)
+	 */
+	protected $firstName = null;
+
+	/**
+	 * @var string
+	 * @validate NotEmpty
+	 * @validate StringLength(minimum=2, maximum=80)
+	 */
+	protected $lastName = null;
+
+	/**
+	 * @var string
+	 * @validate NotEmpty
+	 * @validate StringLength(minimum=2, maximum=80)
+	 */
+	protected $sex = null;
+
+	/**
+	 * @return string
+	 */
+	public function getUsername () {
+		return $this->username;
 	}
-	public function get_full_name(){
-		$full_name = $this['Firstname'].' '.$this['Surname'];
-		return trim($full_name) ? trim($full_name) : $this['userid'];
+
+	/**
+	 * @param string $username
+	 */
+	public function setUsername ($username) {
+		$this->username = $username;
 	}
-	public function get_firstname(){
-		return $this->get_first_name();
+
+	public function getFirstName(){
+		return trim($this->firstName)?trim($this->firstName):$this->getUsername();
 	}
-	public function get_first_name(){
-		return trim($this['Firstname']) ? trim($this['Firstname']) : $this['userid'];
+
+	/**
+	 * @param string $firstName
+	 */
+	public function setFirstName ($firstName) {
+		$this->firstName = $firstName;
 	}
-	public function get_fullname(){
-		return $this->get_full_name();
+
+	/**
+	 * @return string
+	 */
+	public function getLastName () {
+		return $this->lastName;
 	}
-	public function get_long_name(){
-		$full_name = $this->get_full_name();
+
+	/**
+	 * @param string $lastName
+	 */
+	public function setLastName ($lastName) {
+		$this->lastName = $lastName;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSex () {
+		return $this->sex;
+	}
+
+	/**
+	 * @param string $sex
+	 */
+	public function setSex ($sex) {
+		$this->sex = $sex;
+	}
+
+	public function getFullName(){
+		// we use the class functions not the getters, because the firstname can be the username
+		$full_name = $this->firstName.' '.$this->lastName;
+		return trim($full_name) ? trim($full_name) : $this->getUsername();
+	}
+	public function getLongName(){
+		$full_name = $this->getFullName();
 		if( $full_name ){
-			return $full_name.' ('.$this['id'].')';
+			return $full_name.' ('.$this->getUsername().')';
 		} else {
-			return $this['id'];
+			return $this->getUsername();
 		}
-	}
-	/**
-	 * @return SN_Model_Structure
-	 */
-	public function get_structure(){
-		return SN_DataAccess_Structure::instance()->get( $this['structureid'] );		
-	}
-	public function dear(){
-		if( isset($this['sex']) && $this['sex'] === 'f' ){
-			return "Liebe";
-		} else {
-			return "Lieber";
-		}
-	}
-	public function grammar( $he, $she ){
-		if( isset($this['sex']) && $this['sex'] === 'f' ){
-			return $he;
-		} else {
-			return $she;
-		}
-	}
-	public function get_contact_url_short(){
-		return SN::instance()->get_users_contact_url_short( $this );
-	}
-	public function get_contact_url(){
-		return SN::instance()->get_users_contact_url( $this );
-	}
-	public function get_contact_link_tag_full_name(){
-		return SN::instance()->get_users_contact_link_tag_full_name( $this );
-	}
-	public function get_contact_link_tag_first_name(){
-		return SN::instance()->get_users_contact_link_tag_first_name( $this );
 	}
 }

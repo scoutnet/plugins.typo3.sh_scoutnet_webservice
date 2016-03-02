@@ -30,34 +30,476 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
  * Event
  *
  */
-//class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
-class Event extends \ArrayObject{
-	function __construct( $array ){
-		parent::__construct($array);
+class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+	/**
+	 * @var string
+	 * @validate NotEmpty
+	 * @validate StringLength(minimum=2, maximum=80)
+	 */
+	protected $title = '';
 
-		$this['Start'] = isset($array['Start'])?\DateTime::createFromFormat('U',$array['Start']):null;
-		$this['End'] = isset($array['End'])?\DateTime::createFromFormat('U',$array['End']):null;
+	/**
+	 * @var string
+	 * @validate StringLength(minimum=2, maximum=255)
+	 */
+	protected $organizer = '';
+
+	/**
+	 * @var string
+	 * @validate StringLength(minimum=2, maximum=255)
+	 */
+	protected $targetGroup = '';
+
+	/**
+	 * @var \DateTime
+	 * @validate NotEmpty
+	 */
+	protected $startDate;
+	/**
+	 * @var string
+	 */
+	protected $startTime;
+
+	/**
+	 * @var \DateTime
+	 */
+	protected $endDate;
+	/**
+	 * @var string
+	 */
+	protected $endTime;
+
+	/**
+	 * @var string
+	 * @validate StringLength(minimum=3, maximum=6)
+	 */
+	protected $zip;
+
+	/**
+	 * @var string
+	 * @validate StringLength(minimum=2, maximum=255)
+	 */
+	protected $location;
+
+	/**
+	 * @var string
+	 * @validate StringLength(minimum=3, maximum=255)
+	 */
+	protected $urlText;
+
+	/**
+	 * @var string
+	 * @validate StringLength(minimum=3, maximum=255)
+	 */
+	protected $url;
+
+	/**
+	 * @var string
+	 */
+	protected $description;
+
+	/**
+	 * @var array
+	 */
+	protected $stufen = array();
+
+	/**
+	 * @var array
+	 */
+	protected $categories = array();
+	
+	/**
+	 * Kalender
+	 *
+	 * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure
+	 * validate NotEmpty
+	 * @lazy
+	 */
+	protected $structure = NULL;
+
+	/**
+	 * changedBy
+	 *
+	 * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\User
+	 */
+	protected $changedBy = NULL;
+
+	/**
+	 * changedBy
+	 *
+	 * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\User
+	 */
+	protected $createdBy = NULL;
+
+	/**
+	 * createdAt
+	 *
+	 * @var \DateTime
+	 */
+	protected $createdAt;
+
+	/**
+	 * changedAt
+	 *
+	 * @var \DateTime
+	 */
+	protected $changedAt;
+
+	/**
+	 * @return string
+	 */
+	public function getTitle () {
+		return $this->title;
+	}
+
+	/**
+	 * @param string $title
+	 */
+	public function setTitle ($title) {
+		$this->title = $title;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getOrganizer () {
+		return $this->organizer;
+	}
+
+	/**
+	 * @param string $organizer
+	 */
+	public function setOrganizer ($organizer) {
+		$this->organizer = $organizer;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getTargetGroup () {
+		return $this->targetGroup;
+	}
+
+	/**
+	 * @param string $targetGroup
+	 */
+	public function setTargetGroup ($targetGroup) {
+		$this->targetGroup = $targetGroup;
+	}
+
+	/**
+	 * @return \DateTime
+	 */
+	public function getStartDate () {
+		return $this->startDate;
+	}
+
+	/**
+	 * @param \DateTime $startDate
+	 */
+	public function setStartDate ($startDate) {
+		$this->startDate = $startDate;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getStartTime () {
+		return $this->startTime;
+	}
+
+	/**
+	 * @param string $startTime
+	 */
+	public function setStartTime ($startTime) {
+		$this->startTime = $startTime;
+	}
+
+	/**
+	 * @return \DateTime
+	 */
+	public function getEndDate () {
+		return $this->endDate;
+	}
+
+	/**
+	 * @param \DateTime $endDate
+	 */
+	public function setEndDate ($endDate) {
+		$this->endDate = $endDate;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getEndTime () {
+		return $this->endTime;
+	}
+
+	/**
+	 * @param string $endTime
+	 */
+	public function setEndTime ($endTime) {
+		$this->endTime = $endTime;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getZip () {
+		return $this->zip;
+	}
+
+	/**
+	 * @param string $zip
+	 */
+	public function setZip ($zip) {
+		$this->zip = $zip;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLocation () {
+		return $this->location;
+	}
+
+	/**
+	 * @param string $location
+	 */
+	public function setLocation ($location) {
+		$this->location = $location;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getUrlText () {
+		return $this->urlText;
+	}
+
+	/**
+	 * @param string $urlText
+	 */
+	public function setUrlText ($urlText) {
+		$this->urlText = $urlText;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getUrl () {
+		return $this->url;
+	}
+
+	/**
+	 * @param string $url
+	 */
+	public function setUrl ($url) {
+		$this->url = $url;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDescription () {
+		return $this->description;
+	}
+
+	/**
+	 * @param string $description
+	 */
+	public function setDescription ($description) {
+		$this->description = $description;
+	}
+
+	/**
+	 * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure
+	 */
+	public function getStructure () {
+		return $this->structure;
+	}
+
+	/**
+	 * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure $structure
+	 */
+	public function setStructure ($structure) {
+		$this->structure = $structure;
+	}
+
+	/**
+	 * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\User
+	 */
+	public function getChangedBy () {
+		return $this->changedBy;
+	}
+
+	/**
+	 * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\User $changedBy
+	 */
+	public function setChangedBy ($changedBy) {
+		$this->changedBy = $changedBy;
+	}
+
+	/**
+	 * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\User
+	 */
+	public function getCreatedBy () {
+		return $this->createdBy;
+	}
+
+	/**
+	 * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\User $createdBy
+	 */
+	public function setCreatedBy ($createdBy) {
+		$this->createdBy = $createdBy;
+	}
+
+	/**
+	 * @return \DateTime
+	 */
+	public function getCreatedAt () {
+		return $this->createdAt;
+	}
+
+	/**
+	 * @param \DateTime $createdAt
+	 */
+	public function setCreatedAt ($createdAt) {
+		$this->createdAt = $createdAt;
+	}
+
+	/**
+	 * @return \DateTime
+	 */
+	public function getChangedAt () {
+		return $this->changedAt;
+	}
+
+	/**
+	 * @param \DateTime $changedAt
+	 */
+	public function setChangedAt ($changedAt) {
+		$this->changedAt = $changedAt;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getCategories () {
+		return $this->categories;
+	}
+
+	/**
+	 * @param array $categories
+	 */
+	public function setCategories ($categories) {
+		$this->categories = $categories;
 	}
 
 
-	public function get_Author_name(){
-		if (isset($this['Author']) && $this['Author'] != null) {
-			return (string) htmlentities($this['Author']->get_full_Name(), ENT_COMPAT|ENT_HTML401, 'UTF-8');
-		}
 
-		return (string) "";
+	public function getAuthor() {
+		if ($this->changedBy != null) return $this->changedBy;
+		return $this->createdBy;
 	}
 
-	public function get_Stufen_Images() {
-		if (isset($this['Stufen']) && $this['Stufen'] != null) {
+	/**
+	 * @return string
+     */
+	public function getStufenImages() {
+		if (isset($this->stufen) && $this->stufen != null) {
 			
 			$stufen = "";
-			foreach ($this['Stufen'] as $stufe) { 
-				$stufen .= $stufe->get_Image_URL();
+			/** @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Stufe $stufe */
+			foreach ($this->stufen as $stufe) {
+				$stufen .= $stufe->getImageURL();
 			}
 
 			return (string) $stufen;
 		}
 		return (string) "";
+	}
+
+
+
+
+
+	public function getStartTimestamp() {
+		if ($this->startTime) {
+			$startTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' '.$this->startTime);
+		} else {
+			$startTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' 00:00:00');
+		}
+
+		return $startTimestamp;
+	}
+
+	public function getEndTimestamp() {
+		if ($this->endDate && $this->endTime) {
+			$endTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s',$this->endDate->format('Y-m-d').' '.$this->endTime);
+		} elseif ($this->endTime) {
+			$endTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' '.$this->endTime);
+		} elseif ($this->endDate) {
+			$endTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s',$this->endDate->format('Y-m-d').' 00:00:00');
+		} else {
+			$endTimestamp = $this->getStartTimestamp();
+		}
+		return $endTimestamp;
+	}
+
+	public function getShowEndDateOrTime() {
+		return $this->getShowEndDate() || $this->getShowEndTime();
+	}
+
+	public function getShowEndDate() {
+		return !is_null($this->endDate) && $this->endDate != 0 && $this->endDate != $this->startDate;
+	}
+
+	public function getShowEndTime() {
+		return !is_null($this->endTime);
+	}
+
+	public function getAllDayEvent() {
+		return is_null($this->startTime);
+	}
+
+	public function getStartYear() {
+		return $this->startDate->format('Y');
+	}
+	public function getStartMonth() {
+		return $this->startDate->format('m');
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getStufen () {
+		return $this->stufen;
+	}
+
+	/**
+	 * @param mixed $stufen
+	 */
+	public function setStufen ($stufen) {
+		$this->stufen = $stufen;
+	}
+
+	/**
+	 * @param $stufe
+     */
+	public function addStufe($stufe) {
+		$this->stufen[] = $stufe;
+	}
+
+	public function getShowDetails() {
+		return trim($this->getDescription().$this->getZip().$this->getLocation().$this->getOrganizer().$this->getTargetGroup().$this->getUrl()) !== '';
+	}
+
+	/**
+	 * @param $uid
+     */
+	public function setUid ($uid) {
+		$this->uid = $uid;
 	}
 }

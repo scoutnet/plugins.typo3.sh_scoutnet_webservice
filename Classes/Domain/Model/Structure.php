@@ -166,11 +166,18 @@ class Structure extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 
-
+	/**
+	 * @return string
+	 * @deprecated
+     */
 	public function get_long_Name() {
 		return (string) $this->getEbene().(($this->getEbeneId() >= 7)?$this->getName():"");
 	}
 
+	/**
+	 * @return string
+	 * @deprecated
+     */
 	public function get_Name() {
 		return (string) $this->getEbene().(($this->getEbeneId() >= 7)?'&nbsp;'.$this->getName():"");
 	}

@@ -24,16 +24,11 @@ namespace ScoutNet\ShScoutnetWebservice\Property\TypeConverter;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class EventConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter {
+class EventConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter {//  \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter {
     /**
      * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\EventRepository
      */
     protected $eventRepository = null;
-
-    /**
-     * @var array<string>
-     */
-    protected $sourceTypes = array('string');
 
     /**
      * @var string
@@ -46,40 +41,34 @@ class EventConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
     protected $priority = 1;
 
     /**
-     * We can only convert empty strings to array or array to array.
+     * Fetch an object from persistence layer.
      *
-     * @param mixed $source
+     * @param mixed $identity
      * @param string $targetType
-     * @return boolean
+     * @throws \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException
+     * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
+     * @return object
      */
-    public function canConvertFrom($source, $targetType) {
-        return is_numeric($source);
-    }
-
-    /**
-     * Convert from $source to $targetType, a noop if the source is an array.
-     * If it is an empty string it will be converted to an empty array.
-     *
-     * @param string|array $source
-     * @param string $targetType
-     * @param array $convertedChildProperties
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Event
-     * @api
-     */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
-        if (is_numeric($source)) {
-            $this->eventRepository = $this->objectManager->get('\ScoutNet\ShScoutnetWebservice\Domain\Repository\EventRepository');
+    protected function fetchObjectFromPersistence($identity, $targetType) {
+        $object = null;
+        if (ctype_digit((string)$identity)) {
+            // load Object via API
+            $eventRepository = $this->objectManager->get('\ScoutNet\ShScoutnetWebservice\Domain\Repository\EventRepository');
 
             try {
-                return $this->eventRepository->findByUid(intval($source));
+                $object = $eventRepository->findByUid($identity);
             } catch (\Exception $e) {
-                return null;
+                $object = null;
             }
+        } else {
+            throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException('The identity property "' . $identity . '" is no UID.', 1297931020);
         }
 
-        return null;
-    }
+        if ($object === NULL) {
+            throw new \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException('Object with identity "' . print_r($identity, TRUE) . '" not found.', 1297933823);
+        }
 
+        return $object;
+    }
 
 }

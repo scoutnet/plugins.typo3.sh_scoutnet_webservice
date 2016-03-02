@@ -71,7 +71,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * @var string
-	 * @validate StringLength(minimum=3, maximum=6)
+	 * @validate StringLength(minimum=3, maximum=255)
 	 */
 	protected $zip;
 
@@ -198,7 +198,13 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @param \DateTime $startDate
 	 */
 	public function setStartDate ($startDate) {
-		$this->startDate = $startDate;
+		if ($startDate instanceof \DateTime) {
+			$this->startDate = $startDate;
+		} else {
+			$propertyMapper = $this->objectManager->get('\TYPO3\CMS\Extbase\Property\PropertyMapper');
+			$this->startDate = $propertyMapper->convert('12.5', 'float');
+
+		}
 	}
 
 	/**

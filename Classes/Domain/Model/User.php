@@ -54,7 +54,7 @@ class User extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * @var string
 	 * @validate NotEmpty
-	 * @validate StringLength(minimum=2, maximum=80)
+	 * @validate StringLength(minimum=1, maximum=80)
 	 */
 	protected $sex = null;
 

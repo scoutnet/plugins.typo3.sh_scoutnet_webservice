@@ -41,8 +41,18 @@ class EventRepository extends AbstractRepository {
     private $kalender_cache = array();
     private $event_cache = array();
 
+    public function findByStructureAndFilter(\ScoutNet\ShScoutnetWebservice\Domain\Model\Structure $structure, $filter) {
+        return $this->get_events_for_global_id_with_filter(array($structure->getUid()), $filter);
+    }
 
-    public function get_events_for_global_id_with_filter($ids,$filter){
+    /**
+     * @param integer $ids
+     * @param mixed $filter
+     *
+     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Event[]
+     * @deprecated
+     */
+    public function get_events_for_global_id_with_filter($ids, $filter){
         $events = array();
         foreach ($this->load_data_from_scoutnet($ids,array('events'=>$filter)) as $record) {
 
@@ -106,7 +116,12 @@ class EventRepository extends AbstractRepository {
         return $this->SN->deleteObject($type,$ssid,$id,$user,$auth);
     }
 
+    public function update(\ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event){
+        $type = 'event';
+        $auth = $this->authHelper->generateAuth($api_key,$type.$id.serialize($data).$user);
 
+        return $this->SN->setData($type,$id,$data,$user,$auth);
+    }
 
     public function convertToEvent($array){
         $event = new \ScoutNet\ShScoutnetWebservice\Domain\Model\Event();
@@ -119,6 +134,9 @@ class EventRepository extends AbstractRepository {
         $event->setStartTime($array['All_Day']?null:strftime('%H:%M:00',$array['Start']));
         $event->setEndDate($array['End'] == 0?null:\DateTime::createFromFormat('Y-m-d H:i:s', strftime("%Y-%m-%d 00:00:00",$array['End'])));
         $event->setEndTime($array['All_Day']?null:strftime('%H:%M:00',$array['End']));
+
+
+
         $event->setZip($array['ZIP']);
 
         $event->setLocation($array['Location']);
@@ -129,8 +147,8 @@ class EventRepository extends AbstractRepository {
         $event->setChangedBy($this->get_user_by_id($array['Last_Modified_By']));
         $event->setCreatedBy($this->get_user_by_id($array['Created_By']));
 
-        $event->setChangedAt($array['Last_Modified_At'] == 0?null:$array['Last_Modified_At']);
-        $event->setCreatedAt($array['Last_Modified_At'] == 0?null:$array['Created_At']);
+        $event->setChangedAt($array['Last_Modified_At'] == 0?null:\DateTime::createFromFormat('U',$array['Last_Modified_At']));
+        $event->setCreatedAt($array['Created_At'] == 0?null:\DateTime::createFromFormat('U',$array['Created_At']));
 
 
         if (isset($array['Stufen'])){

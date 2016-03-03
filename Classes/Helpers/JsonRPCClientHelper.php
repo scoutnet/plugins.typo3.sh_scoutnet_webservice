@@ -30,6 +30,12 @@ use Exception;
 
 /**
  * JsonRPCClientHelper
+ *
+ * @method get_data_by_global_id($globalid, $filter)
+ * @method deleteObject($type, $globalid, $id, $username, $auth)
+ * @method setData($type,$id,$object,$username,$auth)
+ * @method checkPermission($type,$globalid,$username,$auth)
+ * @method requestPermission($type,$globalid,$username,$auth)
  */
 class JsonRPCClientHelper {
 	
@@ -87,16 +93,19 @@ class JsonRPCClientHelper {
 							:
 							$this->notification = true;
 	}
-	
+
 	/**
 	 * Performs a jsonRCP request and gets the results as an array
 	 *
 	 * @param string $method
-	 * @param array $params
+	 * @param array  $params
+	 *
 	 * @return array
+	 * @throws \Exception
 	 */
 	public function __call($method,$params) {
-		
+		$debug = '';
+
 		// check
 		if (!is_scalar($method)) {
 			throw new Exception('Method name has no scalar value');
@@ -124,7 +133,7 @@ class JsonRPCClientHelper {
 			'id' => $currentId
 		);
 		$request = json_encode($request);
-		$this->debug && $debug.='***** Request *****'."\n".$request."\n".'***** End Of request *****'."\n\n";
+		$this->debug && $debug .='***** Request *****'."\n".$request."\n".'***** End Of request *****'."\n\n";
 
 
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] && extension_loaded( 'curl' ) ) {

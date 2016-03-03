@@ -30,13 +30,21 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
  * @author	Stefan Horst <muetze@scoutnet.de>
  * @package	TYPO3
  * @subpackage	tx_shscoutnetwebservice
+ *
+
  */
-class AbstractRepository { //extends \TYPO3\CMS\Core\Service\AbstractService {
+class AbstractScoutnetRepository { //extends \TYPO3\CMS\Core\Service\AbstractService {
 	/**
 	 * @var \ScoutNet\ShScoutnetWebservice\Helpers\AuthHelper
 	 * @inject
 	 */
 	protected $authHelper = null;
+
+	/**
+	 * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\BackendUserRepository
+	 * @inject
+	 */
+	protected $backendUserRepository = null;
 
 
 	/**
@@ -61,21 +69,23 @@ class AbstractRepository { //extends \TYPO3\CMS\Core\Service\AbstractService {
 		$this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sh_scoutnet_webservice']);
 	}
 
-
-	var $prefixId = 'tx_shscoutnetwebservice_sn';		// Same as class name
-	var $scriptRelPath = 'sn/class.tx_shscoutnetwebservice_sn.php';	// Path to this script relative to the extension dir.
-	var $extKey = 'sh_scoutnet_webservice';	// The extension key.
-	var $iv = '1234567890123456';
-
+	/**
+	 * @var \ScoutNet\ShScoutnetWebservice\Helpers\JsonRPCClientHelper
+	 */
 	var $SN = null;
 
-
-	public function __construct()	{
-		//ini_set('default_socket_timeout',1);
-		$this->SN = new \ScoutNet\ShScoutnetWebservice\Helpers\JsonRPCClientHelper("http://api.scoutnet.dev/jsonrpc/");//, true); // TODO: configure this and configure debug
+	public function initializeObject(){
+		$api_url = $this->extConfig['ScoutnetJsonAPIUrl'];
+		$this->SN = new \ScoutNet\ShScoutnetWebservice\Helpers\JsonRPCClientHelper($api_url);
 	}
 
-	protected function load_data_from_scoutnet($ids,$query){
+	/**
+	 * @param mixed $ids
+	 * @param mixed $query
+	 *
+	 * @return mixed
+     */
+    protected function loadDataFromScoutnet($ids, $query){
 		$res = $this->SN->get_data_by_global_id($ids,$query);
 
 		return $res;

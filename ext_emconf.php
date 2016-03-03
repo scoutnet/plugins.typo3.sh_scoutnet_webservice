@@ -10,6 +10,7 @@
  * "version" and "dependencies" must not be touched!
  ***************************************************************/
 
+/** @var string $_EXTKEY */
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Official Scoutnet Webservice class',
 	'description' => 'This class is needed to comunicate with the scoutnet server.',

@@ -29,7 +29,7 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 /**
  * The repository for Event
  */
-class EventRepository extends AbstractRepository {
+class EventRepository extends AbstractScoutnetRepository {
     /**
      * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\StructureRepository
      * @inject
@@ -37,43 +37,58 @@ class EventRepository extends AbstractRepository {
     protected $kalenderRepository = null;
 
     /**
-     * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\BackendUserRepository
-     * @inject
-     */
-    protected $backendUserRepository = null;
-
-    /**
      * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\CategorieRepository
      * @inject
      */
     protected $categorieRepository = null;
 
+    /**
+     * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\UserRepository
+     * @inject
+     */
+    protected $userRepository = null;
 
-    private $user_cache = array();
-    private $stufen_cache = array();
+    /**
+     * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\StufeRepository
+     */
+    protected $stufeRepository = null;
+
+
     private $event_cache = array();
 
     public function findByStructureAndFilter(\ScoutNet\ShScoutnetWebservice\Domain\Model\Structure $structure, $filter) {
-        return $this->get_events_for_global_id_with_filter(array($structure->getUid()), $filter);
+        return $this->findByStructuresAndFilter(array($structure), $filter);
     }
 
     /**
-     * @param integer $ids
+     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure[] $structures
      * @param mixed $filter
      *
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Event[]
-     * @deprecated
      */
-    public function get_events_for_global_id_with_filter($ids, $filter){
-        $events = array();
-        foreach ($this->load_data_from_scoutnet($ids,array('events'=>$filter)) as $record) {
+    public function findByStructuresAndFilter($structures, $filter) {
+        $ids = array_map(function (\ScoutNet\ShScoutnetWebservice\Domain\Model\Structure $structure) {return $structure->getUid();}, $structures);
+        return $this->convertRecords($this->loadDataFromScoutnet($ids,array('events' =>$filter)));
+    }
 
+    /**
+     * @param mixed $filter
+     *
+     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Event[]
+     */
+    public function findByFilter($filter) {
+        return $this->convertRecords($this->loadDataFromScoutnet(null,array('events' =>$filter)));
+    }
+
+    private function convertRecords($records) {
+        $events = array();
+        foreach ($records as $record) {
             if ($record['type'] === 'user'){
                 // we convert and save to cache
-                $this->convertToUser($record['content']);
+                $this->userRepository->convertToUser($record['content']);
             } elseif ($record['type'] === 'stufe'){
                 // we convert and save to cache
-                $this->convertToStufe($record['content']);
+                $this->stufeRepository->convertToStufe($record['content']);
             } elseif ($record['type'] === 'kalender'){
                 // we convert and save to cache
                 $this->kalenderRepository->convertToStructure($record['content']);
@@ -92,26 +107,7 @@ class EventRepository extends AbstractRepository {
      */
     public function findByUid($uid) {
         // search in all Calendars
-        return $this->get_events_for_global_id_with_filter(null,array('event_ids'=>array($uid)))[0];
-    }
-
-    /**
-     * @param $ids
-     * @param $event_ids
-     *
-     * @return array
-     * @deprecated
-     */
-    public function get_events_with_ids($ids,$event_ids){
-        return $this->get_events_for_global_id_with_filter($ids,array('event_ids'=>$event_ids));
-    }
-
-    private function get_stufe_by_id($id) {
-        return $this->stufen_cache[$id];
-    }
-
-    private function get_user_by_id($id) {
-        return $this->user_cache[$id];
+        return $this->findByFilter(array('event_ids'=>array($uid)))[0];
     }
 
     /**
@@ -190,8 +186,8 @@ class EventRepository extends AbstractRepository {
         $event->setUrl($array['URL']);
         $event->setDescription($array['Description']);
 
-        $event->setChangedBy($this->get_user_by_id($array['Last_Modified_By']));
-        $event->setCreatedBy($this->get_user_by_id($array['Created_By']));
+        $event->setChangedBy($this->userRepository->findByUid($array['Last_Modified_By']));
+        $event->setCreatedBy($this->userRepository->findByUid($array['Created_By']));
 
         $event->setChangedAt($array['Last_Modified_At'] == 0?null:\DateTime::createFromFormat('U',$array['Last_Modified_At']));
         $event->setCreatedAt($array['Created_At'] == 0?null:\DateTime::createFromFormat('U',$array['Created_At']));
@@ -199,7 +195,7 @@ class EventRepository extends AbstractRepository {
 
         if (isset($array['Stufen'])){
             foreach ($array['Stufen'] as $stufenId) {
-                $stufe = $this->get_stufe_by_id($stufenId);
+                $stufe = $this->stufeRepository->findByUid($stufenId);
                 if ($stufe != null) {
                     $event->addStufe($stufe);
                 }
@@ -226,36 +222,6 @@ class EventRepository extends AbstractRepository {
         return $event;
     }
 
-    public function convertToUser($array) {
-        $user = new \ScoutNet\ShScoutnetWebservice\Domain\Model\User();
-        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($array);
-
-        $user->setUsername($array['userid']);
-        $user->setFirstName($array['firstname']);
-        $user->setLastName($array['surname']);
-        $user->setSex($array['sex']);
-
-        // save new object to cache
-        $this->user_cache[$user->getUsername()] = $user;
-        return $user;
-    }
-
-    public function convertToStufe($array) {
-        $stufe = new \ScoutNet\ShScoutnetWebservice\Domain\Model\Stufe();
-        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($array);
-
-        $stufe->setUid($array['id']);
-        $stufe->setVerband($array['verband']);
-        $stufe->setBezeichnung($array['bezeichnung']);
-        $stufe->setFarbe($array['farbe']);
-        $stufe->setStartalter(intval($array['startalter']));
-        $stufe->setEndalter(intval($array['endalter']));
-        $stufe->setCategorieId($array['Keywords_ID']);
-
-        // save new object to cache
-        $this->stufen_cache[$stufe->getCategorieId()] = $stufe;
-        return $stufe;
-    }
 
     public function convertFromEvent(\ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event) {
         $array = array(

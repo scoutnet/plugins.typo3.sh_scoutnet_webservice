@@ -29,7 +29,7 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 /**
  * The repository for Event
  */
-class StructureRepository extends AbstractRepository {
+class StructureRepository extends AbstractScoutnetRepository {
 
     const AUTH_NO_RIGHT = 1;
     const AUTH_WRITE_ALLOWED = 0;
@@ -48,7 +48,7 @@ class StructureRepository extends AbstractRepository {
      */
     public function findKalenderByGlobalid($ids) {
         $kalenders = array();
-        foreach ($this->load_data_from_scoutnet($ids,array('kalenders'=>array())) as $record) {
+        foreach ($this->loadDataFromScoutnet($ids,array('kalenders' =>array())) as $record) {
             if ($record['type'] === 'kalender'){
                 $kalender = $this->convertToStructure($record['content']);
                 $kalenders[] = $kalender;
@@ -59,7 +59,7 @@ class StructureRepository extends AbstractRepository {
     }
 
     /**
-     * @param $uids
+     * @param integer[] $uids
      *
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure[]
      */
@@ -77,7 +77,7 @@ class StructureRepository extends AbstractRepository {
         }
 
         if (count($uidsToLoad) > 0) {
-            foreach ($this->load_data_from_scoutnet($uidsToLoad, array('kalenders' => array())) as $record) {
+            foreach ($this->loadDataFromScoutnet($uidsToLoad, array('kalenders' => array())) as $record) {
                 if ($record['type'] === 'kalender') {
                     $structures[] = $this->convertToStructure($record['content']);
                 }
@@ -96,18 +96,35 @@ class StructureRepository extends AbstractRepository {
         return $this->findByUids(array($uid))[0];
     }
 
-    public function hasWritePermissionsToCalender($ssid, $user, $api_key) {
-        $type = 'event';
-        $auth = $this->authHelper->generateAuth($api_key,$type.$ssid.$user);
+    /**
+     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure $structure
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public function hasWritePermissionsToStructure(\ScoutNet\ShScoutnetWebservice\Domain\Model\Structure $structure) {
+        /** @var \ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser $be_user */
+        $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user["uid"]);
 
-        return $this->SN->checkPermission($type,$ssid,$user,$auth);
+        $type = 'event';
+        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetkalenderScoutnetApikey(),$type.$structure->getUid().$be_user->getTxShscoutnetkalenderScoutnetUsername());
+
+        return $this->SN->checkPermission($type,$structure->getUid(),$be_user->getTxShscoutnetkalenderScoutnetUsername(),$auth);
     }
 
-    public function request_write_permissions_for_calender($ssid,$user,$api_key) {
-        $type = 'event';
-        $auth = $this->authHelper->generateAuth($api_key,$type.$ssid.$user);
+    /**
+     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure $structure
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public function requestWritePermissionsForStructure(\ScoutNet\ShScoutnetWebservice\Domain\Model\Structure $structure) {
+        /** @var \ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser $be_user */
+        $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user["uid"]);
 
-        return $this->SN->requestPermission($type,$ssid,$user,$auth);
+        $type = 'event';
+        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetkalenderScoutnetApikey(),$type.$structure->getUid().$be_user->getTxShscoutnetkalenderScoutnetUsername());
+        return $this->SN->requestPermission($type,$structure->getUid(),$be_user->getTxShscoutnetkalenderScoutnetUsername(),$auth);
     }
 
     public function convertToStructure($array) {

@@ -10,3 +10,5 @@ ScoutnetProviderName =
 # cat=plugin.tx_shscoutnetwebservice//; type=string+; label= Scoutnet Login Page (this should not be altered)
 ScoutnetLoginPage = https://www.scoutnet.de/community/scoutnetConnect.html
 
+# cat=plugin.tx_shscoutnetwebservice//; type=string+; label= Scoutnet JSON Api URL (this should not be altered)
+ScoutnetJsonAPIUrl = https://api.scoutnet.de/jsonrpc/

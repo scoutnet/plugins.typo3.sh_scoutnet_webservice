@@ -30,7 +30,7 @@ class CategorieRepository extends AbstractScoutnetRepository {
     /**
      * @param integer $uid
      *
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Categorie[]|null
+     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Categorie|null
      */
     public function findByUid($uid) {
         $generatedCategories = array();
@@ -48,6 +48,25 @@ class CategorieRepository extends AbstractScoutnetRepository {
         }
 
         return $generatedCategories[0];
+    }
+
+    /**
+     *
+     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Categorie[]
+     */
+    public function findAll() {
+        $generatedCategories = array();
+        try {
+            foreach ($this->loadDataFromScoutnet(null , array('categories' => array('all' => True))) as $record) {
+                if ($record['type'] === 'categorie') {
+                    $generatedCategories[] = $this->convertToCategorie($record['content']);
+                }
+            }
+        } catch (\Exception $e) {
+            return array();
+        }
+
+        return $generatedCategories;
     }
 
     /**

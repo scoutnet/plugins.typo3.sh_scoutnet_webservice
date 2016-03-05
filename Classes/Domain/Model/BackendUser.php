@@ -32,40 +32,40 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser {
      *
      * @var string
      */
-    protected $txShscoutnetkalenderScoutnetUsername = '';
+    protected $txShscoutnetUsername= '';
 
     /**
      *
      * @var string
      */
-    protected $txShscoutnetkalenderScoutnetApikey = '';
+    protected $txShscoutnetApikey = '';
 
     /**
      * @return string
      */
-    public function getTxShscoutnetkalenderScoutnetUsername () {
-        return $this->txShscoutnetkalenderScoutnetUsername;
+    public function getTxShscoutnetUsername () {
+        return $this->txShscoutnetUsername;
     }
 
     /**
-     * @param string $txShscoutnetkalenderScoutnetUsername
+     * @param string $txShscoutnetUsername
      */
-    public function setTxShscoutnetkalenderScoutnetUsername ($txShscoutnetkalenderScoutnetUsername) {
-        $this->txShscoutnetkalenderScoutnetUsername = $txShscoutnetkalenderScoutnetUsername;
+    public function setTxShscoutnetUsername ($txShscoutnetUsername) {
+        $this->txShscoutnetUsername = $txShscoutnetUsername;
     }
 
     /**
      * @return string
      */
-    public function getTxShscoutnetkalenderScoutnetApikey () {
-        return $this->txShscoutnetkalenderScoutnetApikey;
+    public function getTxShscoutnetApikey () {
+        return $this->txShscoutnetApikey;
     }
 
     /**
-     * @param string $txShscoutnetkalenderScoutnetApikey
+     * @param string $txShscoutnetApikey
      */
-    public function setTxShscoutnetkalenderScoutnetApikey ($txShscoutnetkalenderScoutnetApikey) {
-        $this->txShscoutnetkalenderScoutnetApikey = $txShscoutnetkalenderScoutnetApikey;
+    public function setTxShscoutnetApikey ($txShscoutnetApikey) {
+        $this->txShscoutnetApikey = $txShscoutnetApikey;
     }
 
 

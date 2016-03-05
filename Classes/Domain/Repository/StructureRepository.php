@@ -107,9 +107,9 @@ class StructureRepository extends AbstractScoutnetRepository {
         $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user["uid"]);
 
         $type = 'event';
-        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetkalenderScoutnetApikey(),$type.$structure->getUid().$be_user->getTxShscoutnetkalenderScoutnetUsername());
+        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetApikey(),$type.$structure->getUid().$be_user->getTxShscoutnetUsername());
 
-        return $this->SN->checkPermission($type,$structure->getUid(),$be_user->getTxShscoutnetkalenderScoutnetUsername(),$auth);
+        return $this->SN->checkPermission($type,$structure->getUid(),$be_user->getTxShscoutnetUsername(),$auth);
     }
 
     /**
@@ -123,8 +123,8 @@ class StructureRepository extends AbstractScoutnetRepository {
         $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user["uid"]);
 
         $type = 'event';
-        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetkalenderScoutnetApikey(),$type.$structure->getUid().$be_user->getTxShscoutnetkalenderScoutnetUsername());
-        return $this->SN->requestPermission($type,$structure->getUid(),$be_user->getTxShscoutnetkalenderScoutnetUsername(),$auth);
+        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetApikey(),$type.$structure->getUid().$be_user->getTxShscoutnetUsername());
+        return $this->SN->requestPermission($type,$structure->getUid(),$be_user->getTxShscoutnetUsername(),$auth);
     }
 
     public function convertToStructure($array) {

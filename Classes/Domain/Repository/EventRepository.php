@@ -50,6 +50,7 @@ class EventRepository extends AbstractScoutnetRepository {
 
     /**
      * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\StufeRepository
+     * @inject
      */
     protected $stufeRepository = null;
 
@@ -121,9 +122,9 @@ class EventRepository extends AbstractScoutnetRepository {
         $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user["uid"]);
 
         $type = 'event';
-        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetkalenderScoutnetApikey(),$type.$event->getStructure()->getUid().$event->getUid().$be_user->getTxShscoutnetkalenderScoutnetUsername());
+        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetApikey(),$type.$event->getStructure()->getUid().$event->getUid().$be_user->getTxShscoutnetUsername());
 
-        return $this->SN->deleteObject($type,$event->getStructure()->getUid(),$event->getUid(),$be_user->getTxShscoutnetkalenderScoutnetUsername(),$auth);
+        return $this->SN->deleteObject($type,$event->getStructure()->getUid(),$event->getUid(),$be_user->getTxShscoutnetUsername(),$auth);
     }
 
     /**
@@ -140,9 +141,9 @@ class EventRepository extends AbstractScoutnetRepository {
         $data = $this->convertFromEvent($event);
         $id = $event->getUid();
         $type = 'event';
-        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetkalenderScoutnetApikey(),$type.$id.serialize($data).$be_user->getTxShscoutnetkalenderScoutnetUsername());
+        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetApikey(),$type.$id.serialize($data).$be_user->getTxShscoutnetUsername());
 
-        return $this->SN->setData($type,$id,$data,$be_user->getTxShscoutnetkalenderScoutnetUsername(),$auth);
+        return $this->SN->setData($type,$id,$data,$be_user->getTxShscoutnetUsername(),$auth);
     }
 
     /**
@@ -160,9 +161,9 @@ class EventRepository extends AbstractScoutnetRepository {
         $data['ID'] = -1;
         $id = -1;
         $type = 'event';
-        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetkalenderScoutnetApikey(),$type.$id.serialize($data).$be_user->getTxShscoutnetkalenderScoutnetUsername());
+        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetApikey(),$type.$id.serialize($data).$be_user->getTxShscoutnetUsername());
 
-        return $this->SN->setData($type,$id,$data,$be_user->getTxShscoutnetkalenderScoutnetUsername(),$auth);
+        return $this->SN->setData($type,$id,$data,$be_user->getTxShscoutnetUsername(),$auth);
     }
 
     public function convertToEvent($array){

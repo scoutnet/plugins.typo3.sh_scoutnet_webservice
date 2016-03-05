@@ -152,7 +152,7 @@ class tx_shscoutnetwebservice_sn extends \TYPO3\CMS\Core\Service\AbstractService
 
 	public function write_event($id,$data,$user,$api_key) {
 		$type = 'event';
-		$auth = $this->_generate_auth($api_key,$type.$id.serialize($data).$user);
+		$auth = $this->_generate_auth($api_key,$type.$id.json_encode($data).$user);
 
 		return $this->SN->setData($type,$id,$data,$user,$auth);
 	}
@@ -223,17 +223,17 @@ class tx_shscoutnetwebservice_sn extends \TYPO3\CMS\Core\Service\AbstractService
 		if (trim($base64) == "")  
 			throw new Exception('the auth is empty');
 
-		$data = unserialize(substr($aes->decrypt($base64),strlen($iv)));
+		$data = json_decode(substr($aes->decrypt($base64),strlen($iv)), true);
 
 
 		$md5 = $data['md5']; unset($data['md5']);
 		$sha1 = $data['sha1']; unset($data['sha1']);
 
-		if (md5(serialize($data)) != $md5) {
+		if (md5(json_encode($data)) != $md5) {
 			throw new Exception('the auth is broken');
 		}    
 
-		if (sha1(serialize($data)) != $sha1) {
+		if (sha1(json_encode($data)) != $sha1) {
 			throw new Exception('the auth is broken');
 		}    
 
@@ -274,7 +274,7 @@ class tx_shscoutnetwebservice_sn extends \TYPO3\CMS\Core\Service\AbstractService
 			'md5' => md5($checkValue),
 			'time' => time(),
 		);
-		$auth = serialize($auth);
+		$auth = json_encode($auth);
 
 		// this is done since we use the same iv all the time
 		$first_block = '';

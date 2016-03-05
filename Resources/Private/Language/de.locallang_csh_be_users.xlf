@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xliff version="1.0">
+    <file product-name="sh_scoutnet_webservice" target-language="de" source-language="en" date="2015-02-19T17:33:19Z" datatype="plaintext" original="locallang_csh_be_users">
+        <body>
+            <trans-unit id="be_users.scoutnet_tab">
+                <source>ScoutNet</source>
+                <target>ScoutNet</target>
+            </trans-unit>
+            <trans-unit id="be_users.scoutnet_username">
+                <source>ScoutNet Username</source>
+                <target>ScoutNet Benutzername</target>
+            </trans-unit>
+            <trans-unit id="be_users.scoutnet_apikey">
+                <source>ScoutNet Apikey</source>
+                <target>ScoutNet Apikey</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

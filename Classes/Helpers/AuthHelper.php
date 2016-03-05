@@ -129,8 +129,7 @@ class AuthHelper {
 			'md5' => md5($checkValue),
 			'time' => time(),
 		);
-		// TODO: fix this!
-		$auth = serialize($auth);
+		$auth = json_encode($auth);
 
 		// this is done since we use the same iv all the time
 		$first_block = '';

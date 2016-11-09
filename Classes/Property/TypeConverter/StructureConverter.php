@@ -49,7 +49,7 @@ class StructureConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Persi
         $identity = str_replace('ScoutNet\ShScoutnetWebservice\Domain\Model\Structure:','',$identity);
         if (ctype_digit((string)$identity)) {
             // load Object via API
-            $structureRepository = $this->objectManager->get('\ScoutNet\ShScoutnetWebservice\Domain\Repository\StructureRepository');
+            $structureRepository = $this->objectManager->get('ScoutNet\ShScoutnetWebservice\Domain\Repository\StructureRepository');
 
             try {
                 $object = $structureRepository->findByUid($identity);

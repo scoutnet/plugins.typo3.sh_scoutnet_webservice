@@ -53,7 +53,7 @@ class EventConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Persisten
         $object = null;
         if (ctype_digit((string)$identity)) {
             // load Object via API
-            $eventRepository = $this->objectManager->get('\ScoutNet\ShScoutnetWebservice\Domain\Repository\EventRepository');
+            $eventRepository = $this->objectManager->get('ScoutNet\ShScoutnetWebservice\Domain\Repository\EventRepository');
 
             try {
                 $object = $eventRepository->findByUid($identity);

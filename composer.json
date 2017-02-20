@@ -27,5 +27,8 @@
 	},
 	"replace": {
 		"typo3-ter/sh-scoutnet-webservice": "self.version"
-	}
+	},
+	"repositories": [
+		  { "type": "composer", "url": "https://composer.typo3.org/" }
+	]
 }

@@ -26,7 +26,6 @@
 		}
 	},
 	"replace": {
-		"sh-scoutnet-webservice": "self.version",
 		"typo3-ter/sh-scoutnet-webservice": "self.version"
 	}
 }

@@ -16,7 +16,7 @@
 	"support": {
 		"issues": "https://bitbucket.org/scoutnet/plugins.typo3.sh_scoutnet_webservice"
 	},
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"require": {
 		"typo3/cms-core": "^6.2.14 || ^7.6.0"
 	},

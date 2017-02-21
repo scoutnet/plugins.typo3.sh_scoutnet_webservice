@@ -1,0 +1,4 @@
+sh_scoutnet_webservice:
+  build: 
+    image: typo3.sh_scoutnet_webservice
+    dockerfile_path: Dockerfile

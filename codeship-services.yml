@@ -1,5 +1,21 @@
-sh_scoutnet_webservice:
-  build: 
-    image: typo3.sh_scoutnet_webservice
-    dockerfile_path: Dockerfile
+typo3_test:
+  build:
+    image: scoutnetdev
+    dockerfile_path: Docker/Dockerfile.ci
+  environment:
+    TYPO3_PATH_WEB: /opt/typo3/web
+    SHELL: /bin/sh
   cached: true
+  volumes:
+    - .:/opt/typo3/web/typo3conf/ext/sh_scoutnet_webservice
+
+build_host:
+  build:
+    image: scoutnetbuild
+    dockerfile_path: Docker/Dockerfile.build
+  environment:
+    SHELL: /bin/bash
+  encrypted_env_file: deployment.env.encrypted
+  cached: true
+  volumes:
+    - .:/opt/data

@@ -1,6 +1,7 @@
+[ ![Codeship Status for scoutnet/plugins.typo3.sh_scoutnet_webservice](https://img.shields.io/codeship/58979de0-da91-0134-20fd-7ed446c6039d/master.svg)](https://app.codeship.com/projects/203731)
+---
 ScoutNet Webservice
 ===================
-[ ![Codeship Status for scoutnet/plugins.typo3.sh_scoutnet_webservice](https://app.codeship.com/projects/58979de0-da91-0134-20fd-7ed446c6039d/status?branch=master)](https://app.codeship.com/projects/203731)
 
 This Plugin is intended for the ScoutNet.de JSON RPC Api.
 

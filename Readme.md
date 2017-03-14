@@ -1,7 +1,7 @@
 [![Codeship](https://img.shields.io/codeship/58979de0-da91-0134-20fd-7ed446c6039d/master.svg)](https://app.codeship.com/projects/203731)
-[![Packagist](https://img.shields.io/packagist/v/scoutnet/sh-scoutnet-webservice.svg)]()
-[![Packagist](https://img.shields.io/packagist/dt/scoutnet/sh-scoutnet-webservice.svg?label=packagist%20downloads)]()
-[![Packagist](https://img.shields.io/packagist/l/scoutnet/sh-scoutnet-webservice.svg)]()
+[![Packagist](https://img.shields.io/packagist/v/scoutnet/sh-scoutnet-webservice.svg)](https://packagist.org/packages/scoutnet/sh-scoutnet-webservice)
+[![Packagist](https://img.shields.io/packagist/dt/scoutnet/sh-scoutnet-webservice.svg?label=packagist%20downloads)](https://packagist.org/packages/scoutnet/sh-scoutnet-webservice)
+[![Packagist](https://img.shields.io/packagist/l/scoutnet/sh-scoutnet-webservice.svg)](https://packagist.org/packages/scoutnet/sh-scoutnet-webservice)
 ---
 ScoutNet Webservice
 ===================

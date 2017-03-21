@@ -32,9 +32,9 @@ With Extbase you can include the webservice by dependency injection. Some of the
 
 Development
 -----------
-If you want to contribute, please make a pull request on bitbucket. The Repo is located here:
+If you want to contribute, feel free to do so. The Repo is located here:
 
-https://bitbucket.org/scoutnet/plugins.typo3.sh_scoutnet_webservice
+https://github.com/scoutnet/plugins.typo3.sh_scoutnet_webservice
 
 Author
 ------

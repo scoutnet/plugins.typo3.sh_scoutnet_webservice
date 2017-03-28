@@ -26,6 +26,13 @@
 		}
 	},
 	"replace": {
-		"typo3-ter/sh-scoutnet-webservice": "self.version"
+		"typo3-ter/sh-scoutnet-webservice": "self.version",
+		"sh_scoutnet_webservice": "self.version"
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "2.0.x-dev",
+			"dev-development": "2.0.x-dev"
+		}
 	}
 }

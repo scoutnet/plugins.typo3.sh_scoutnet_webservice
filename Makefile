@@ -1,7 +1,8 @@
 
 NAME=sh_scoutnet_webservice
-REPO_ORG=scoutnet
-REPO_NAME=plugins.typo3.$(NAME)
+
+export GITHUB_USER=scoutnet
+export GITHUB_REPO=plugins.typo3.$(NAME)
 
 CURRENTVERSION=$(shell cat ext_emconf.php | grep "'version' =>" | cut -d "'" -f 4)
 GIT_VERSION=$(shell git tag | sort | tail -n 1)
@@ -11,10 +12,7 @@ NEXTPATCHVERSION=$(shell php -r 'list($$a,$$b,$$c) = (explode(".","$(CURRENTVERS
 NEXTMINORVERSION=$(shell php -r 'list($$a,$$b,$$c) = (explode(".","$(CURRENTVERSION)", 3)); echo "$$a.".($$b+1).".0";')
 NEXTMAJORVERSION=$(shell php -r 'list($$a,$$b,$$c) = (explode(".","$(CURRENTVERSION)", 3)); echo ($$a + 1).".0.0";')
 
-COMMIT_MESSAGE=$(shell git tag -l $(CURRENTVERSION) -n99 | sed "s/^$(CURRENTVERSION)[ ]*//g" | sed "s/^[ ]*//g" | sed -e ':a' -e 'N' -e '$$!ba' -e 's/\n/\\n/g')
-
-API_JSON={"tag_name": "$(CURRENTVERSION)","target_commitish": "master","name": "$(CURRENTVERSION)","body": "Release of version $(CURRENTVERSION)\n$(COMMIT_MESSAGE)","draft": true,"prerelease": false}
-AUTH_HEADER=-H "Authorization: token $(GITHUB_API_KEY)" -H "Accept: application/vnd.github.v3+json"
+COMMIT_MESSAGE=$(shell git tag -l $(CURRENTVERSION) -n99 | sed "s/^$(CURRENTVERSION)[ ]*//g" | sed "s/^[ ]*//g" | sed -e ':a' -e 'N' -e '$$!ba' -e 's/\n//g')
 
 default: zip
 
@@ -49,15 +47,12 @@ tag:
 	@if [ ! -n "$$(git tag -l $(CURRENTVERSION))" ]; then git tag -a $(CURRENTVERSION); fi
 	@echo You can now use git push --tags to push all changes to github
 
-Build/ok.sh:
-	curl -s -o Build/ok.sh https://raw.githubusercontent.com/whiteinge/ok.sh/master/ok.sh
-	chmod +x Build/ok.sh
-
-release: checkVersion Build/$(NAME)_$(CURRENTVERSION).zip Build/ok.sh
-	@echo "Upload Release $(CURRENTVERSION) to Github"
-	cd Build && \
-	id=$$(./ok.sh create_release $(REPO_ORG) $(REPO_NAME) $(CURRENTVERSION) draft=true | cut -d "	" -f 2) && \
-	./ok.sh upload_asset $(REPO_ORG) $(REPO_NAME) $$id "$(NAME)_$(CURRENTVERSION).zip"
+release: checkVersion Build/$(NAME)_$(CURRENTVERSION).zip
+	@if [ -z "$(GITHUB_TOKEN)" ]; then echo "Please Set ENV GITHUB_TOKEN"; exit 2; fi
+	@echo "* Upload Release $(CURRENTVERSION) to Github"
+	@github-release release -t $(CURRENTVERSION) -d "Release of version $(CURRENTVERSION)$(COMMIT_MESSAGE)"
+	@github-release upload -t $(CURRENTVERSION) -f Build/$(NAME)_$(CURRENTVERSION).zip -n "$(NAME)_$(CURRENTVERSION).zip"
+	@echo "* Upload Done"
 
 clean:
 	rm -rf Build/*.zip
@@ -66,8 +61,9 @@ checkVersion:
 	@echo GIT_VERSION: $(GIT_VERSION)
 	@echo TYPO3_VERSION: $(CURRENTVERSION)
 	@echo COMPOSER_VERSION: $(COMPOSER_VERSION)
-	[ "$(GIT_VERSION)" = "$(CURRENTVERSION)" ]
-	[ "$(GIT_VERSION)" = "$(COMPOSER_VERSION)" ]
+	@[ "$(GIT_VERSION)" = "$(CURRENTVERSION)" ]
+	@[ "$(GIT_VERSION)" = "$(COMPOSER_VERSION)" ]
+	@echo "* All Versions correct"
 
 deploy: checkVersion Build/$(NAME)_$(CURRENTVERSION).zip
 	# clean build folder

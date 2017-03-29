@@ -1,9 +1,9 @@
 - name: run test
-  service: typo3_test
+  service: ci_host
   command: bash -c "cd /opt/typo3; vendor/bin/phpunit --color -c web/typo3conf/ext/sh_scoutnet_webservice/Tests/Builds/UnitTests.xml"
 
 - name: run php lint
-  service: typo3_test
+  service: ci_host
   command: bash -c "cd /opt/typo3/web/typo3conf/ext/sh_scoutnet_webservice; find . -name \*.php | parallel --gnu php -d display_errors=stderr -l {} > /dev/null"
 
 - name: check_version

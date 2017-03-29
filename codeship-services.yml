@@ -1,4 +1,4 @@
-typo3_test:
+ci_host:
   image: scoutnet/cihost
   environment:
     TYPO3_PATH_WEB: /opt/typo3/web

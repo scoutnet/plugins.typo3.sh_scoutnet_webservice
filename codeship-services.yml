@@ -1,7 +1,5 @@
 typo3_test:
-  build:
-    image: scoutnetdev
-    dockerfile_path: Docker/Dockerfile.ci
+  image: scoutnet/cihost
   environment:
     TYPO3_PATH_WEB: /opt/typo3/web
     SHELL: /bin/sh
@@ -10,9 +8,7 @@ typo3_test:
     - .:/opt/typo3/web/typo3conf/ext/sh_scoutnet_webservice
 
 build_host:
-  build:
-    image: scoutnetbuild
-    dockerfile_path: Docker/Dockerfile.build
+  image: scoutnet/buildhost
   environment:
     SHELL: /bin/bash
   encrypted_env_file: deployment.env.encrypted

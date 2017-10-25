@@ -18,15 +18,17 @@ pipeline {
             }
         }
         stage('Deploy'){
-            /*when {
+            when {
                 expression {
-                    env.TAG_NAME ==~ /(?i)(v[1234567890][.][1234567890][.][1234567890])/
+                    env.TAG_NAME ==~ /^[0-9]+[.][0-9]+[.][0-9]+$/
                 }
-            }*/
+            }
             steps {
                 withCredentials([string(credentialsId: 'GITHUB_TOKEN', variable: 'GITHUB_TOKEN'), usernamePassword(credentialsId: 'ac854e35-e62e-4aa1-b7ac-2ced736da9e6', passwordVariable: 'TYPO3_TER_PASSWORD', usernameVariable: 'TYPO3_TER_USER')]) {
                     sh 'git pull --tags'
                     sh 'docker run --rm -e TYPO3_TER_PASSWORD -e TYPO3_TER_USER -e GITHUB_TOKEN -w /opt/data -v `pwd`:/opt/data -i scoutnet/buildhost:latest make checkVersion'
+                    sh 'docker run --rm -e TYPO3_TER_PASSWORD -e TYPO3_TER_USER -e GITHUB_TOKEN -w /opt/data -v `pwd`:/opt/data -i scoutnet/buildhost:latest make release'
+                    sh 'docker run --rm -e TYPO3_TER_PASSWORD -e TYPO3_TER_USER -e GITHUB_TOKEN -w /opt/data -v `pwd`:/opt/data -i scoutnet/buildhost:latest make deploy'
                 }
             }
         }
@@ -37,20 +39,4 @@ pipeline {
         }
 
     }
-    /*
-- name: check_version
-  tag: ^[0-9]+[.][0-9]+[.][0-9]+$
-  service: build_host
-  command: bash -c "cd /opt/data; make checkVersion"
-
-- name: release to Github
-  tag: ^[0-9]+[.][0-9]+[.][0-9]+$
-  service: build_host
-  command: bash -c "cd /opt/data; make release"
-
-- name: build
-  tag: ^[0-9]+[.][0-9]+[.][0-9]+$
-  service: build_host
-  command: bash -c "cd /opt/data; make deploy"
-  */
 }

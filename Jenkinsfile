@@ -5,7 +5,7 @@ pipeline {
         stage('Test'){
             steps {
                 sh 'docker run --rm -w /opt/typo3 -v `pwd`:/opt/typo3/web/typo3conf/ext/sh_scoutnet_webservice -i scoutnet/cihost:latest "vendor/bin/phpunit --color -c web/typo3conf/ext/sh_scoutnet_webservice/Tests/Builds/UnitTests.xml"'
-                sh 'docker run --rm -w /opt/typo3/web/typo3conf/ext/sh_scoutnet_webservice -v `pwd`:/opt/typo3/web/typo3conf/ext/sh_scoutnet_webservice -i scoutnet/cihost:latest "find . -name \*.php | parallel --gnu php -d display_errors=stderr -l {}"'
+                sh 'docker run --rm -w /opt/typo3/web/typo3conf/ext/sh_scoutnet_webservice -v `pwd`:/opt/typo3/web/typo3conf/ext/sh_scoutnet_webservice -i scoutnet/cihost:latest "find . -name \\*.php | parallel --gnu php -d display_errors=stderr -l {}"'
             }
         }
         stage('Build'){

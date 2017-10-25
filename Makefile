@@ -69,7 +69,6 @@ checkVersion:
 	@echo "* All Versions correct"
 
 deploy: checkVersion Build/$(NAME)_$(CURRENTVERSION).zip
-	echo "upload $(NAME) $(TYPO3_TER_USER) $(TYPO3_TER_PASSWORD) "$(shell git tag -l $(CURRENTVERSION) -n99 | sed "s/^$(CURRENTVERSION)[ ]*//g" | sed "s/^[ ]*//g")""
 	# clean build folder
 	-@[ -d Build/$(NAME) ] && rm -rf Build/$(NAME)
 	mkdir Build/$(NAME)

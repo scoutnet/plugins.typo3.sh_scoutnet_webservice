@@ -18,15 +18,15 @@ pipeline {
             }
         }
         stage('Deploy'){
-            when {
+          /*  when {
                 expression {
                     env.TAG_NAME ==~ /(?i)(v[1234567890][.][1234567890][.][1234567890])/
                 }
-            }
+            }*/
             steps {
-                withCredentials([usernamePassword(credentialsId: '89505d3f-4830-48fe-9595-b84743c5bb79', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                    sh 'docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"'
-
+                withCredentials([string(credentialsId: 'GITHUB_TOKEN', variable: 'GITHUB_TOKEN'), usernamePassword(credentialsId: 'ac854e35-e62e-4aa1-b7ac-2ced736da9e6', passwordVariable: 'TYPO3_TER_PASSWORD', usernameVariable: 'TYPO3_TER_USER')]) {
+                    sh 'env'
+                    sh 'docker run --rm -e TYPO3_TER_PASSWORD -e TYPO3_TER_USER -e GITHUB_TOKEN -w /opt/data -v `pwd`:/opt/data -i scoutnet/build_host:latest make checkVersion'
                 }
             }
         }

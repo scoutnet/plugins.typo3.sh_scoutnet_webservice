@@ -1,4 +1,10 @@
 {
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "https://composer.typo3.org/"
+		}
+	],
 	"name": "scoutnet/sh-scoutnet-webservice",
 	"type": "typo3-cms-extension",
 	"description" : "This class is needed to comunicate with the scoutnet.de server.",
@@ -16,13 +22,32 @@
 	"support": {
 		"issues": "https://github.com/scoutnet/plugins.typo3.sh_scoutnet_webservice/issues"
 	},
-	"version": "2.0.5",
 	"require": {
-		"typo3/cms": "^7.6.0"
+		"typo3/cms-core": "^9.5",
+		"typo3/cms-extensionmanager": "^9.5",
+		"ext-json": "*",
+		"ext-openssl": "*"
+    },
+	"config": {
+		"vendor-dir": ".Build/vendor",
+		"bin-dir": ".Build/bin"
+	},
+	"require-dev": {
+		"typo3/testing-framework": "^4.13.1",
+		"typo3/cms-frontend": "^9.5",
+		"typo3/cms-install": "^9.5",
+		"typo3/cms-about": "^9.5",
+		"typo3/cms-fluid-styled-content": "^9.5",
+		"codeception/codeception": "^2.4"
 	},
 	"autoload": {
 		"psr-4": {
 			"ScoutNet\\ShScoutnetWebservice\\": "Classes/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"ScoutNet\\ShScoutnetWebservice\\Tests\\": "Tests"
 		}
 	},
 	"replace": {
@@ -31,8 +56,15 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "2.0.x-dev",
+			"dev-master": "3.0.x-dev",
 			"dev-development": "2.0.x-dev"
+		},
+		"typo3/cms": {
+			"app-dir": ".Build",
+			"cms-package-dir": "{$vendor-dir}/typo3/cms",
+			"web-dir": ".Build/Web",
+			"extension-key": "sh_scoutnet_webservice",
+			"composer-mode": false
 		}
 	}
 }

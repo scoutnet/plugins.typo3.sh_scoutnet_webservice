@@ -11,7 +11,7 @@
  ***************************************************************/
 
 /** @var string $_EXTKEY */
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
 	'title' => 'Official Scoutnet Webservice class',
 	'description' => 'This class is needed to comunicate with the scoutnet server.',
 	'category' => 'services',
@@ -22,14 +22,12 @@ $EM_CONF[$_EXTKEY] = array(
 	'uploadfolder' => '0',
 	'createDirs' => '',
 	'clearCacheOnLoad' => 1,
-	'version' => '2.0.5',
-	'constraints' => array(
-		'depends' => array(
-			'typo3' => '6.2.0-7.6.99',
-		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
-	),
-);
+	'version' => '3.0.0',
+	'constraints' => [
+		'depends' => [
+			'typo3' => '9.x',
+		],
+		'conflicts' => [],
+		'suggests' => [],
+	],
+];

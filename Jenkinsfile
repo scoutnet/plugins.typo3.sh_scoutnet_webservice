@@ -30,12 +30,13 @@ pipeline {
                         }
                         parallel tests
 
-                        for (x in PHP_VERSIONS) {
-                            def PHP_VERSION = x.replace('.','')
-
-                                sh "make functionalTest-php${PHP_VERSION}"
-                                sh "make acceptanceTest-php${PHP_VERSION}"
-                        }
+// no functional and acceptance tests for now
+//                         for (x in PHP_VERSIONS) {
+//                             def PHP_VERSION = x.replace('.','')
+//
+//                                 sh "make functionalTest-php${PHP_VERSION}"
+//                                 sh "make acceptanceTest-php${PHP_VERSION}"
+//                         }
                         sh 'rm -f auth.json'
                     }
                 }

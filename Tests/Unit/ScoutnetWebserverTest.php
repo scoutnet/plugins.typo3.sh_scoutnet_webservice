@@ -2,6 +2,8 @@
 
 namespace ScoutNet\ShScoutnetWebservice\Tests\Unit;
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -18,7 +20,7 @@ namespace ScoutNet\ShScoutnetWebservice\Tests\Unit;
 /**
  * Testcase for class ScoutNet\ShScoutnetWebservice\Test
  */
-class ScoutnetWebserviceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class ScoutnetWebserviceTest extends UnitTestCase {
     /**
      * @test
      * @return void

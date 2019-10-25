@@ -51,8 +51,12 @@
 		}
 	},
 	"replace": {
-		"typo3-ter/sh-scoutnet-webservice": "self.version",
-		"sh_scoutnet_webservice": "self.version"
+		"typo3-ter/sh-scoutnet-webservice": "self.version"
+	},
+	"scripts": {
+		"post-autoload-dump": [
+			"TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
+		]
 	},
 	"extra": {
 		"branch-alias": {

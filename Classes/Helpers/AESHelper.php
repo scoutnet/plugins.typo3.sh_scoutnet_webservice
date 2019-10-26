@@ -506,7 +506,7 @@ class AESHelper {
      * @return void
      **/
     private function invShiftRows() {
-        $temp = "";
+        $temp = [];
         for ($i = 1; $i < 4; $i++) {
             for ($j = 0; $j < self::$Nb; $j++)
                 $temp[($i + $j) % self::$Nb] = $this->s[$i][$j];
@@ -550,7 +550,7 @@ class AESHelper {
      * @return void
      **/
     private function shiftRows () {
-        $temp = "";
+        $temp = [];
         for ($i = 1; $i < 4; $i++) {
             for ($j = 0; $j < self::$Nb; $j++)
                 $temp[$j] = $this->s[$i][($j + $i) % self::$Nb];

@@ -14,10 +14,14 @@
 
 namespace ScoutNet\ShScoutnetWebservice\Tests\Unit\Helpers;
 
+use Exception;
 use ScoutNet\ShScoutnetWebservice\Helpers\AESHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AESHelperTest extends UnitTestCase {
+    /**
+     * @throws \Exception
+     */
     public function testEncryptDecrypt() {
         $key = [
             'key' => '12345678901234567890123456789012',
@@ -34,6 +38,45 @@ class AESHelperTest extends UnitTestCase {
         $aes = new AESHelper($key['key'], $key['mode'], $key['iv']);
 
         $this->assertEquals($aes->decrypt($crypt), $pt);
+    }
+
+    public function dataProviderCorrectKeyLength() {
+        return [
+            'aes128' => [
+                '1234567890123456',
+                true,
+            ],
+            'aes192' => [
+                '123456789012345678901234',
+                true,
+            ],
+            'aes256' => [
+                '12345678901234567890123456789012',
+                true,
+            ],
+            'empty' => [
+                '',
+                false,
+            ],
+            'wrong length' => [
+                '123',
+                false,
+            ],
+        ];
+    }
+
+    /**
+     * @param $key
+     * @param $valid
+     *
+     * @throws \Exception
+     * @dataProvider dataProviderCorrectKeyLength
+     */
+    public function testCorrectKeyLength($key, $valid) {
+        if (!$valid) {
+            $this->expectException(Exception::class);
+        }
+        $aes = new AESHelper($key);
     }
 
 
@@ -78,6 +121,8 @@ class AESHelperTest extends UnitTestCase {
      * @param $key
      * @param $plaintext
      * @param $cyphertext
+     *
+     * @throws \Exception
      */
     public function testEncrypt($key, $plaintext, $cyphertext)
     {
@@ -138,6 +183,8 @@ class AESHelperTest extends UnitTestCase {
      * @param $key
      * @param $cyphertext
      * @param $plaintext
+     *
+     * @throws \Exception
      */
     public function testDecrypt($key, $cyphertext, $plaintext)
     {

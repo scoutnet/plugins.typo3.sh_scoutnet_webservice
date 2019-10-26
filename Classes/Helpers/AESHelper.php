@@ -197,13 +197,15 @@ class AESHelper {
      * @param        $z
      * @param string $mode
      * @param string $iv
+     *
+     * @throws \Exception
      */
     public function __construct ($z, $mode = 'ECB', $iv = '1234567890123456') {
         $this->Nk = strlen($z) / 4;
         $this->Nr = $this->Nk + self::$Nb + 2;
 
         if ($this->Nk != 4 && $this->Nk != 6 && $this->Nk != 8)
-            die("Key is " . ($this->Nk * 32) . " bits long. *not* 128, 192, or 256.");
+            throw new \Exception("Key is " . ($this->Nk * 32) . " bits long. *not* 128, 192, or 256.");
 
         $this->Nr = $this->Nk + self::$Nb + 2;
         $this->w = array(); // Nb*(Nr+1) 32-bit words

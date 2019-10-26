@@ -1,6 +1,12 @@
 <?php
 namespace ScoutNet\ShScoutnetWebservice\Helpers;
 
+use Exception;
+use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar;
+use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -35,7 +41,7 @@ class AuthHelper {
 	/**
 	 * @var array
 	 */
-	protected $settings;
+//	protected $settings;
 
 	protected $extConfig;
 
@@ -48,9 +54,9 @@ class AuthHelper {
 	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
-		$this->settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
+//		$this->settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
 		$this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sh_scoutnet_webservice']);
 	}
 
@@ -62,6 +68,13 @@ class AuthHelper {
 
 	const UNSECURE_START_IV = '1234567890123456';
 
+    /**
+     * @param $data
+     *
+     * @return array|mixed
+     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar
+     * @throws \Exception
+     */
 	public function getApiKeyFromData($data){
 		if (isset($this->snData)) {
 			return $this->snData;
@@ -72,12 +85,12 @@ class AuthHelper {
 		$z = $this->extConfig['AES_key'];
 		$iv = $this->extConfig['AES_iv'];
 
-		$aes = new \ScoutNet\ShScoutnetWebservice\Helpers\AESHelper($z,"CBC",$iv);
+		$aes = new AESHelper($z,"CBC",$iv);
 
 		$base64 = base64_decode(strtr($data, '-_~','+/='));
 
 		if (trim($base64) == "")  
-			throw new \Exception('the auth is empty');
+			throw new Exception('the auth is empty');
 
 		$data = json_decode(substr($aes->decrypt($base64),strlen($iv)),true);
 
@@ -86,59 +99,67 @@ class AuthHelper {
 		$sha1 = $data['sha1']; unset($data['sha1']);
 
 		if (md5(json_encode($data)) != $md5) {
-			throw new \Exception('the auth is broken');
+			throw new Exception('the auth is broken');
 		}    
 
 		if (sha1(json_encode($data)) != $sha1) {
-			throw new \Exception('the auth is broken');
+			throw new Exception('the auth is broken');
 		}    
 
 
 		if (time() - $data['time'] > 3600) {
-			throw new \Exception('the auth is too old. Try again');
+			throw new Exception('the auth is too old. Try again');
 		}    
 
 		$your_domain = $this->extConfig['ScoutnetProviderName'];
 
 		if ($data['your_domain'] != $your_domain)
-			throw new \Exception('the auth is for the wrong site!. Try again');
+			throw new Exception('the auth is for the wrong site!. Try again');
 
 		$this->snData = $data;
 
 		return $data;
 	}
 
+    /**
+     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar
+     */
 	private function _checkConfigValues(){
 		$configVars = array('AES_key','AES_iv','ScoutnetLoginPage','ScoutnetProviderName');
 
 		foreach ($configVars as $configVar) {
 			if (trim($this->extConfig[$configVar]) == '')
-				throw new \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar($configVar);
+				throw new ScoutNetExceptionMissingConfVar($configVar);
 		}
 	}
 
-
+    /**
+     * @param $api_key
+     * @param $checkValue
+     *
+     * @return array|false|string
+     * @throws \Exception
+     */
 	public function generateAuth($api_key, $checkValue){
 		if ($api_key == '')
-			throw new \Exception('your Api Key is empty');
+			throw new Exception('your Api Key is empty');
 
-		$aes = new \ScoutNet\ShScoutnetWebservice\Helpers\AESHelper($api_key,"CBC",self::UNSECURE_START_IV);
+		$aes = new AESHelper($api_key,"CBC",self::UNSECURE_START_IV);
+
+		$now = GeneralUtility::makeInstance(\DateTime::class);
 
 		$auth = array(
 			'sha1' => sha1($checkValue),
 			'md5' => md5($checkValue),
-			'time' => time(),
+			'time' => $now->getTimestamp(),
 		);
 		$auth = json_encode($auth);
 
 		// this is done since we use the same iv all the time
-		$first_block = '';
-		for ($i=0;$i<16;$i++) {
-			$first_block .= chr(rand(0,255));
-		}
+        $random = GeneralUtility::makeInstance(Random::class);
+        $first_block = $random->generateRandomBytes(16);
 
 		$auth = strtr(base64_encode($aes->encrypt($first_block.$auth)), '+/=', '-_~');
 		return $auth;
 	}
-
 }

@@ -46,7 +46,7 @@ class JsonRPCClientHelper {
 	 *
 	 * @var boolean
 	 */
-	private $debug;
+	private $debugOutput;
 	
 	/**
 	 * The server URL
@@ -71,12 +71,12 @@ class JsonRPCClientHelper {
 	 * Takes the connection parameters
 	 *
 	 * @param string $url
-	 * @param boolean $dbgOutput
+	 * @param boolean $debug
 	 */
-	public function __construct($url, $dbgOutput = false) {
+	public function __construct($url, $debug = false) {
 		// server URL
 		$this->url = $url;
-		$this->debug = $dbgOutput;
+		$this->debugOutput = $debug;
 		// message id
 		$this->id = 1;
 	}
@@ -136,7 +136,7 @@ class JsonRPCClientHelper {
 			'id' => $currentId
 		);
 		$request = json_encode($request);
-		$this->debug && $debug .='***** Request *****'."\n".$request."\n".'***** End Of request *****'."\n\n";
+		$this->debugOutput && $debug .='***** Request *****'."\n".$request."\n".'***** End Of request *****'."\n\n";
 
 
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] && extension_loaded( 'curl' ) ) {
@@ -174,7 +174,7 @@ class JsonRPCClientHelper {
 
 			$response = trim( curl_exec( $ch ) );
 
-			$this->debug && $debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
+			$this->debugOutput && $debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
 			$response = json_decode( $response, true );
 			curl_close( $ch );
 		} else {
@@ -192,7 +192,7 @@ class JsonRPCClientHelper {
 				while($row = fgets($fp)) {
 					$response.= trim($row)."\n";
 				}
-				$this->debug && $debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
+				$this->debugOutput && $debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
 				$response = json_decode($response,true);
 			} else {
 				throw new ScoutNetException('Unable to connect to '.$this->url, 1572202683);
@@ -200,7 +200,7 @@ class JsonRPCClientHelper {
 		}
 
 		// debug output
-		if ($this->debug) {
+		if ($this->debugOutput) {
 			echo nl2br($debug);
 		}
 		

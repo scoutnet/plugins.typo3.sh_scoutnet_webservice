@@ -76,10 +76,7 @@ class JsonRPCClientHelper {
 	public function __construct($url,$debug = false) {
 		// server URL
 		$this->url = $url;
-		// proxy
-		empty($proxy) ? $this->proxy = '' : $this->proxy = $proxy;
-		// debug state
-		empty($debug) ? $this->debug = false : $this->debug = true;
+		$this->debug = $debug;
 		// message id
 		$this->id = 1;
 	}
@@ -129,6 +126,7 @@ class JsonRPCClientHelper {
 			$currentId = NULL;
 		} else {
 			$currentId = $this->id;
+			$this->id += 1;
 		}
 		
 		// prepares the request

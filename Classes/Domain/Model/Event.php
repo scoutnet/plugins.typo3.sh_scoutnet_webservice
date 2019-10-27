@@ -33,26 +33,26 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
 class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * @var string
-	 * @validate NotEmpty
-	 * @validate StringLength(minimum=2, maximum=80)
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=80)
 	 */
 	protected $title = '';
 
 	/**
 	 * @var string
-	 * @validate StringLength(minimum=2, maximum=255)
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=255)
 	 */
 	protected $organizer = '';
 
 	/**
 	 * @var string
-	 * @validate StringLength(minimum=2, maximum=255)
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=255)
 	 */
 	protected $targetGroup = '';
 
 	/**
 	 * @var \DateTime
-	 * @validate NotEmpty
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
 	 */
 	protected $startDate;
 	/**
@@ -71,25 +71,25 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * @var string
-	 * @validate StringLength(minimum=3, maximum=255)
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=3, maximum=255)
 	 */
 	protected $zip;
 
 	/**
 	 * @var string
-	 * @validate StringLength(minimum=2, maximum=255)
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=255)
 	 */
 	protected $location;
 
 	/**
 	 * @var string
-	 * @validate StringLength(minimum=3, maximum=255)
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=3, maximum=255)
 	 */
 	protected $urlText;
 
 	/**
 	 * @var string
-	 * @validate StringLength(minimum=3, maximum=255)
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=3, maximum=255)
 	 */
 	protected $url;
 

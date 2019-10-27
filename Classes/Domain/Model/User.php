@@ -32,29 +32,29 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
 class User extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * @var string
-	 * @validate NotEmpty
-	 * @validate StringLength(minimum=2, maximum=80)
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=80)
 	 */
 	protected $username = null;
 
 	/**
 	 * @var string
-	 * @validate NotEmpty
-	 * @validate StringLength(minimum=2, maximum=80)
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=80)
 	 */
 	protected $firstName = null;
 
 	/**
 	 * @var string
-	 * @validate NotEmpty
-	 * @validate StringLength(minimum=2, maximum=80)
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=80)
 	 */
 	protected $lastName = null;
 
 	/**
 	 * @var string
-	 * @validate NotEmpty
-	 * @validate StringLength(minimum=1, maximum=80)
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=1, maximum=80)
 	 */
 	protected $sex = null;
 

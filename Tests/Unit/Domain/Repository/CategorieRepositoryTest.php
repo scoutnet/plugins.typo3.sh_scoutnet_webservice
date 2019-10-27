@@ -62,6 +62,42 @@ class CategorieRepositoryTest extends TestCase {
 
 
     public function testFindAll() {
+        list($cat1, $cat2) = self::generateCategories();
+
+        // mock json rpc client
+        $sn = $this->prophesize(JsonRPCClientHelperFixture::class);
+        $sn->get_data_by_global_id(null, array('categories' => array('all' => True)))->willReturn([
+            // TODO: set correct ids like the API does
+            [
+                'type' => 'categorie',
+                'content'=> self::CATEGORY_1_ARRAY,
+            ],
+            [
+                'type' => 'categorie',
+                'content'=> self::CATEGORY_2_ARRAY,
+            ]
+        ]);
+
+        GeneralUtility::addInstance(JsonRPCClientHelper::class, $sn->reveal());
+
+        // fix extension Configuration
+        $em = $this->prophesize(ExtensionConfiguration::class);
+
+        $em->get('sh_scoutnet_webservice')->willReturn(
+            [
+                'AES_key' => '12345678901234567890123456789012',
+                'AES_iv' => '1234567890123456',
+                'ScoutnetLoginPage' => 'https://www.scoutnet.de/auth',
+                'ScoutnetProviderName' => 'unitTest',
+            ]);
+
+        GeneralUtility::addInstance(ExtensionConfiguration::class, $em->reveal());
+
+        $this->categoryRepository->initializeObject();
+
+        $act = $this->categoryRepository->findAll();
+
+        $this->assertEquals([$cat1, $cat2], $act);
 
     }
 

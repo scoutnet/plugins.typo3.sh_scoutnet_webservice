@@ -2,6 +2,11 @@
 
 namespace ScoutNet\ShScoutnetWebservice\Property\TypeConverter;
 
+use Exception;
+use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
+use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
+use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,12 +29,7 @@ namespace ScoutNet\ShScoutnetWebservice\Property\TypeConverter;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class EventConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter {//  \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter {
-    /**
-     * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\EventRepository
-     */
-    protected $eventRepository = null;
-
+class EventConverter extends PersistentObjectConverter {
     /**
      * @var string
      */
@@ -57,15 +57,15 @@ class EventConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Persisten
 
             try {
                 $object = $eventRepository->findByUid($identity);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $object = null;
             }
         } else {
-            throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException('The identity property "' . $identity . '" is no UID.', 1297931020);
+            throw new InvalidSourceException('The identity property "' . $identity . '" is no UID.', 1297931020);
         }
 
         if ($object === NULL) {
-            throw new \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException('Object with identity "' . print_r($identity, TRUE) . '" not found.', 1297933823);
+            throw new TargetNotFoundException('Object with identity "' . print_r($identity, TRUE) . '" not found.', 1297933823);
         }
 
         return $object;

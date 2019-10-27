@@ -1,6 +1,8 @@
 <?php
 namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
+use ScoutNet\ShScoutnetWebservice\Domain\Model\User;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -47,7 +49,7 @@ class UserRepository extends AbstractScoutnetRepository {
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\User
      */
     public function convertToUser($array) {
-        $user = new \ScoutNet\ShScoutnetWebservice\Domain\Model\User();
+        $user = new User();
         //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($array);
 
         $user->setUsername($array['userid']);

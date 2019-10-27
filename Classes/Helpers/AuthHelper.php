@@ -1,7 +1,6 @@
 <?php
 namespace ScoutNet\ShScoutnetWebservice\Helpers;
 
-use Exception;
 use DateTime;
 
 use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException;

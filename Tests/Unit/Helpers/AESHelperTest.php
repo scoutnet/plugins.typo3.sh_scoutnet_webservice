@@ -14,13 +14,12 @@
 
 namespace ScoutNet\ShScoutnetWebservice\Tests\Unit\Helpers;
 
-use Exception;
 use ScoutNet\ShScoutnetWebservice\Helpers\AESHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AESHelperTest extends UnitTestCase {
     /**
-     * @throws \Exception
+     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException
      */
     public function testEncryptDecrypt() {
         $key = [
@@ -44,39 +43,38 @@ class AESHelperTest extends UnitTestCase {
         return [
             'aes128' => [
                 '1234567890123456',
-                true,
             ],
             'aes192' => [
                 '123456789012345678901234',
-                true,
             ],
             'aes256' => [
                 '12345678901234567890123456789012',
-                true,
             ],
             'empty' => [
                 '',
-                false,
+                [1572194460],
             ],
             'wrong length' => [
                 '123',
-                false,
+                [1572194460],
             ],
         ];
     }
 
     /**
      * @param $key
-     * @param $valid
+     * @param $expExceptions
      *
-     * @throws \Exception
+     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException
      * @dataProvider dataProviderCorrectKeyLength
      */
-    public function testCorrectKeyLength($key, $valid) {
-        if (!$valid) {
-            $this->expectException(Exception::class);
+    public function testCorrectKeyLength($key, $expExceptions = []) {
+        if ($expExceptions and count($expExceptions) > 0) {
+            foreach ($expExceptions as $expExc) {
+                $this->expectExceptionCode($expExc);
+            }
         }
-        $aes = new AESHelper($key);
+        new AESHelper($key);
     }
 
 
@@ -122,7 +120,7 @@ class AESHelperTest extends UnitTestCase {
      * @param $plaintext
      * @param $cyphertext
      *
-     * @throws \Exception
+     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException
      */
     public function testEncrypt($key, $plaintext, $cyphertext)
     {
@@ -184,7 +182,7 @@ class AESHelperTest extends UnitTestCase {
      * @param $cyphertext
      * @param $plaintext
      *
-     * @throws \Exception
+     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException
      */
     public function testDecrypt($key, $cyphertext, $plaintext)
     {

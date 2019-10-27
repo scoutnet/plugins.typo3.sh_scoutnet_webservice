@@ -26,7 +26,8 @@ namespace ScoutNet\ShScoutnetWebservice\Helpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Exception;
+use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
 
 /**
  * JsonRPCClientHelper
@@ -36,6 +37,7 @@ use Exception;
  * @method setData($type,$id,$object,$username,$auth)
  * @method checkPermission($type,$globalid,$username,$auth)
  * @method requestPermission($type,$globalid,$username,$auth)
+ * @method test()
  */
 class JsonRPCClientHelper {
 	
@@ -100,23 +102,26 @@ class JsonRPCClientHelper {
 	 * @param string $method
 	 * @param array  $params
 	 *
-	 * @return array
-	 * @throws \Exception
+	 * @return array | bool
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException
+     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException
 	 */
-	public function __call($method,$params) {
+	public function __call($method, $params) {
 		$debug = '';
 
 		// check
 		if (!is_scalar($method)) {
-			throw new Exception('Method name has no scalar value');
+		    // only possible if someone calls __call directly
+			throw new InvalidArgumentValueException('Method name has no scalar value', 1572203129);
 		}
-		
+
 		// check
 		if (is_array($params)) {
 			// no keys
 			$params = array_values($params);
 		} else {
-			throw new Exception('Params must be given as array');
+            // only possible if someone calls __call directly
+			throw new InvalidArgumentValueException('Params must be given as array', 1572203170);
 		}
 		
 		// sets notification or request task
@@ -192,7 +197,7 @@ class JsonRPCClientHelper {
 				$this->debug && $debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
 				$response = json_decode($response,true);
 			} else {
-				throw new Exception('Unable to connect to '.$this->url);
+				throw new ScoutNetException('Unable to connect to '.$this->url, 1572202683);
 			}
 		}
 
@@ -205,10 +210,10 @@ class JsonRPCClientHelper {
 		if (!$this->notification) {
 			// check
 			if ($response['id'] != $currentId) {
-				throw new Exception('Incorrect response id (request id: '.$currentId.', response id: '.$response['id'].')');
+				throw new ScoutNetException('Incorrect response id (request id: '.$currentId.', response id: '.$response['id'].')', 1572203283);
 			}
 			if (!is_null($response['error'])) {
-				throw new Exception('Request error: '.$response['error']);
+				throw new ScoutNetException('Request error: '.$response['error'], 1572203301);
 			}
 			
 			return $response['result'];

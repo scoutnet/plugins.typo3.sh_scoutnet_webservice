@@ -1,6 +1,9 @@
 <?php
 namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -46,36 +49,14 @@ class AbstractScoutnetRepository { //extends \TYPO3\CMS\Core\Service\AbstractSer
 	 */
 	protected $backendUserRepository = null;
 
-
-	/**
-	 * @var array
-	 */
-	protected $settings;
-
-	protected $extConfig;
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 */
-	protected $configurationManager;
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-	 * @return void
-	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
-		$this->configurationManager = $configurationManager;
-		$this->settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
-		$this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sh_scoutnet_webservice']);
-	}
-
 	/**
 	 * @var \ScoutNet\ShScoutnetWebservice\Helpers\JsonRPCClientHelper
 	 */
 	var $SN = null;
 
 	public function initializeObject(){
-		$api_url = $this->extConfig['ScoutnetJsonAPIUrl'];
+        $extConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('sh_scoutnet_webservice');
+		$api_url = $extConfig['ScoutnetJsonAPIUrl'];
 		$this->SN = new \ScoutNet\ShScoutnetWebservice\Helpers\JsonRPCClientHelper($api_url);
 	}
 

@@ -113,7 +113,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 *
 	 * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure
 	 * validate NotEmpty
-	 * @lazy
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\ORM\\Lazy
 	 */
 	protected $structure = NULL;
 

@@ -32,25 +32,25 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 class EventRepository extends AbstractScoutnetRepository {
     /**
      * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\StructureRepository
-     * @inject
+     * @TYPO3\\CMS\\Extbase\\Annotation\\Inject
      */
     protected $kalenderRepository = null;
 
     /**
      * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\CategorieRepository
-     * @inject
+     * @TYPO3\\CMS\\Extbase\\Annotation\\Inject
      */
     protected $categorieRepository = null;
 
     /**
      * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\UserRepository
-     * @inject
+     * @TYPO3\\CMS\\Extbase\\Annotation\\Inject
      */
     protected $userRepository = null;
 
     /**
      * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\StufeRepository
-     * @inject
+     * @TYPO3\\CMS\\Extbase\\Annotation\\Inject
      */
     protected $stufeRepository = null;
 

@@ -1,6 +1,8 @@
 <?php
 namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -29,7 +31,7 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
 /**
  * Stufe
  */
-class Stufe extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Stufe extends AbstractEntity {
 
 	/**
 	 * @var String
@@ -152,6 +154,7 @@ class Stufe extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$this->categorieId = $categorieId;
 	}
 
+	// TODO: make this configurable
 	public function getImageURL(){
 		return (string) "<img src='https://kalender.scoutnet.de/2.0/images/".$this->getUid().".gif' alt='".htmlentities($this->getBezeichnung(), ENT_COMPAT|ENT_HTML401, 'UTF-8')."' />";
 	}

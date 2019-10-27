@@ -1,6 +1,8 @@
 <?php
 namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
+use ScoutNet\ShScoutnetWebservice\Domain\Model\Structure;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -102,7 +104,7 @@ class StructureRepository extends AbstractScoutnetRepository {
      * @return mixed
      * @throws \Exception
      */
-    public function hasWritePermissionsToStructure(\ScoutNet\ShScoutnetWebservice\Domain\Model\Structure $structure) {
+    public function hasWritePermissionsToStructure(Structure $structure) {
         /** @var \ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser $be_user */
         $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user["uid"]);
 
@@ -118,7 +120,7 @@ class StructureRepository extends AbstractScoutnetRepository {
      * @return mixed
      * @throws \Exception
      */
-    public function requestWritePermissionsForStructure(\ScoutNet\ShScoutnetWebservice\Domain\Model\Structure $structure) {
+    public function requestWritePermissionsForStructure(Structure $structure) {
         /** @var \ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser $be_user */
         $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user["uid"]);
 
@@ -128,7 +130,7 @@ class StructureRepository extends AbstractScoutnetRepository {
     }
 
     public function convertToStructure($array) {
-        $structure = new \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure();
+        $structure = new Structure();
         //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($array);
 
         $structure->setUid($array['ID']);

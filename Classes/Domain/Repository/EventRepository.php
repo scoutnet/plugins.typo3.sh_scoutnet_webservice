@@ -1,6 +1,10 @@
 <?php
 namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
+use DateTime;
+use ScoutNet\ShScoutnetWebservice\Domain\Model\Event;
+use ScoutNet\ShScoutnetWebservice\Domain\Model\Structure;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -57,7 +61,7 @@ class EventRepository extends AbstractScoutnetRepository {
 
     private $event_cache = array();
 
-    public function findByStructureAndFilter(\ScoutNet\ShScoutnetWebservice\Domain\Model\Structure $structure, $filter) {
+    public function findByStructureAndFilter(Structure $structure, $filter) {
         return $this->findByStructuresAndFilter(array($structure), $filter);
     }
 
@@ -68,7 +72,7 @@ class EventRepository extends AbstractScoutnetRepository {
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Event[]
      */
     public function findByStructuresAndFilter($structures, $filter) {
-        $ids = array_map(function (\ScoutNet\ShScoutnetWebservice\Domain\Model\Structure $structure) {return $structure->getUid();}, $structures);
+        $ids = array_map(function (Structure $structure) {return $structure->getUid();}, $structures);
         return $this->convertRecords($this->loadDataFromScoutnet($ids,array('events' =>$filter)));
     }
 
@@ -117,7 +121,7 @@ class EventRepository extends AbstractScoutnetRepository {
      * @return mixed
      * @throws \Exception
      */
-    public function delete(\ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event) {
+    public function delete(Event $event) {
 		/** @var \ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser $be_user */
         $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user["uid"]);
 
@@ -133,7 +137,7 @@ class EventRepository extends AbstractScoutnetRepository {
      * @return mixed
      * @throws \Exception
      */
-    public function update(\ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event){
+    public function update(Event $event){
 		/** @var \ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser $be_user */
         $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user["uid"]);
 
@@ -152,7 +156,7 @@ class EventRepository extends AbstractScoutnetRepository {
      * @return mixed
      * @throws \Exception
      */
-    public function add(\ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event){
+    public function add(Event $event){
         /** @var \ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser $be_user */
         $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user["uid"]);
 
@@ -167,15 +171,15 @@ class EventRepository extends AbstractScoutnetRepository {
     }
 
     public function convertToEvent($array){
-        $event = new \ScoutNet\ShScoutnetWebservice\Domain\Model\Event();
+        $event = new Event();
 
         $event->setTitle($array['Title']);
         $event->setUid($array['UID']);
         $event->setOrganizer($array['Organizer']);
         $event->setTargetGroup($array['Target_Group']);
-        $event->setStartDate(\DateTime::createFromFormat('Y-m-d H:i:s', gmstrftime("%Y-%m-%d 00:00:00",$array['Start'])));
+        $event->setStartDate(DateTime::createFromFormat('Y-m-d H:i:s', gmstrftime("%Y-%m-%d 00:00:00",$array['Start'])));
         $event->setStartTime($array['All_Day']?null:gmstrftime('%H:%M:00',$array['Start']));
-        $event->setEndDate($array['End'] == 0?null:\DateTime::createFromFormat('Y-m-d H:i:s', gmstrftime("%Y-%m-%d 00:00:00",$array['End'])));
+        $event->setEndDate($array['End'] == 0?null: DateTime::createFromFormat('Y-m-d H:i:s', gmstrftime("%Y-%m-%d 00:00:00",$array['End'])));
         $event->setEndTime($array['All_Day']?null:gmstrftime('%H:%M:00',$array['End']));
 
 
@@ -190,8 +194,8 @@ class EventRepository extends AbstractScoutnetRepository {
         $event->setChangedBy($this->userRepository->findByUid($array['Last_Modified_By']));
         $event->setCreatedBy($this->userRepository->findByUid($array['Created_By']));
 
-        $event->setChangedAt($array['Last_Modified_At'] == 0?null:\DateTime::createFromFormat('U',$array['Last_Modified_At']));
-        $event->setCreatedAt($array['Created_At'] == 0?null:\DateTime::createFromFormat('U',$array['Created_At']));
+        $event->setChangedAt($array['Last_Modified_At'] == 0?null: DateTime::createFromFormat('U',$array['Last_Modified_At']));
+        $event->setCreatedAt($array['Created_At'] == 0?null: DateTime::createFromFormat('U',$array['Created_At']));
 
 
         if (isset($array['Stufen'])){
@@ -224,15 +228,15 @@ class EventRepository extends AbstractScoutnetRepository {
     }
 
 
-    public function convertFromEvent(\ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event) {
+    public function convertFromEvent(Event $event) {
         $array = array(
             'ID' => $event->getUid() !== null?$event->getUid():-1,
             'SSID' => $event->getStructure()->getUid(),
             'Title' => $event->getTitle(),
             'Organizer' => $event->getOrganizer(),
             'Target_Group' => $event->getTargetGroup(),
-            'Start' => $event->getStartTimestamp() instanceof \DateTime?\DateTime::createFromFormat('d.m.Y H:i:s T',$event->getStartTimestamp()->format('d.m.Y H:i:s').' UTC')->format('U'):'',
-            'End' => $event->getEndTimestamp() instanceof \DateTime?\DateTime::createFromFormat('d.m.Y H:i:s T',$event->getEndTimestamp()->format('d.m.Y H:i:s').' UTC')->format('U'):'',
+            'Start' => $event->getStartTimestamp() instanceof DateTime? DateTime::createFromFormat('d.m.Y H:i:s T',$event->getStartTimestamp()->format('d.m.Y H:i:s').' UTC')->format('U'):'',
+            'End' => $event->getEndTimestamp() instanceof DateTime? DateTime::createFromFormat('d.m.Y H:i:s T',$event->getEndTimestamp()->format('d.m.Y H:i:s').' UTC')->format('U'):'',
             'All_Day' => $event->getAllDayEvent(),
             'ZIP' => $event->getZip(),
             'Location' => $event->getLocation(),

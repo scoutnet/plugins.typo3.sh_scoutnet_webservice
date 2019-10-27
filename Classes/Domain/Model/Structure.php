@@ -1,6 +1,8 @@
 <?php
 namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -30,7 +32,7 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
  * Kalender
  *
  */
-class Structure extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Structure extends AbstractEntity {
 	/**
 	 * @var String
      */

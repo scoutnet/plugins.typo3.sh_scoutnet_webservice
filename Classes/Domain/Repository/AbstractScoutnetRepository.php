@@ -37,7 +37,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
 
  */
-class AbstractScoutnetRepository { //extends \TYPO3\CMS\Core\Service\AbstractService {
+class AbstractScoutnetRepository {
 	/**
 	 * @var \ScoutNet\ShScoutnetWebservice\Helpers\AuthHelper
 	 * @TYPO3\\CMS\\Extbase\\Annotation\\Inject
@@ -72,10 +72,9 @@ class AbstractScoutnetRepository { //extends \TYPO3\CMS\Core\Service\AbstractSer
 	 * @return mixed
      */
     protected function loadDataFromScoutnet($ids, $query){
-		$res = $this->SN->get_data_by_global_id($ids,$query);
+		$res = $this->SN->get_data_by_global_id($ids, $query);
 
 		return $res;
 	}
-
 }
 

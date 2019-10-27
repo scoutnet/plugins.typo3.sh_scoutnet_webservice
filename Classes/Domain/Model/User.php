@@ -1,6 +1,8 @@
 <?php
 namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -29,7 +31,7 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
 /**
  * User
  */
-class User extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class User extends AbstractEntity {
 	/**
 	 * @var string
 	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty

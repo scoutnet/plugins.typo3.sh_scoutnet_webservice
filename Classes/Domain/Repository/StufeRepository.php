@@ -1,6 +1,8 @@
 <?php
 namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
+use ScoutNet\ShScoutnetWebservice\Domain\Model\Stufe;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -47,7 +49,7 @@ class StufeRepository extends AbstractScoutnetRepository {
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Stufe
      */
     public function convertToStufe($array) {
-        $stufe = new \ScoutNet\ShScoutnetWebservice\Domain\Model\Stufe();
+        $stufe = new Stufe();
         //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($array);
 
         $stufe->setUid($array['id']);

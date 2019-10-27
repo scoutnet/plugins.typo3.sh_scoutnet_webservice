@@ -1,6 +1,9 @@
 <?php
 namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
 
+use DateTime;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -30,7 +33,7 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
  * Event
  *
  */
-class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Event extends AbstractEntity {
 	/**
 	 * @var string
 	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
@@ -417,7 +420,6 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		if (isset($this->stufen) && $this->stufen != null) {
 			
 			$stufen = "";
-			/** @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Stufe $stufe */
 			foreach ($this->stufen as $stufe) {
 				$stufen .= $stufe->getImageURL();
 			}
@@ -446,9 +448,9 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	public function getStartTimestamp() {
 		if ($this->startTime) {
-			$startTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' '.$this->startTime.(substr_count($this->startTime,':') == 1?':00':''));
+			$startTimestamp = DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' '.$this->startTime.(substr_count($this->startTime,':') == 1?':00':''));
 		} else {
-			$startTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' 00:00:00');
+			$startTimestamp = DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' 00:00:00');
 		}
 
 		return $startTimestamp;
@@ -456,11 +458,11 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	public function getEndTimestamp() {
 		if ($this->endDate && $this->endTime) {
-			$endTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s',$this->endDate->format('Y-m-d').' '.$this->endTime.(substr_count($this->endTime,':') == 1?':00':''));
+			$endTimestamp = DateTime::createFromFormat('Y-m-d H:i:s',$this->endDate->format('Y-m-d').' '.$this->endTime.(substr_count($this->endTime,':') == 1?':00':''));
 		} elseif ($this->endTime) {
-			$endTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' '.$this->endTime.(substr_count($this->endTime,':') == 1?':00':''));
+			$endTimestamp = DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' '.$this->endTime.(substr_count($this->endTime,':') == 1?':00':''));
 		} elseif ($this->endDate) {
-			$endTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s',$this->endDate->format('Y-m-d').' 00:00:00');
+			$endTimestamp = DateTime::createFromFormat('Y-m-d H:i:s',$this->endDate->format('Y-m-d').' 00:00:00');
 		} else {
 			$endTimestamp = $this->getStartTimestamp();
 		}

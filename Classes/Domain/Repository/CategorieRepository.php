@@ -2,6 +2,11 @@
 
 namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
+use Exception;
+use ScoutNet\ShScoutnetWebservice\Domain\Model\Categorie;
+use ScoutNet\ShScoutnetWebservice\Domain\Model\Event;
+use ScoutNet\ShScoutnetWebservice\Domain\Model\Structure;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -43,7 +48,7 @@ class CategorieRepository extends AbstractScoutnetRepository {
                     $generatedCategories[] = $this->convertToCategorie($record['content']);
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
 
@@ -62,7 +67,7 @@ class CategorieRepository extends AbstractScoutnetRepository {
                     $generatedCategories[] = $this->convertToCategorie($record['content']);
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return array();
         }
 
@@ -75,7 +80,7 @@ class CategorieRepository extends AbstractScoutnetRepository {
      *
      * @return mixed
      */
-    public function getAllCategoriesForStructureAndEvent(\ScoutNet\ShScoutnetWebservice\Domain\Model\Structure $structure, \ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event){
+    public function getAllCategoriesForStructureAndEvent(Structure $structure, Event $event){
         $generatedCategories = array();
         try {
             foreach ($this->loadDataFromScoutnet($structure->getUid(), array('categories' => array('generatedCategoriesForEventId' => $event->getUid() != null?$event->getUid():-1))) as $record) {
@@ -83,7 +88,7 @@ class CategorieRepository extends AbstractScoutnetRepository {
                     $generatedCategories[] = $this->convertToCategorie($record['content']);
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // if the scoutnet Server is down, we use the Categories from the structure
             $categories['generatedCategories'] = $this->convertArrayToCategories($structure->getUsedCategories(), $event);
         }
@@ -96,10 +101,10 @@ class CategorieRepository extends AbstractScoutnetRepository {
         return $categories;
     }
 
-    private function convertArrayToCategories($array, \ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event) {
+    private function convertArrayToCategories($array, Event $event) {
         $categories = array();
         foreach ($array as $key => $text) {
-            $categorie = new \ScoutNet\ShScoutnetWebservice\Domain\Model\Categorie();
+            $categorie = new Categorie();
 
             $categorie->setUid($key);
             $categorie->setText($text);
@@ -112,7 +117,7 @@ class CategorieRepository extends AbstractScoutnetRepository {
     }
 
     public function convertToCategorie($array) {
-        $categorie = new \ScoutNet\ShScoutnetWebservice\Domain\Model\Categorie();
+        $categorie = new Categorie();
 
         $categorie->setUid($array['ID']);
         $categorie->setText($array['Text']);

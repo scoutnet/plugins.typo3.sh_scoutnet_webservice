@@ -1,6 +1,11 @@
 <?php
 namespace ScoutNet\ShScoutnetWebservice\Helpers;
 
+use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -47,13 +52,21 @@ class ScoutNetConnectHelper {
 	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
-		$this->settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
+		$this->settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
 		$this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sh_scoutnet_webservice']);
 	}
 
+    /**
+     * @param string $returnUrl
+     * @param bool   $requestApiKey
+     *
+     * @return string
+     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar
+     */
 	public function getScoutNetConnectLoginButton($returnUrl = '',$requestApiKey = false){
+	    // TODO: use a template here!!
 		$lang = $GLOBALS['LANG']->lang;
 
 		if ($lang == 'default') 
@@ -69,7 +82,7 @@ class ScoutNetConnectHelper {
 		
 		$button .= '<a href="#" onclick="document.getElementById(\'scoutnetLogin\').submit(); return false;">';
 
-		$button .= '<img src="'.\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('sh_scoutnet_webservice').'Resources/Public/Images/scoutnetConnect.png" title="scoutnet" alt="scoutnet"/>';
+		$button .= '<img src="'. PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath('sh_scoutnet_webservice').'Resources/Public/Images/scoutnetConnect.png').'" title="scoutnet" alt="scoutnet"/>';
 		$button .= '</a>';
 		
 		$button .= '</form>';
@@ -77,12 +90,15 @@ class ScoutNetConnectHelper {
 		return $button;
 	}
 
+    /**
+     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar
+     */
 	private function _checkConfigValues(){
 		$configVars = array('AES_key','AES_iv','ScoutnetLoginPage','ScoutnetProviderName');
 
 		foreach ($configVars as $configVar) {
 			if (trim($this->extConfig[$configVar]) == '')
-				throw new \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar($configVar);
+				throw new ScoutNetExceptionMissingConfVar($configVar);
 		}
 	}
 }

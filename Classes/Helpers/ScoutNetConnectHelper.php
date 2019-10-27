@@ -2,7 +2,9 @@
 namespace ScoutNet\ShScoutnetWebservice\Helpers;
 
 use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
@@ -37,48 +39,32 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
  * @subpackage	tx_shscoutnetwebservice
  */
 class ScoutNetConnectHelper {
-	/**
-	 * @var array
-	 */
-	protected $settings;
-	protected $extConfig;
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 */
-	protected $configurationManager;
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-	 * @return void
-	 */
-	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
-		$this->configurationManager = $configurationManager;
-		$this->settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
-		$this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sh_scoutnet_webservice']);
-	}
-
     /**
      * @param string $returnUrl
      * @param bool   $requestApiKey
      *
      * @return string
      * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar
+     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
+     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException
      */
 	public function getScoutNetConnectLoginButton($returnUrl = '',$requestApiKey = false){
 	    // TODO: use a template here!!
-//		$lang = $GLOBALS['LANG']->lang;
-        $lang = $TSFE->sys_language_isocode;
+		$lang = $GLOBALS['LANG']->lang;
+//        $lang = $TSFE->sys_language_isocode;
 
-		if ($lang == 'default') 
+        $extConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('sh_scoutnet_webservice');
+
+
+        if ($lang == 'default')
 			$lang = 'en';
 
-		$this->_checkConfigValues();
-		$button = '<form action="'.$this->extConfig['ScoutnetLoginPage'].'" id="scoutnetLogin" method="post" target="_self">';
+		$this->_checkConfigValues($extConfig);
+		$button = '<form action="'.$extConfig['ScoutnetLoginPage'].'" id="scoutnetLogin" method="post" target="_self">';
 
 		$button .= $returnUrl == ''?'':'<input type="hidden" name="redirect_url" value="'.$returnUrl.'" />';
 		$button .= '<input type="hidden" name="lang" value="'.$lang.'"/>';
-		$button .= '<input type="hidden" name="provider" value="'.$this->extConfig['ScoutnetProviderName'].'" />';
+		$button .= '<input type="hidden" name="provider" value="'.$extConfig['ScoutnetProviderName'].'" />';
 		$button .= $requestApiKey?'<input type="hidden" name="createApiKey" value="1" />':'';
 		
 		$button .= '<a href="#" onclick="document.getElementById(\'scoutnetLogin\').submit(); return false;">';
@@ -92,13 +78,15 @@ class ScoutNetConnectHelper {
 	}
 
     /**
+     * @param $config
+     *
      * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar
      */
-	private function _checkConfigValues(){
+	private function _checkConfigValues($config){
 		$configVars = array('AES_key','AES_iv','ScoutnetLoginPage','ScoutnetProviderName');
 
 		foreach ($configVars as $configVar) {
-			if (trim($this->extConfig[$configVar]) == '')
+			if (trim($config[$configVar]) == '')
 				throw new ScoutNetExceptionMissingConfVar($configVar);
 		}
 	}

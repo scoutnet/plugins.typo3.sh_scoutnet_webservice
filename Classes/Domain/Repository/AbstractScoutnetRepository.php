@@ -36,13 +36,13 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 class AbstractScoutnetRepository { //extends \TYPO3\CMS\Core\Service\AbstractService {
 	/**
 	 * @var \ScoutNet\ShScoutnetWebservice\Helpers\AuthHelper
-	 * @inject
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\Inject
 	 */
 	protected $authHelper = null;
 
 	/**
 	 * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\BackendUserRepository
-	 * @inject
+	 * @TYPO3\\CMS\\Extbase\\Annotation\\Inject
 	 */
 	protected $backendUserRepository = null;
 

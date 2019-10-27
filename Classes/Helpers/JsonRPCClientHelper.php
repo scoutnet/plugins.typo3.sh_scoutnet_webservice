@@ -73,10 +73,10 @@ class JsonRPCClientHelper {
 	 * @param string $url
 	 * @param boolean $debug
 	 */
-	public function __construct($url,$debug = false) {
+	public function __construct($url, $debugOutput = false) {
 		// server URL
 		$this->url = $url;
-		$this->debug = $debug;
+		$this->debug = $debugOutput;
 		// message id
 		$this->id = 1;
 	}

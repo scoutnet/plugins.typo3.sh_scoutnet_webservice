@@ -5,9 +5,9 @@ use DateTime;
 
 use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException;
 use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 /***************************************************************
 *  Copyright notice
@@ -41,28 +41,6 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
  */
 class AuthHelper {
 	/**
-	 * @var array
-	 */
-//	protected $settings;
-
-	protected $extConfig;
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 */
-	protected $configurationManager;
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-	 * @return void
-	 */
-	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
-		$this->configurationManager = $configurationManager;
-//		$this->settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
-		$this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sh_scoutnet_webservice']);
-	}
-
-	/**
 	 * Stores the Login Data
 	 * @var array
 	 */
@@ -80,12 +58,13 @@ class AuthHelper {
 	public function getApiKeyFromData($data){
 		if (isset($this->snData)) {
 			return $this->snData;
-		}    
+		}
+        $extConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('sh_scoutnet_webservice');
 
-		$this->_checkConfigValues();
+		$this->_checkConfigValues($extConfig);
 
-		$z = $this->extConfig['AES_key'];
-		$iv = $this->extConfig['AES_iv'];
+		$z = $extConfig['AES_key'];
+		$iv = $extConfig['AES_iv'];
 
 		$aes = new AESHelper($z,"CBC",$iv);
 
@@ -115,7 +94,7 @@ class AuthHelper {
 			throw new ScoutNetException('the auth is too old. Try again', 1572192282);
 		}    
 
-		$your_domain = $this->extConfig['ScoutnetProviderName'];
+		$your_domain = $extConfig['ScoutnetProviderName'];
 
 		if ($data['your_domain'] != $your_domain)
 			throw new ScoutNetException('the auth is for the wrong site!. Try again', 1572192283);
@@ -126,13 +105,15 @@ class AuthHelper {
 	}
 
     /**
+     * @param $extConfig
+     *
      * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar
      */
-	private function _checkConfigValues(){
+	private function _checkConfigValues($extConfig){
 		$configVars = array('AES_key','AES_iv','ScoutnetLoginPage','ScoutnetProviderName');
 
 		foreach ($configVars as $configVar) {
-			if (trim($this->extConfig[$configVar]) == '')
+			if (trim($extConfig[$configVar]) == '')
 				throw new ScoutNetExceptionMissingConfVar($configVar);
 		}
 	}

@@ -50,8 +50,10 @@ class ScoutNetConnectHelper {
      */
 	public function getScoutNetConnectLoginButton($returnUrl = '',$requestApiKey = false){
 	    // TODO: use a template here!!
-		$lang = $GLOBALS['LANG']->lang;
+//		$lang = $GLOBALS['LANG']->lang;
 //        $lang = $TSFE->sys_language_isocode;
+        // TODO: make this work again, deprecation
+        $lang = '';
 
         $extConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('sh_scoutnet_webservice');
 

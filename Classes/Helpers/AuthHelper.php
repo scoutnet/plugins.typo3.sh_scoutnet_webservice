@@ -2,6 +2,9 @@
 namespace ScoutNet\ShScoutnetWebservice\Helpers;
 
 use Exception;
+use DateTime;
+
+use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException;
 use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -90,7 +93,7 @@ class AuthHelper {
 		$base64 = base64_decode(strtr($data, '-_~','+/='));
 
 		if (trim($base64) == "")  
-			throw new Exception('the auth is empty');
+			throw new ScoutNetException('the auth is empty', 1572191918);
 
 		$data = json_decode(substr($aes->decrypt($base64),strlen($iv)),true);
 
@@ -99,22 +102,24 @@ class AuthHelper {
 		$sha1 = $data['sha1']; unset($data['sha1']);
 
 		if (md5(json_encode($data)) != $md5) {
-			throw new Exception('the auth is broken');
+			throw new ScoutNetException('the auth is broken', 1572192280);
 		}    
 
 		if (sha1(json_encode($data)) != $sha1) {
-			throw new Exception('the auth is broken');
-		}    
+			throw new ScoutNetException('the auth is broken', 1572192281);
+		}
 
+        // use this so we can mock it
+        $now = GeneralUtility::makeInstance(DateTime::class);
 
-		if (time() - $data['time'] > 3600) {
-			throw new Exception('the auth is too old. Try again');
+		if ($now->getTimestamp() - $data['time'] > 3600) {
+			throw new ScoutNetException('the auth is too old. Try again', 1572192282);
 		}    
 
 		$your_domain = $this->extConfig['ScoutnetProviderName'];
 
 		if ($data['your_domain'] != $your_domain)
-			throw new Exception('the auth is for the wrong site!. Try again');
+			throw new ScoutNetException('the auth is for the wrong site!. Try again', 1572192283);
 
 		$this->snData = $data;
 
@@ -134,6 +139,12 @@ class AuthHelper {
 	}
 
     /**
+     * This Function generates Auth for given value. The auth uses this formular:
+     *
+     * base64(aes_256_cbc(<random block> + json([sha1=>sha1($checkValue),md5=>md5($checkvalue),time=>time()])))
+     *
+     * the key for the aes is the api_key, the iv is self::UNSECURE_START_IV, therefor the first block is random and will be discarded on the other end
+     *
      * @param $api_key
      * @param $checkValue
      *
@@ -142,11 +153,11 @@ class AuthHelper {
      */
 	public function generateAuth($api_key, $checkValue){
 		if ($api_key == '')
-			throw new Exception('your Api Key is empty');
+			throw new ScoutNetException('your Api Key is empty', 1572194190);
 
 		$aes = new AESHelper($api_key,"CBC",self::UNSECURE_START_IV);
 
-		$now = GeneralUtility::makeInstance(\DateTime::class);
+		$now = GeneralUtility::makeInstance(DateTime::class);
 
 		$auth = array(
 			'sha1' => sha1($checkValue),

@@ -60,8 +60,8 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "3.0.x-dev",
-			"dev-development": "2.0.x-dev"
+			"dev-development": "2.0.x-dev",
+			"dev-typo3_9": "3.0.x-dev"
 		},
 		"typo3/cms": {
 			"app-dir": ".Build",

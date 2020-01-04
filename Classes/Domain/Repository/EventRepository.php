@@ -4,6 +4,7 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 use DateTime;
 use ScoutNet\ShScoutnetWebservice\Domain\Model\Event;
 use ScoutNet\ShScoutnetWebservice\Domain\Model\Structure;
+use TYPO3\CMS\Extbase\Annotation\Inject;
 
 /***************************************************************
  *
@@ -36,25 +37,25 @@ use ScoutNet\ShScoutnetWebservice\Domain\Model\Structure;
 class EventRepository extends AbstractScoutnetRepository {
     /**
      * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\StructureRepository
-     * @TYPO3\\CMS\\Extbase\\Annotation\\Inject
+     * @Inject
      */
     protected $kalenderRepository = null;
 
     /**
      * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\CategorieRepository
-     * @TYPO3\\CMS\\Extbase\\Annotation\\Inject
+     * @Inject
      */
     protected $categorieRepository = null;
 
     /**
      * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\UserRepository
-     * @TYPO3\\CMS\\Extbase\\Annotation\\Inject
+     * @Inject
      */
     protected $userRepository = null;
 
     /**
      * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\StufeRepository
-     * @TYPO3\\CMS\\Extbase\\Annotation\\Inject
+     * @Inject
      */
     protected $stufeRepository = null;
 

@@ -27,7 +27,7 @@
 		"typo3/cms-extensionmanager": "^9.5",
 		"ext-json": "*",
 		"ext-openssl": "*"
-    },
+	},
 	"config": {
 		"vendor-dir": ".Build/vendor",
 		"bin-dir": ".Build/bin"

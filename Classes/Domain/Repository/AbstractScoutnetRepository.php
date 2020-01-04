@@ -4,6 +4,7 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 use ScoutNet\ShScoutnetWebservice\Helpers\JsonRPCClientHelper;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Annotation\Inject;
 
 /***************************************************************
 *  Copyright notice
@@ -40,13 +41,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class AbstractScoutnetRepository {
 	/**
 	 * @var \ScoutNet\ShScoutnetWebservice\Helpers\AuthHelper
-	 * @TYPO3\\CMS\\Extbase\\Annotation\\Inject
+	 * @Inject
 	 */
 	protected $authHelper = null;
 
 	/**
 	 * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\BackendUserRepository
-	 * @TYPO3\\CMS\\Extbase\\Annotation\\Inject
+	 * @Inject
 	 */
 	protected $backendUserRepository = null;
 

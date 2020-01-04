@@ -211,7 +211,11 @@ class JsonRPCClientHelper {
 				throw new ScoutNetException('Incorrect response id (request id: '.$currentId.', response id: '.$response['id'].')', 1572203283);
 			}
 			if (!is_null($response['error'])) {
-				throw new ScoutNetException('Request error: '.$response['error'], 1572203301);
+			    if (is_array($response['error'])) {
+                    throw new ScoutNetException('Request error: '.$response['error']['message']. ' ('.$response['error']['code'].')', 1572203301);
+                } else {
+                    throw new ScoutNetException('Request error: ' . $response['error'], 1572203301);
+                }
 			}
 			
 			return $response['result'];

@@ -23,8 +23,8 @@
 		"issues": "https://github.com/scoutnet/plugins.typo3.sh_scoutnet_webservice/issues"
 	},
 	"require": {
-		"typo3/cms-core": "^9.5",
-		"typo3/cms-extensionmanager": "^9.5",
+		"typo3/cms-core": "^10.4",
+		"typo3/cms-extensionmanager": "^10.4",
 		"ext-json": "*",
 		"ext-openssl": "*"
 	},
@@ -33,11 +33,11 @@
 		"bin-dir": ".Build/bin"
 	},
 	"require-dev": {
-		"typo3/testing-framework": "^4.13.1",
-		"typo3/cms-frontend": "^9.5",
-		"typo3/cms-install": "^9.5",
-		"typo3/cms-about": "^9.5",
-		"typo3/cms-fluid-styled-content": "^9.5",
+		"typo3/testing-framework": "^6.2",
+		"typo3/cms-frontend": "^10.4",
+		"typo3/cms-install": "^10.4",
+		"typo3/cms-about": "^10.4",
+		"typo3/cms-fluid-styled-content": "^10.4",
 		"codeception/codeception": "^2.4"
 	},
 	"autoload": {

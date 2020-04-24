@@ -15,16 +15,18 @@
 namespace ScoutNet\ShScoutnetWebservice\Tests\Unit\Domain\Repository;
 
 use Prophecy\Argument;
+use Prophecy\Prophet;
 use ScoutNet\ShScoutnetWebservice\Domain\Model\Categorie;
 use ScoutNet\ShScoutnetWebservice\Domain\Repository\CategorieRepository;
-use PHPUnit\Framework\TestCase;
 use ScoutNet\ShScoutnetWebservice\Helpers\JsonRPCClientHelper;
 use ScoutNet\ShScoutnetWebservice\Tests\Unit\Fixtures\JsonRPCClientHelperFixture;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CategorieRepositoryTest extends TestCase {
+class CategorieRepositoryTest extends UnitTestCase {
     protected $categoryRepository = null;
+    private $prophet;
 
     const CATEGORY_1_ARRAY = [
         'ID' => 1,
@@ -54,9 +56,14 @@ class CategorieRepositoryTest extends TestCase {
         ];
     }
 
-    public function setUp() {
+    public function setUp(): void {
         parent::setUp();
         $this->categoryRepository = new CategorieRepository();
+        $this->prophet = new Prophet;
+    }
+
+    protected function tearDown(): void {
+        $this->prophet->checkPredictions();
     }
 
 
@@ -65,7 +72,7 @@ class CategorieRepositoryTest extends TestCase {
         list($cat1, $cat2) = self::generateCategories();
 
         // mock json rpc client
-        $sn = $this->prophesize(JsonRPCClientHelperFixture::class);
+        $sn = $this->prophet->prophesize(JsonRPCClientHelperFixture::class);
         $sn->get_data_by_global_id(null, array('categories' => array('all' => True)))->willReturn([
             // TODO: set correct ids like the API does
             [
@@ -81,7 +88,7 @@ class CategorieRepositoryTest extends TestCase {
         GeneralUtility::addInstance(JsonRPCClientHelper::class, $sn->reveal());
 
         // fix extension Configuration
-        $em = $this->prophesize(ExtensionConfiguration::class);
+        $em = $this->prophet->prophesize(ExtensionConfiguration::class);
 
         $em->get('sh_scoutnet_webservice')->willReturn(
             [
@@ -120,14 +127,11 @@ class CategorieRepositoryTest extends TestCase {
      * @param $uid
      * @param $exp
      *
-     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
-     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException
-     * @throws \TYPO3\CMS\Core\Exception
      * @dataProvider dataProviderFindByUid
      */
     public function testFindByUid($uid, $exp) {
         // mok json rpc client
-        $sn = $this->prophesize(JsonRPCClientHelperFixture::class);
+        $sn = $this->prophet->prophesize(JsonRPCClientHelperFixture::class);
         $sn->get_data_by_global_id(null, Argument::any())->will(
             function($args) {
                 $req = $args[1];
@@ -149,7 +153,7 @@ class CategorieRepositoryTest extends TestCase {
         GeneralUtility::addInstance(JsonRPCClientHelper::class, $sn->reveal());
 
         // fix extension Configuration
-        $em = $this->prophesize(ExtensionConfiguration::class);
+        $em = $this->prophet->prophesize(ExtensionConfiguration::class);
 
         $em->get('sh_scoutnet_webservice')->willReturn(
             [

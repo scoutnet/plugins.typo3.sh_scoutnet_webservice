@@ -17,7 +17,7 @@
 			"role": "Developer"
 		}
 	],
-	"license": ["GPL-2.0+"],
+	"license": ["GPL-2.0-or-later"],
 	"keywords": ["TYPO3 CMS", "ScoutNet", "Pfadfinder", "ScoutNet API"],
 	"support": {
 		"issues": "https://github.com/scoutnet/plugins.typo3.sh_scoutnet_webservice/issues"
@@ -27,6 +27,9 @@
 		"typo3/cms-extensionmanager": "^10.4",
 		"ext-json": "*",
 		"ext-openssl": "*"
+	},
+	"suggest": {
+		"ext-curl": "*"
 	},
 	"config": {
 		"vendor-dir": ".Build/vendor",
@@ -38,7 +41,10 @@
 		"typo3/cms-install": "^10.4",
 		"typo3/cms-about": "^10.4",
 		"typo3/cms-fluid-styled-content": "^10.4",
-		"codeception/codeception": "^2.4"
+		"phpspec/prophecy": "~1.0",
+		"codeception/codeception": "^4.1",
+		"codeception/module-webdriver": "^1.0",
+		"codeception/module-asserts": "^1.2"
 	},
 	"autoload": {
 		"psr-4": {
@@ -60,7 +66,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-development": "2.0.x-dev",
+			"dev-master": "4.0.x-dev",
 			"dev-typo3_9": "3.0.x-dev"
 		},
 		"typo3/cms": {

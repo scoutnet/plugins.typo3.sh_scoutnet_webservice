@@ -42,7 +42,7 @@ Testing
 -------
 Needed: GnuMake, PHP, Docker and docker-compose
 
-Init: 
+Init:
 
 `make init`
 
@@ -50,13 +50,13 @@ To Run all the Tests call:
 
 `make test`
 
-you can use the -phpx suffix to indicate which php version you want to check e.g. `make test-php72`
+you can use the -phpx suffix to indicate which php version you want to check e.g. `make test-php73`
 
 for only testing a special function or php version there are different suffixes. For Example:
 
-- `make lintTest-php72`
+- `make lintTest-php73`
 - `make unitTest-php73`
-- `make unitTest`        Will call Unit tests with php7.2 and php 7.3
+- `make unitTest`        Will call Unit tests with php7.3 and php 7.4
 
 Testing with PhpStorm: Setup new remote PHP interpreter.
 Docker-Compose:
@@ -88,7 +88,7 @@ If you have any questions reganding this software, you can send me an email to m
 
 License
 -------
-(c) 2016 Stefan "Mütze" Horst <muetze@scoutnet.de>
+(c) 2020 Stefan "Mütze" Horst <muetze@scoutnet.de>
 All rights reserved
 
 This script is part of the TYPO3 project. The TYPO3 project is

@@ -57,12 +57,10 @@ class AbstractScoutnetRepository {
 	var $SN = null;
 
     /**
-     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
-     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException
      */
 	public function initializeObject(){
         $extConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('sh_scoutnet_webservice');
-		$api_url = $extConfig['ScoutnetJsonAPIUrl'];
+		$api_url = isset($extConfig['scoutnetJsonAPIUrl'])?$extConfig['ScoutnetJsonAPIUrl']:'localhost';
 		$this->SN = GeneralUtility::makeInstance(JsonRPCClientHelper::class, $api_url);
 	}
 

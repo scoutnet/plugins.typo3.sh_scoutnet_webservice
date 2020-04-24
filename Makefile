@@ -1,6 +1,6 @@
 # This file is a generic Scoutnet Makefile file. The original is found in the dummy extension
 # https://github.com/scoutnet/plugins.typo3.scoutnet_dummy/blob/master/Makefile
-# MAKEFILE Version: 1.0.3
+# MAKEFILE Version: 2.0.0
 
 EXT_NAME=$(shell php -r "print(json_decode(file_get_contents('composer.json'), true)['extra']['typo3/cms']['extension-key']);")
 
@@ -21,7 +21,7 @@ PHP_XDEBUG_ON ?= 0
 PHP_XDEBUG_PORT ?= 9000
 SCRIPT_VERBOSE ?= 0
 
-PHP_VERSIONS ?= 7.2 7.3
+PHP_VERSIONS ?= 7.3 7.4
 TESTS ?= lint unit functional acceptance
 
 COMPOSE_PROJECT_NAME_PREFIX=typo3-local-$(JOB_NAME)-$(BUILD_ID)-$(EXT_NAME)-
@@ -60,8 +60,8 @@ $(TEST_ROOT_FOLDER)/docker-%/.env:
 # create .env for phpstorm debuger
 .PHONY: phpStormDockerDotEnv
 phpStormDockerDotEnv: Tests/Build/.env
-Tests/Build/.env: $(TEST_ROOT_FOLDER)/docker-php72-phpStorm/.env
-	@cp $(TEST_ROOT_FOLDER)/docker-php72-phpStorm/.env $@
+Tests/Build/.env: $(TEST_ROOT_FOLDER)/docker-php74-phpStorm/.env
+	@cp $(TEST_ROOT_FOLDER)/docker-php74-phpStorm/.env $@
 
 $(TEST_ROOT_FOLDER)/docker-%/docker-compose.yaml:
 	@echo "Generating docker-compose file for $*"
@@ -108,17 +108,20 @@ clean:
 
 .PHONY: cleanDocker
 cleanDocker:
-	@cd $(TEST_ROOT_FOLDER)/docker-php72-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_install; docker-compose down
-	@cd $(TEST_ROOT_FOLDER)/docker-php72-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_update; docker-compose down
-	@cd $(TEST_ROOT_FOLDER)/docker-php72-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_validate; docker-compose down
-	@cd $(TEST_ROOT_FOLDER)/docker-php72-lint && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php72-lint; docker-compose down
-	@cd $(TEST_ROOT_FOLDER)/docker-php72-unit && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php72-unit; docker-compose down
-	@cd $(TEST_ROOT_FOLDER)/docker-php72-functional && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php72-functional_mariadb10; docker-compose down
-	@cd $(TEST_ROOT_FOLDER)/docker-php72-acceptance && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php72-acceptance_backend_mariadb10; docker-compose down
+	# Composer
+	@cd $(TEST_ROOT_FOLDER)/docker-php74-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_install; docker-compose down
+	@cd $(TEST_ROOT_FOLDER)/docker-php74-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_update; docker-compose down
+	@cd $(TEST_ROOT_FOLDER)/docker-php74-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_validate; docker-compose down
+	# PHP 7.3
 	@cd $(TEST_ROOT_FOLDER)/docker-php73-lint && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php73-lint; docker-compose down
 	@cd $(TEST_ROOT_FOLDER)/docker-php73-unit && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php73-unit; docker-compose down
 	@cd $(TEST_ROOT_FOLDER)/docker-php73-functional && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php73-functional_mariadb10; docker-compose down
 	@cd $(TEST_ROOT_FOLDER)/docker-php73-acceptance && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php73-acceptance_backend_mariadb10; docker-compose down
+	# PHP 7.4
+	@cd $(TEST_ROOT_FOLDER)/docker-php74-lint && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php74-lint; docker-compose down
+	@cd $(TEST_ROOT_FOLDER)/docker-php74-unit && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php74-unit; docker-compose down
+	@cd $(TEST_ROOT_FOLDER)/docker-php74-functional && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php74-functional_mariadb10; docker-compose down
+	@cd $(TEST_ROOT_FOLDER)/docker-php74-acceptance && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php74-acceptance_backend_mariadb10; docker-compose down
 
 
 
@@ -146,21 +149,21 @@ endif
 init: clean composerInstall phpStormDockerDotEnv
 
 .PHONY: composerInstall
-composerInstall: $(TEST_ROOT_FOLDER)/docker-php72-composer/.env $(TEST_ROOT_FOLDER)/docker-php72-composer/docker-compose.yaml
-	@cd $(TEST_ROOT_FOLDER)/docker-php72-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_install; docker-compose run composer_install
-	@cd $(TEST_ROOT_FOLDER)/docker-php72-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_install; docker-compose down
+composerInstall: $(TEST_ROOT_FOLDER)/docker-php74-composer/.env $(TEST_ROOT_FOLDER)/docker-php74-composer/docker-compose.yaml
+	@cd $(TEST_ROOT_FOLDER)/docker-php74-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_install; docker-compose run composer_install
+	@cd $(TEST_ROOT_FOLDER)/docker-php74-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_install; docker-compose down
 	# Create Link for functional tests to work properly they expect to have the vendor directory in the web directory
 	@ln -fs ../vendor .Build/Web
 
 .PHONY: composerUpdate
-composerUpdate: $(TEST_ROOT_FOLDER)/docker-php72-composer/.env $(TEST_ROOT_FOLDER)/docker-php72-composer/docker-compose.yaml
-	@cd $(TEST_ROOT_FOLDER)/docker-php72-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_update; docker-compose run composer_update
-	@cd $(TEST_ROOT_FOLDER)/docker-php72-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_update; docker-compose down
+composerUpdate: $(TEST_ROOT_FOLDER)/docker-php74-composer/.env $(TEST_ROOT_FOLDER)/docker-php74-composer/docker-compose.yaml
+	@cd $(TEST_ROOT_FOLDER)/docker-php74-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_update; docker-compose run composer_update
+	@cd $(TEST_ROOT_FOLDER)/docker-php74-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_update; docker-compose down
 
 .PHONY: composerValidate
-composerValidate: $(TEST_ROOT_FOLDER)/docker-php72-composer/.env $(TEST_ROOT_FOLDER)/docker-php72-composer/docker-compose.yaml
-	@cd $(TEST_ROOT_FOLDER)/docker-php72-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_validate; docker-compose run composer_validate
-	@cd $(TEST_ROOT_FOLDER)/docker-php72-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_validate; docker-compose down
+composerValidate: $(TEST_ROOT_FOLDER)/docker-php74-composer/.env $(TEST_ROOT_FOLDER)/docker-php74-composer/docker-compose.yaml
+	@cd $(TEST_ROOT_FOLDER)/docker-php74-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_validate; docker-compose run composer_validate
+	@cd $(TEST_ROOT_FOLDER)/docker-php74-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_validate; docker-compose down
 
 AVAILABLE_TESTS = $(foreach test,$(TESTS),$(test)Test)
 

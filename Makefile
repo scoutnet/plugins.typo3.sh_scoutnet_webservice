@@ -99,12 +99,12 @@ release: checkVersion $(RELEASE_BUILD_FOLDER)/$(EXT_NAME)_$(EXT_VERSION).zip
 
 .PHONY: clean
 clean:
-	rm -rf $(RELEASE_BUILD_FOLDER)
-	rm -rf $(TEST_ROOT_FOLDER)
-	rm -rf .Build/
-	rm -f composer.lock
-	rm -rf Tests/Acceptance/Support/_generated
-	rm -rf Tests/Build/.env
+	-rm -rf $(RELEASE_BUILD_FOLDER)
+	-rm -rf $(TEST_ROOT_FOLDER)
+	-rm -rf .Build/
+	-rm -f composer.lock
+	-rm -rf Tests/Acceptance/Support/_generated
+	-rm -rf Tests/Build/.env
 
 .PHONY: cleanDocker
 cleanDocker:

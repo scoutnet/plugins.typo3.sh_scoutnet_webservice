@@ -109,19 +109,19 @@ clean:
 .PHONY: cleanDocker
 cleanDocker:
 	# Composer
-	@cd $(TEST_ROOT_FOLDER)/docker-php74-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_install; docker-compose down
-	@cd $(TEST_ROOT_FOLDER)/docker-php74-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_update; docker-compose down
-	@cd $(TEST_ROOT_FOLDER)/docker-php74-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_validate; docker-compose down
+	-cd $(TEST_ROOT_FOLDER)/docker-php74-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_install; docker-compose down
+	-cd $(TEST_ROOT_FOLDER)/docker-php74-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_update; docker-compose down
+	-cd $(TEST_ROOT_FOLDER)/docker-php74-composer && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)composer_validate; docker-compose down
 	# PHP 7.3
-	@cd $(TEST_ROOT_FOLDER)/docker-php73-lint && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php73-lint; docker-compose down
-	@cd $(TEST_ROOT_FOLDER)/docker-php73-unit && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php73-unit; docker-compose down
-	@cd $(TEST_ROOT_FOLDER)/docker-php73-functional && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php73-functional_mariadb10; docker-compose down
-	@cd $(TEST_ROOT_FOLDER)/docker-php73-acceptance && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php73-acceptance_backend_mariadb10; docker-compose down
+	-cd $(TEST_ROOT_FOLDER)/docker-php73-lint && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php73-lint; docker-compose down
+	-cd $(TEST_ROOT_FOLDER)/docker-php73-unit && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php73-unit; docker-compose down
+	-cd $(TEST_ROOT_FOLDER)/docker-php73-functional && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php73-functional_mariadb10; docker-compose down
+	-cd $(TEST_ROOT_FOLDER)/docker-php73-acceptance && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php73-acceptance_backend_mariadb10; docker-compose down
 	# PHP 7.4
-	@cd $(TEST_ROOT_FOLDER)/docker-php74-lint && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php74-lint; docker-compose down
-	@cd $(TEST_ROOT_FOLDER)/docker-php74-unit && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php74-unit; docker-compose down
-	@cd $(TEST_ROOT_FOLDER)/docker-php74-functional && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php74-functional_mariadb10; docker-compose down
-	@cd $(TEST_ROOT_FOLDER)/docker-php74-acceptance && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php74-acceptance_backend_mariadb10; docker-compose down
+	-cd $(TEST_ROOT_FOLDER)/docker-php74-lint && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php74-lint; docker-compose down
+	-cd $(TEST_ROOT_FOLDER)/docker-php74-unit && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php74-unit; docker-compose down
+	-cd $(TEST_ROOT_FOLDER)/docker-php74-functional && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php74-functional_mariadb10; docker-compose down
+	-cd $(TEST_ROOT_FOLDER)/docker-php74-acceptance && export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME_PREFIX)php74-acceptance_backend_mariadb10; docker-compose down
 
 
 

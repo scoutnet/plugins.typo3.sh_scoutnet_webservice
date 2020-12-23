@@ -474,7 +474,7 @@ class Event extends AbstractEntity {
      */
     public function getSectionImages(): string {
         $sections = "";
-	    foreach ($this->getSections() as $section) {
+        foreach ($this->getSections() as $section) {
             $sections .= $section->getImageURL();
         }
         return (string) $sections;

@@ -237,7 +237,7 @@ class EventRepository extends AbstractScoutnetRepository {
 
         if (isset($array['Stufen'])){
             foreach ($array['Stufen'] as $sectionId) {
-                $section = $this->sectionRepository->findByUid($sectionId);
+                $section = $this->sectionRepository->findByCategoryId($sectionId);
                 if ($section != null) {
                     $event->addSection($section);
                 }

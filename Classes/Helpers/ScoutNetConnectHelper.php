@@ -6,7 +6,6 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 /***************************************************************
 *  Copyright notice
@@ -48,14 +47,18 @@ class ScoutNetConnectHelper {
      * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
      * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException
      */
-	public function getScoutNetConnectLoginButton($returnUrl = '',$requestApiKey = false){
+	public function getScoutNetConnectLoginButton(string $returnUrl = '',bool $requestApiKey = false): string {
 	    // TODO: use a template here!!
 //		$lang = $GLOBALS['LANG']->lang;
 //        $lang = $TSFE->sys_language_isocode;
         // TODO: make this work again, deprecation
         $lang = '';
 
-        $extConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('sh_scoutnet_webservice');
+        /** @var ExtensionConfiguration $extensionConfiguration */
+        $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
+
+        // load configuration for this Extension
+        $extConfig = $extensionConfiguration->get('sh_scoutnet_webservice');
 
 
         if ($lang == 'default')
@@ -80,11 +83,13 @@ class ScoutNetConnectHelper {
 	}
 
     /**
-     * @param $config
+     * Checks if $config contains all relevant parameters, otherwise throw Exception
+     *
+     * @param array $config
      *
      * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar
      */
-	private function _checkConfigValues($config){
+	private function _checkConfigValues(array $config){
 		$configVars = array('AES_key','AES_iv','ScoutnetLoginPage','ScoutnetProviderName');
 
 		foreach ($configVars as $configVar) {

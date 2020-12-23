@@ -2,7 +2,6 @@
 namespace ScoutNet\ShScoutnetWebservice\Helpers;
 
 use DateTime;
-
 use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException;
 use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -49,17 +48,20 @@ class AuthHelper {
 	const UNSECURE_START_IV = '1234567890123456';
 
     /**
-     * @param $data
+     * @param string $data
      *
      * @return array|mixed
      * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar
      * @throws \Exception
      */
-	public function getApiKeyFromData($data){
+	public function getApiKeyFromData(string $data): ?array {
 		if (isset($this->snData)) {
 			return $this->snData;
 		}
-        $extConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('sh_scoutnet_webservice');
+
+		/** @var ExtensionConfiguration $extensionConfiguration */
+        $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
+        $extConfig = $extensionConfiguration->get('sh_scoutnet_webservice');
 
 		$this->_checkConfigValues($extConfig);
 
@@ -75,6 +77,10 @@ class AuthHelper {
 
 		$data = json_decode(substr($aes->decrypt($base64),strlen($iv)),true);
 
+		if ($data === Null || !is_array($data)) {
+            throw new ScoutNetException('the auth is broken', 1608717350);
+        }
+
 
 		$md5 = $data['md5']; unset($data['md5']);
 		$sha1 = $data['sha1']; unset($data['sha1']);
@@ -88,6 +94,7 @@ class AuthHelper {
 		}
 
         // use this so we can mock it
+        /** @var DateTime $now */
         $now = GeneralUtility::makeInstance(DateTime::class);
 
 		if ($now->getTimestamp() - $data['time'] > 3600) {
@@ -105,11 +112,11 @@ class AuthHelper {
 	}
 
     /**
-     * @param $extConfig
+     * @param array $extConfig
      *
      * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar
      */
-	private function _checkConfigValues($extConfig){
+	private function _checkConfigValues(array $extConfig){
 		$configVars = array('AES_key','AES_iv','ScoutnetLoginPage','ScoutnetProviderName');
 
 		foreach ($configVars as $configVar) {
@@ -121,17 +128,17 @@ class AuthHelper {
     /**
      * This Function generates Auth for given value. The auth uses this formular:
      *
-     * base64(aes_256_cbc(<random block> + json([sha1=>sha1($checkValue),md5=>md5($checkvalue),time=>time()])))
+     * base64(aes_256_cbc(<random block> + json([sha1=>sha1($checkValue),md5=>md5($checkValue),time=>time()])))
      *
-     * the key for the aes is the api_key, the iv is self::UNSECURE_START_IV, therefor the first block is random and will be discarded on the other end
+     * the key for the aes is the api_key, the iv is self::UNSECURE_START_IV, therefore the first block is random and will be discarded on the other end
      *
-     * @param $api_key
-     * @param $checkValue
+     * @param string $api_key
+     * @param string $checkValue
      *
-     * @return array|false|string
+     * @return string
      * @throws \Exception
      */
-	public function generateAuth($api_key, $checkValue){
+	public function generateAuth(string $api_key, string $checkValue): string{
 		if ($api_key == '')
 			throw new ScoutNetException('your Api Key is empty', 1572194190);
 

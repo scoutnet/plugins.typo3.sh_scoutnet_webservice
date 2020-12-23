@@ -1,6 +1,8 @@
 <?php
 namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
 
+use ScoutNet\ShScoutnetWebservice\Domain\Repository\CategoryRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /***************************************************************
@@ -29,9 +31,9 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  ***************************************************************/
 
 /**
- * Stufe
+ * Section
  */
-class Stufe extends AbstractEntity {
+class Section extends AbstractEntity {
 
 	/**
 	 * @var String
@@ -59,103 +61,125 @@ class Stufe extends AbstractEntity {
 	protected $endalter;
 
 	/**
-	 * @var String
+	 * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Category
 	 */
-	protected $categorieId;
+	protected $category;
 
 	/**
 	 * @param Int $uid
      */
-	public function setUid($uid) {
+	public function setUid(int $uid) {
 		$this->uid = $uid;
 	}
 
 	/**
 	 * @return String
 	 */
-	public function getVerband () {
-		return $this->verband;
+	public function getVerband(): string {
+		return $this->verband??'';
 	}
 
-	/**
-	 * @param String $verband
-	 */
-	public function setVerband ($verband) {
+    /**
+     * @param String $verband
+     */
+	public function setVerband(string $verband) {
 		$this->verband = $verband;
 	}
 
 	/**
 	 * @return String
 	 */
-	public function getBezeichnung () {
-		return $this->bezeichnung;
+	public function getBezeichnung(): string {
+		return $this->bezeichnung??'';
 	}
 
-	/**
-	 * @param String $bezeichnung
-	 */
-	public function setBezeichnung ($bezeichnung) {
+    /**
+     * @param String $bezeichnung
+     */
+	public function setBezeichnung(string $bezeichnung) {
 		$this->bezeichnung = $bezeichnung;
 	}
 
 	/**
 	 * @return String
 	 */
-	public function getFarbe () {
-		return $this->farbe;
+	public function getFarbe(): string {
+		return $this->farbe??'';
 	}
 
-	/**
-	 * @param String $farbe
-	 */
-	public function setFarbe ($farbe) {
+    /**
+     * @param String $farbe
+     */
+	public function setFarbe(string $farbe) {
 		$this->farbe = $farbe;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function getStartalter () {
-		return $this->startalter;
+	public function getStartalter(): int {
+		return $this->startalter??-1;
 	}
 
 	/**
 	 * @param int $startalter
 	 */
-	public function setStartalter ($startalter) {
+	public function setStartalter(int $startalter) {
 		$this->startalter = $startalter;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function getEndalter () {
-		return $this->endalter;
+	public function getEndalter(): int {
+		return $this->endalter??-1;
 	}
 
 	/**
 	 * @param int $endalter
 	 */
-	public function setEndalter ($endalter) {
+	public function setEndalter(int $endalter) {
 		$this->endalter = $endalter;
 	}
 
+    /**
+     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Category
+     */
+    public function getCategory(): ?Category {
+        return $this->category;
+    }
+
+    /**
+     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Category $category
+     */
+    public function setCategory(Category $category): void {
+        $this->category = $category;
+    }
+
+
 	/**
 	 * @return String
-	 */
-	public function getCategorieId () {
-		return $this->categorieId;
+     * @deprecated
+     */
+	public function getCategorieId(): string {
+	    return $this->category->getUid();
 	}
 
-	/**
-	 * @param String $categorieId
-	 */
-	public function setCategorieId ($categorieId) {
-		$this->categorieId = $categorieId;
+    /**
+     * @param int $categoryId
+     * @deprecated
+     */
+	public function setCategorieId(int $categoryId) {
+	    /** @var CategoryRepository $categoryRepository */
+	    $categoryRepository = GeneralUtility::makeInstance(CategoryRepository::class);
+	    $this->category = $categoryRepository->findByUid($categoryId);
 	}
 
-	// TODO: make this configurable
-	public function getImageURL(){
+    /**
+     * @return string
+     */
+	public function getImageURL(): string {
+        // TODO: make this configurable
 		return (string) "<img src='https://kalender.scoutnet.de/2.0/images/".$this->getUid().".gif' alt='".htmlentities($this->getBezeichnung(), ENT_COMPAT|ENT_HTML401, 'UTF-8')."' />";
 	}
 

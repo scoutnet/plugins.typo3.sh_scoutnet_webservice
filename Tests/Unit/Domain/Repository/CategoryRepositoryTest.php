@@ -16,15 +16,15 @@ namespace ScoutNet\ShScoutnetWebservice\Tests\Unit\Domain\Repository;
 
 use Prophecy\Argument;
 use Prophecy\Prophet;
-use ScoutNet\ShScoutnetWebservice\Domain\Model\Categorie;
-use ScoutNet\ShScoutnetWebservice\Domain\Repository\CategorieRepository;
+use ScoutNet\ShScoutnetWebservice\Domain\Model\Category;
+use ScoutNet\ShScoutnetWebservice\Domain\Repository\CategoryRepository;
 use ScoutNet\ShScoutnetWebservice\Helpers\JsonRPCClientHelper;
 use ScoutNet\ShScoutnetWebservice\Tests\Unit\Fixtures\JsonRPCClientHelperFixture;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CategorieRepositoryTest extends UnitTestCase {
+class CategoryRepositoryTest extends UnitTestCase {
     protected $categoryRepository = null;
     private $prophet;
 
@@ -39,13 +39,16 @@ class CategorieRepositoryTest extends UnitTestCase {
         'Selected' => 'yes',
     ];
 
-    static private function generateCategories() {
-        $cat1 = new Categorie();
+    /**
+     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Category[]
+     */
+    static private function generateCategories(): array {
+        $cat1 = new Category();
         $cat1->setUid(1);
         $cat1->setText('testCategory');
         $cat1->setAvailable(false);
 
-        $cat2 = new Categorie();
+        $cat2 = new Category();
         $cat2->setUid(2);
         $cat2->setText('testCategory2');
         $cat2->setAvailable(true);
@@ -58,7 +61,7 @@ class CategorieRepositoryTest extends UnitTestCase {
 
     public function setUp(): void {
         parent::setUp();
-        $this->categoryRepository = new CategorieRepository();
+        $this->categoryRepository = new CategoryRepository();
         $this->prophet = new Prophet;
     }
 
@@ -190,9 +193,12 @@ class CategorieRepositoryTest extends UnitTestCase {
 
     /**
      * @dataProvider dataProviderConvertToCategory
+     *
+     * @param array                                                $test
+     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Category $exp
      */
-    public function testConvertToCategorie($test, $exp) {
-        $act = $this->categoryRepository->convertToCategorie($test);
+    public function testConvertToCategory(array $test, Category $exp) {
+        $act = $this->categoryRepository->convertToCategory($test);
 
         $this->assertEquals($exp, $act);
     }

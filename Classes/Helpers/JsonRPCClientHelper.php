@@ -73,7 +73,7 @@ class JsonRPCClientHelper {
 	 * @param string $url
 	 * @param boolean $debug
 	 */
-	public function __construct($url, $debug = false) {
+	public function __construct(string $url, bool $debug = false) {
 		// server URL
 		$this->url = $url;
 		$this->debugOutput = $debug;
@@ -86,24 +86,22 @@ class JsonRPCClientHelper {
 	 *
 	 * @param boolean $notification
 	 */
-	public function setRPCNotification($notification) {
-		empty($notification) ?
-							$this->notification = false
-							:
-							$this->notification = true;
+	public function setRPCNotification(bool $notification) {
+		empty($notification) ?$this->notification = false:$this->notification = true;
 	}
 
-	/**
-	 * Performs a jsonRCP request and gets the results as an array
-	 *
-	 * @param string $method
-	 * @param array  $params
-	 *
-	 * @return array | bool
+    /**
+     * Performs a jsonRCP request and gets the results as an array
+     *
+     * @param string $method
+     * @param array  $params
+     *
+     * @return array | bool
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException
      * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException
-	 */
-	public function __call($method, $params) {
+     * @noinspection PhpComposerExtensionStubsInspection
+     */
+	public function __call(string $method, array $params) {
 		$debug = '';
 
 		// check
@@ -138,20 +136,19 @@ class JsonRPCClientHelper {
 		$request = json_encode($request);
 		$this->debugOutput && $debug .='***** Request *****'."\n".$request."\n".'***** End Of request *****'."\n\n";
 
-
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] && extension_loaded( 'curl' ) ) {
 			// performs the HTTP POST by use of libcurl
-			$options = array(
+			$options = [
 				CURLOPT_URL		=> $this->url,
 				CURLOPT_POST		=> true,
 				CURLOPT_POSTFIELDS	=> $request,
-				CURLOPT_HTTPHEADER	=> array( 'Content-Type: application/json' ),
+				CURLOPT_HTTPHEADER	=> ['Content-Type: application/json'],
 				CURLINFO_HEADER_OUT	=> true,
 				CURLOPT_RETURNTRANSFER	=> true,
 				CURLOPT_SSL_VERIFYHOST 	=> false,
 				CURLOPT_SSL_VERIFYPEER 	=> false,
 				CURLOPT_FOLLOWLOCATION	=> true,
-			);
+            ];
 			$ch = curl_init();
 			curl_setopt_array( $ch, $options );
 

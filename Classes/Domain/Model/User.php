@@ -37,90 +37,97 @@ class User extends AbstractEntity {
 	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
 	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=80)
 	 */
-	protected $username = null;
+	protected $username = '';
 
 	/**
 	 * @var string
 	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
 	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=80)
 	 */
-	protected $firstName = null;
+	protected $firstName = '';
 
 	/**
 	 * @var string
 	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
 	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=80)
 	 */
-	protected $lastName = null;
+	protected $lastName = '';
 
 	/**
 	 * @var string
 	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
 	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=1, maximum=80)
 	 */
-	protected $sex = null;
+	protected $sex = '';
 
 	/**
 	 * @return string
 	 */
-	public function getUsername () {
+	public function getUsername (): string {
 		return $this->username;
 	}
 
-	/**
-	 * @param string $username
-	 */
-	public function setUsername ($username) {
+    /**
+     * @param string $username
+     */
+	public function setUsername(string $username) {
 		$this->username = $username;
 	}
 
-	public function getFirstName(){
+	public function getFirstName(): string {
 		return trim($this->firstName)?trim($this->firstName):$this->getUsername();
 	}
 
 	/**
 	 * @param string $firstName
 	 */
-	public function setFirstName ($firstName) {
+	public function setFirstName(string $firstName) {
 		$this->firstName = $firstName;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getLastName () {
+	public function getLastName(): string {
 		return $this->lastName;
 	}
 
 	/**
 	 * @param string $lastName
 	 */
-	public function setLastName ($lastName) {
+	public function setLastName(string $lastName) {
 		$this->lastName = $lastName;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getSex () {
+	public function getSex (): string {
 		return $this->sex;
 	}
 
-	/**
-	 * @param string $sex
-	 */
-	public function setSex ($sex) {
+    /**
+     * @param string $sex
+     */
+	public function setSex(string $sex) {
 		$this->sex = $sex;
 	}
 
-	public function getFullName(){
+    /**
+     * @return string
+     */
+	public function getFullName(): string {
 		// we use the class functions not the getters, because the firstname can be the username
 		$full_name = $this->firstName.' '.$this->lastName;
 		return trim($full_name) ? trim($full_name) : $this->getUsername();
 	}
-	public function getLongName(){
+
+    /**
+     * @return string
+     */
+	public function getLongName(): string {
 		$full_name = $this->getFullName();
-		if( $full_name ){
+		if($full_name != $this->getUsername()){
 			return $full_name.' ('.$this->getUsername().')';
 		} else {
 			return $this->getUsername();

@@ -32,7 +32,7 @@ use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException;
  * AESHelper
  */
 class AESHelper {
-    // The number of 32-bit words comprising the plaintext and columns comrising the state matrix of an AES cipher.
+    // The number of 32-bit words comprising the plaintext and columns comprising the state matrix of an AES cipher.
     private static $Nb = 4;
     // The number of 32-bit words comprising the cipher key in this AES cipher.
     private $Nk;
@@ -187,7 +187,7 @@ class AESHelper {
     private $w;
     // The state matrix in this AES cipher with Nb columns and 4 rows
     private $s;
-    // Determines the lenght of key z
+    // Determines the length of key z
     //private $keyLength;
 
     private $mode;
@@ -196,13 +196,13 @@ class AESHelper {
     /**
      * constructs an AES cipher using a specific key.
      *
-     * @param        $z
+     * @param string $z
      * @param string $mode
      * @param string $iv
      *
      * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException
      */
-    public function __construct ($z, $mode = 'ECB', $iv = '1234567890123456') {
+    public function __construct (string $z, string $mode = 'ECB', string $iv = '1234567890123456') {
         $this->Nk = strlen($z) / 4;
         $this->Nr = $this->Nk + self::$Nb + 2;
 
@@ -211,7 +211,7 @@ class AESHelper {
 
         $this->Nr = $this->Nk + self::$Nb + 2;
         $this->w = array(); // Nb*(Nr+1) 32-bit words
-        $this->s = array(array());  // 2-D array of Nb colums and 4 rows
+        $this->s = array(array());  // 2-D array of Nb columns and 4 rows
 
         $this->KeyExpansion($z); // places expanded key in w
         $this->mode = $mode;
@@ -225,7 +225,7 @@ class AESHelper {
         }
     }
 
-    /** Encrypts an aribtrary length String.
+    /** Encrypts an arbitrary length String.
      *
      * Whenever possible you should stream your plaintext through the
      * encryptBlock() function directly, as the amount of time required
@@ -233,9 +233,9 @@ class AESHelper {
      *
      * @param string $plaintext
      *
-     * @return string cyphertext
+     * @return string ciphertext
      **/
-    public function encrypt ($plaintext) {
+    public function encrypt(string $plaintext): string {
         $t = ""; // 16-byte block
         $ciphertext = "";
 
@@ -256,27 +256,26 @@ class AESHelper {
         return $ciphertext;
     }
 
-    /** Decrypts an aribtrary length String.
+    /** Decrypts an arbitrary length String.
      *
      * Whenever possible you should stream your ciphertext through the
      * decryptBlock() function directly, as the amount of time required
      * to decrypt is linear to the size of the ciphertext.
      *
-     * @param string $cyphertext
+     * @param string $ciphertext
      *
      * @return string plaintext
-     *
      */
-    public function decrypt ($cyphertext) {
+    public function decrypt(string $ciphertext): string {
         $t = ""; // 16-byte block
         $plaintext = ""; // returned plain text;
 
         // put a 16-byte block into t
-        $ysize = strlen($cyphertext);
+        $ysize = strlen($ciphertext);
         for ($i = 0; $i < $ysize; $i += 16) {
             for ($j = 0; $j < 16; $j++) {
                 if (($i + $j) < $ysize)
-                    $t[$j] = $cyphertext[$i + $j];
+                    $t[$j] = $ciphertext[$i + $j];
                 else
                     $t[$j] = chr(0);
             }
@@ -292,8 +291,8 @@ class AESHelper {
      * @param string $x 16-byte plaintext
      *
      * @return string 16-byte ciphertext
-     **/
-    public function encryptBlock ($x) {
+     */
+    public function encryptBlock(string $x): string {
         $y = ""; // 16-byte string
 
         // place input x into the initial state matrix in column order
@@ -301,7 +300,7 @@ class AESHelper {
             if ($this->mode === "CBC") {
                 $x[$i] = chr(ord($this->iv[$i]) ^ ord($x[$i]));
             }
-            // we want integerger division for the second index
+            // we want integer division for the second index
             $this->s[$i % 4][($i - $i % self::$Nb) / self::$Nb] = ord($x[$i]);
         }
 
@@ -351,9 +350,8 @@ class AESHelper {
      *
      * @return string 16-byte plaintext
      **/
-    public function decryptBlock ($y) {
+    public function decryptBlock(string $y): string {
         $x = ""; // 16-byte string
-
 
         // place input y into the initial state matrix in column order
         for ($i = 0; $i < 4 * self::$Nb; $i++)
@@ -401,6 +399,9 @@ class AESHelper {
         return $x;
     }
 
+    /**
+     * Deconstructs Class, removes w and s from memory
+     */
     public function __destruct () {
         unset($this->w);
         unset($this->s);
@@ -409,9 +410,10 @@ class AESHelper {
     /** makes a big key out of a small one
      *
      * @param string $z
+     *
      * @return void
-     **/
-    private function KeyExpansion ($z) {
+     */
+    private function KeyExpansion(string $z) {
         // Rcon is the round constant
         static $Rcon = array(
             0x00000000,
@@ -467,8 +469,8 @@ class AESHelper {
      * @param integer $round
      *
      * @return void
-     **/
-    private function addRoundKey($round) {
+     */
+    private function addRoundKey(int $round) {
         for ($i = 0; $i < 4; $i++) {
             for ($j = 0; $j < self::$Nb; $j++) {
                 // place the i-th byte of the j-th word from expanded key w into temp
@@ -483,7 +485,7 @@ class AESHelper {
         }
     }
 
-    /** unmixes each column of a state matrix.
+    /** reverse mix for each column of a state matrix.
      *
      * @return void
      **/
@@ -580,12 +582,12 @@ class AESHelper {
      * @param integer $a
      * @param integer $b
      *
-     * @returns integer 8-bit value
-     **/
-    private static function mult ($a, $b) {
+     * @return integer 8-bit value
+     */
+    private static function mult(int $a, int $b): int {
         $sum = self::$ltable[$a] + self::$ltable[$b];
         $sum %= 255;
-        // Get the antilog
+        // Get the anti log
         $sum = self::$atable[$sum];
 
         return ($a == 0 ? 0 : ($b == 0 ? 0 : $sum));
@@ -596,8 +598,8 @@ class AESHelper {
      * @param integer $w
      *
      * @return integer 32-bit
-     **/
-    private static function rotWord ($w) {
+     */
+    private static function rotWord(int $w): int {
         $temp = $w >> 24; // put the first 8-bits into temp
         $w <<= 8; // make room for temp to fill the lower end of the word
         self::make32BitWord($w);
@@ -613,8 +615,8 @@ class AESHelper {
      * @param integer $w
      *
      * @return integer 32-bit
-     **/
-    private static function subWord ($w) {
+     */
+    private static function subWord(int $w): int {
         // loop through 4 bytes of a word
         for ($i = 0; $i < 4; $i++) {
             $temp = $w >> 24; // put the first 8-bits into temp
@@ -635,8 +637,8 @@ class AESHelper {
      * @param integer $w
      *
      * @return void
-     **/
-    private static function make32BitWord (&$w) {
+     */
+    private static function make32BitWord(int &$w) {
         // Reduce this 64-bit word to 32-bits on 64-bit machines
         $w &= 0x00000000FFFFFFFF;
     }

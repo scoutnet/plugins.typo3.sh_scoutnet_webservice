@@ -11,3 +11,25 @@
  * Authors: Stefan (Muetze) Horst <muetze@DPSG-Liblar.de>               *
  ************************************************************************
  */
+
+
+use ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser;
+
+return [
+    BackendUser::class => [
+        'tableName' => 'be_users',
+    ],
+];
+
+//config.tx_extbase.persistence.classes{
+//    TYPO3\CMS\Extbase\Domain\Model\BackendUser {
+//        subclasses {
+//            BackendUser = ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser
+//		}
+//	}
+//	ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser {
+//        mapping {
+//            tableName = be_users
+//		}
+//	}
+//}

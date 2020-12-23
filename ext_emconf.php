@@ -8,7 +8,7 @@
 /** @var string $_EXTKEY */
 $EM_CONF[$_EXTKEY] = [
 	'title' => 'Official Scoutnet Webservice class',
-	'description' => 'This class is needed to comunicate with the scoutnet server.',
+	'description' => 'This class is needed to communicate with the scoutnet server.',
 	'category' => 'services',
 	'author' => 'Stefan "Mütze" Horst',
 	'author_email' => 'muetze@scoutnet.de',
@@ -20,7 +20,7 @@ $EM_CONF[$_EXTKEY] = [
 	'version' => '4.0.0',
 	'constraints' => [
 		'depends' => [
-			'typo3' => '10.0.0-10.4.99',
+			'typo3' => '10.4.0-10.4.99',
 		],
 		'conflicts' => [],
 		'suggests' => [],

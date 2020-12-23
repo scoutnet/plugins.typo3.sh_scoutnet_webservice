@@ -1,6 +1,8 @@
 <?php
 namespace ScoutNet\ShScoutnetWebservice\Exceptions;
 
+use Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -25,6 +27,6 @@ namespace ScoutNet\ShScoutnetWebservice\Exceptions;
  ***************************************************************/
 
 
-class ScoutNetException extends \Exception {
+class ScoutNetException extends Exception {
 
 }

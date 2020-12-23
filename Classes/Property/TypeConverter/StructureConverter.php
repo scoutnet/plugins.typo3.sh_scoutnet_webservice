@@ -3,6 +3,9 @@
 namespace ScoutNet\ShScoutnetWebservice\Property\TypeConverter;
 
 use Exception;
+use ScoutNet\ShScoutnetWebservice\Domain\Model\Structure;
+use ScoutNet\ShScoutnetWebservice\Domain\Repository\StructureRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
@@ -33,7 +36,7 @@ class StructureConverter extends PersistentObjectConverter {
     /**
      * @var string
      */
-    protected $targetType = 'ScoutNet\ShScoutnetWebservice\Domain\Model\Structure';
+    protected $targetType = Structure::class;
 
     /**
      * @var integer
@@ -43,18 +46,20 @@ class StructureConverter extends PersistentObjectConverter {
     /**
      * Fetch an object from persistence layer.
      *
-     * @param mixed $identity
+     * @param mixed  $identity
      * @param string $targetType
+     *
+     * @return object
      * @throws \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
-     * @return object
      */
-    protected function fetchObjectFromPersistence($identity, $targetType) {
+    protected function fetchObjectFromPersistence($identity, string $targetType): object {
         $object = null;
-        $identity = str_replace('ScoutNet\ShScoutnetWebservice\Domain\Model\Structure:','',$identity);
+        $identity = str_replace(Structure::class.':','',$identity);
         if (ctype_digit((string)$identity)) {
             // load Object via API
-            $structureRepository = $this->objectManager->get('ScoutNet\ShScoutnetWebservice\Domain\Repository\StructureRepository');
+            /** @var StructureRepository $structureRepository */
+            $structureRepository = GeneralUtility::makeInstance(StructureRepository::class);
 
             try {
                 $object = $structureRepository->findByUid($identity);

@@ -2,6 +2,7 @@
 namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
 use ScoutNet\ShScoutnetWebservice\Domain\Model\User;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException;
 
 /***************************************************************
  *
@@ -35,22 +36,30 @@ class UserRepository extends AbstractScoutnetRepository {
     private $user_cache = array();
 
     /**
-     * @param integer $uid
+     * @param int $uid
      *
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\User
+     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException
      */
-    public function findByUid($uid) {
-        return $this->user_cache[$uid];
+    public function findByUid(int $uid) {
+        throw new UnsupportedMethodException('this Method is no longer supported, use findByUsername');
     }
 
     /**
-     * @param mixed $array
+     * @param string $username
      *
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\User
      */
-    public function convertToUser($array) {
+    public function findByUsername(string $username): ?User {
+        return $this->user_cache[$username]??null;
+    }
+
+    /**
+     * @param array $array
+     *
+     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\User
+     */
+    public function convertToUser(array $array): User {
         $user = new User();
-        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($array);
 
         $user->setUsername($array['userid']);
         $user->setFirstName($array['firstname']);

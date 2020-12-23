@@ -4,7 +4,6 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 use DateTime;
 use ScoutNet\ShScoutnetWebservice\Domain\Model\Event;
 use ScoutNet\ShScoutnetWebservice\Domain\Model\Structure;
-use TYPO3\CMS\Extbase\Annotation\Inject;
 
 /***************************************************************
  *
@@ -37,68 +36,100 @@ use TYPO3\CMS\Extbase\Annotation\Inject;
 class EventRepository extends AbstractScoutnetRepository {
     /**
      * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\StructureRepository
-     * @Inject
      */
-    protected $kalenderRepository = null;
+    protected $structureRepository;
 
     /**
-     * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\CategorieRepository
-     * @Inject
+     * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\CategoryRepository
      */
-    protected $categorieRepository = null;
+    protected $categoryRepository;
 
     /**
      * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\UserRepository
-     * @Inject
      */
-    protected $userRepository = null;
+    protected $userRepository;
 
     /**
-     * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\StufeRepository
-     * @Inject
+     * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\SectionRepository
      */
-    protected $stufeRepository = null;
+    protected $sectionRepository;
 
+    /**
+     * Cache all events, key is UID
+     * @var array
+     */
+    private $event_cache = [];
 
-    private $event_cache = array();
-
-    public function findByStructureAndFilter(Structure $structure, $filter) {
-        return $this->findByStructuresAndFilter(array($structure), $filter);
+    /**
+     * EventRepository constructor.
+     *
+     * @param \ScoutNet\ShScoutnetWebservice\Domain\Repository\StructureRepository $kalenderRepository
+     * @param \ScoutNet\ShScoutnetWebservice\Domain\Repository\CategoryRepository  $categoryRepository
+     * @param \ScoutNet\ShScoutnetWebservice\Domain\Repository\UserRepository      $userRepository
+     * @param \ScoutNet\ShScoutnetWebservice\Domain\Repository\SectionRepository   $sectionRepository
+     */
+    public function __construct(
+        StructureRepository $kalenderRepository,
+        CategoryRepository $categoryRepository,
+        UserRepository $userRepository,
+        SectionRepository $sectionRepository) {
+        $this->structureRepository = $kalenderRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->userRepository = $userRepository;
+        $this->sectionRepository = $sectionRepository;
     }
 
     /**
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure[] $structures
-     * @param mixed $filter
+     * @param Structure $structure
+     * @param array                                                 $filter
      *
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Event[]
      */
-    public function findByStructuresAndFilter($structures, $filter) {
+    public function findByStructureAndFilter(Structure $structure, array $filter): array {
+        return $this->findByStructuresAndFilter([$structure], $filter);
+    }
+
+    /**
+     * @param Structure[] $structures
+     * @param array $filter
+     *
+     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Event[]
+     */
+    public function findByStructuresAndFilter(array $structures, array $filter): array {
+        // get UIDs from Structure Objects
         $ids = array_map(function (Structure $structure) {return $structure->getUid();}, $structures);
-        return $this->convertRecords($this->loadDataFromScoutnet($ids,array('events' =>$filter)));
+
+        return $this->convertRecords($this->loadDataFromScoutnet($ids, ['events' =>$filter]));
     }
 
     /**
-     * @param mixed $filter
+     * @param array $filter
      *
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Event[]
      */
-    public function findByFilter($filter) {
-        return $this->convertRecords($this->loadDataFromScoutnet(null,array('events' =>$filter)));
+    public function findByFilter(array $filter): array {
+        return $this->convertRecords($this->loadDataFromScoutnet(null, ['events' =>$filter]));
     }
 
-    private function convertRecords($records) {
-        $events = array();
+    /**
+     * @param $records
+     *
+     * @return array
+     */
+    private function convertRecords(?array $records): array {
+        $events = [];
         foreach ($records as $record) {
             if ($record['type'] === 'user'){
-                // we convert and save to cache
+                // convert and save to cache
                 $this->userRepository->convertToUser($record['content']);
             } elseif ($record['type'] === 'stufe'){
-                // we convert and save to cache
-                $this->stufeRepository->convertToStufe($record['content']);
+                // convert and save to cache
+                $this->sectionRepository->convertToSection($record['content']);
             } elseif ($record['type'] === 'kalender'){
-                // we convert and save to cache
-                $this->kalenderRepository->convertToStructure($record['content']);
+                // convert and save to cache
+                $this->structureRepository->convertToStructure($record['content']);
             } elseif ($record['type'] === 'event') {
+                // convert and save to cache
                 $event = $this->convertToEvent($record['content']);
                 $events[] = $event;
             }
@@ -111,9 +142,9 @@ class EventRepository extends AbstractScoutnetRepository {
      *
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Event
      */
-    public function findByUid($uid) {
+    public function findByUid(int $uid): Event {
         // search in all Calendars
-        return $this->findByFilter(array('event_ids'=>array($uid)))[0];
+        return $this->event_cache[$uid]??$this->findByFilter(['event_ids'=> [$uid]])[0];
     }
 
     /**
@@ -129,7 +160,7 @@ class EventRepository extends AbstractScoutnetRepository {
         $type = 'event';
         $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetApikey(),$type.$event->getStructure()->getUid().$event->getUid().$be_user->getTxShscoutnetUsername());
 
-        return $this->SN->deleteObject($type,$event->getStructure()->getUid(),$event->getUid(),$be_user->getTxShscoutnetUsername(),$auth);
+        return $this->SN->deleteObject($type, $event->getStructure()->getUid(), $event->getUid(), $be_user->getTxShscoutnetUsername(), $auth);
     }
 
     /**
@@ -171,7 +202,14 @@ class EventRepository extends AbstractScoutnetRepository {
         return $this->SN->setData($type,$id,$data,$be_user->getTxShscoutnetUsername(),$auth);
     }
 
-    public function convertToEvent($array){
+    /**
+     * convert from API Array to Event Object
+     *
+     * @param array $array
+     *
+     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Event
+     */
+    public function convertToEvent(array $array): Event {
         $event = new Event();
 
         $event->setTitle($array['Title']);
@@ -183,8 +221,6 @@ class EventRepository extends AbstractScoutnetRepository {
         $event->setEndDate($array['End'] == 0?null: DateTime::createFromFormat('Y-m-d H:i:s', gmstrftime("%Y-%m-%d 00:00:00",$array['End'])));
         $event->setEndTime($array['All_Day']?null:gmstrftime('%H:%M:00',$array['End']));
 
-
-
         $event->setZip($array['ZIP']);
 
         $event->setLocation($array['Location']);
@@ -192,46 +228,49 @@ class EventRepository extends AbstractScoutnetRepository {
         $event->setUrl($array['URL']);
         $event->setDescription($array['Description']);
 
-        $event->setChangedBy($this->userRepository->findByUid($array['Last_Modified_By']));
-        $event->setCreatedBy($this->userRepository->findByUid($array['Created_By']));
+        $event->setChangedBy($this->userRepository->findByUsername($array['Last_Modified_By']));
+        $event->setCreatedBy($this->userRepository->findByUsername($array['Created_By']));
 
         $event->setChangedAt($array['Last_Modified_At'] == 0?null: DateTime::createFromFormat('U',$array['Last_Modified_At']));
         $event->setCreatedAt($array['Created_At'] == 0?null: DateTime::createFromFormat('U',$array['Created_At']));
 
 
         if (isset($array['Stufen'])){
-            foreach ($array['Stufen'] as $stufenId) {
-                $stufe = $this->stufeRepository->findByUid($stufenId);
-                if ($stufe != null) {
-                    $event->addStufe($stufe);
+            foreach ($array['Stufen'] as $sectionId) {
+                $section = $this->sectionRepository->findByUid($sectionId);
+                if ($section != null) {
+                    $event->addSection($section);
                 }
             }
         }
 
-        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($event);
-
-        $event->setStructure($this->kalenderRepository->findByUid(intval($array['Kalender'])));
+        $event->setStructure($this->structureRepository->findByUid(intval($array['Kalender'])));
 
         if (isset($array['Keywords'])) {
             foreach ($array['Keywords'] as $id => $text) {
-                $categorie = $this->categorieRepository->convertToCategorie(array('ID'=>$id,'Text'=>$text));
-                if ($categorie != null) {
-                    $event->addCategorie($categorie);
+                $category = $this->categoryRepository->convertToCategory(array('ID'=>$id,'Text'=>$text));
+                if ($category != null) {
+                    $event->addCategory($category);
                 }
             }
         }
         //$event->setCategories($array['Keywords']);
 
-        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->get_kalender_by_id($array['Kalender']));
         // save new object to cache
         $this->event_cache[$event->getUid()] = $event;
         return $event;
     }
 
-
-    public function convertFromEvent(Event $event) {
-        $array = array(
-            'ID' => $event->getUid() !== null?$event->getUid():-1,
+    /**
+     * Converts from Event Object to Api Data
+     *
+     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event
+     *
+     * @return array
+     */
+    public function convertFromEvent(Event $event): array {
+        $array = [
+            'ID' => $event->getUid()??-1,
             'SSID' => $event->getStructure()->getUid(),
             'Title' => $event->getTitle(),
             'Organizer' => $event->getOrganizer(),
@@ -244,12 +283,11 @@ class EventRepository extends AbstractScoutnetRepository {
             'URL_Text' => $event->getUrlText(),
             'URL' => $event->getUrl(),
             'Description' => $event->getDescription(),
-            'Stufen' => array(),
-            'Keywords' => array(),
-        );
+            'Stufen' => [],
+            'Keywords' => [],
+        ];
 
-        $customKeywords = array();
-        /** @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Categorie $category */
+        $customKeywords = [];
         foreach ($event->getCategories() as $category) {
             if ($category->getUid() == null) {
                 $customKeywords[] = $category->getText();

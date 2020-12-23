@@ -36,7 +36,7 @@ class Structure extends AbstractEntity {
 	/**
 	 * @var String
      */
-	protected $ebene;
+	protected $level;
 	/**
 	 * @var String
      */
@@ -52,7 +52,7 @@ class Structure extends AbstractEntity {
 	/**
 	 * @var Integer
      */
-	protected $ebeneId;
+	protected $levelId;
 	/**
 	 * @var array
      */
@@ -65,105 +65,137 @@ class Structure extends AbstractEntity {
 	/**
 	 * @param Integer $uid
      */
-	public function setUid($uid) {
+	public function setUid(int $uid) {
 		$this->uid = $uid;
 	}
 
+    /**
+     * @return String
+     */
+    public function getLevel(): string {
+        return $this->level??'';
+    }
+
+    /**
+     * @param String $level
+     */
+    public function setLevel(string $level): void {
+        $this->level = $level;
+    }
+
 	/**
 	 * @return String
+     * @deprecated
 	 */
-	public function getEbene () {
-		return $this->ebene;
+	public function getEbene(): string {
+		return $this->getLevel();
 	}
 
 	/**
 	 * @param String $ebene
-	 */
-	public function setEbene ($ebene) {
-		$this->ebene = $ebene;
+     * @deprecated
+     */
+	public function setEbene(string $ebene) {
+	    $this->setLevel($ebene);
 	}
 
 	/**
 	 * @return String
 	 */
-	public function getVerband () {
+	public function getVerband(): string {
 		return $this->verband;
 	}
 
 	/**
 	 * @param String $verband
 	 */
-	public function setVerband ($verband) {
+	public function setVerband(string $verband) {
 		$this->verband = $verband;
 	}
 
 	/**
 	 * @return String
 	 */
-	public function getIdent () {
+	public function getIdent(): string {
 		return $this->ident;
 	}
 
 	/**
 	 * @param String $ident
 	 */
-	public function setIdent ($ident) {
+	public function setIdent(string $ident) {
 		$this->ident = $ident;
 	}
 
+    /**
+     * @return int
+     */
+    public function getLevelId(): int {
+        return $this->levelId??-1;
+    }
+
+    /**
+     * @param int $levelId
+     */
+    public function setLevelId(int $levelId): void {
+        $this->levelId = $levelId;
+    }
+
 	/**
 	 * @return int
+     * @deprecated
 	 */
-	public function getEbeneId () {
-		return $this->ebeneId;
+	public function getEbeneId(): int {
+	    return $this->getLevelId();
 	}
 
 	/**
 	 * @param int $ebeneId
-	 */
-	public function setEbeneId ($ebeneId) {
-		$this->ebeneId = $ebeneId;
+     * @deprecated
+     */
+	public function setEbeneId(int $ebeneId) {
+	    $this->setLevelId($ebeneId);
 	}
 
 	/**
 	 * @return array
 	 */
-	public function getUsedCategories () {
-		return $this->usedCategories;
+	public function getUsedCategories(): array {
+		return $this->usedCategories??[];
 	}
 
-	/**
-	 * @param array $usedCategories
-	 */
-	public function setUsedCategories ($usedCategories) {
+    /**
+     * @param array $usedCategories
+     */
+	public function setUsedCategories(array $usedCategories) {
 		$this->usedCategories = $usedCategories;
 	}
 
 	/**
 	 * @return array
 	 */
-	public function getForcedCategories () {
-		return $this->forcedCategories;
+	public function getForcedCategories(): array {
+		return $this->forcedCategories??[];
 	}
 
-	/**
-	 * @param array $forcedCategories
-	 */
-	public function setForcedCategories ($forcedCategories) {
+    /**
+     * @param array $forcedCategories
+     */
+	public function setForcedCategories(array $forcedCategories) {
 		$this->forcedCategories = $forcedCategories;
 	}
 
 	/**
 	 * @return String
      */
-	public function getName() {
-		return $this->name;
+	public function getName(): string {
+		return $this->name??'';
 	}
 
-	/**
-	 * @param String $name
+    /**
+     * @param String $name
      */
-	public function setName($name) {
+	public function setName(string $name) {
 		$this->name = $name;
 	}
 
@@ -171,15 +203,15 @@ class Structure extends AbstractEntity {
 	/**
 	 * @return string
      */
-	public function getLongName() {
-		return (string) $this->getEbene().' '.(($this->getEbeneId() >= 7)?$this->getName():"");
+	public function getLongName(): string {
+		return (string) $this->getLevel().' '.(($this->getLevelId() >= 7)?$this->getName():"");
 	}
 
 	/**
 	 * @return string
 	 * @deprecated
      */
-	public function get_Name() {
-		return (string) $this->getEbene().(($this->getEbeneId() >= 7)?'&nbsp;'.$this->getName():"");
+	public function get_Name(): string {
+		return (string) $this->getLevel().(($this->getLevelId() >= 7)?'&nbsp;'.$this->getName():"");
 	}
 }

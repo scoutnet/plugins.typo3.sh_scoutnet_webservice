@@ -3,6 +3,9 @@
 namespace ScoutNet\ShScoutnetWebservice\Property\TypeConverter;
 
 use Exception;
+use ScoutNet\ShScoutnetWebservice\Domain\Model\Event;
+use ScoutNet\ShScoutnetWebservice\Domain\Repository\EventRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
@@ -33,7 +36,7 @@ class EventConverter extends PersistentObjectConverter {
     /**
      * @var string
      */
-    protected $targetType = 'ScoutNet\ShScoutnetWebservice\Domain\Model\Event';
+    protected $targetType = Event::class;
 
     /**
      * @var integer
@@ -43,17 +46,19 @@ class EventConverter extends PersistentObjectConverter {
     /**
      * Fetch an object from persistence layer.
      *
-     * @param mixed $identity
+     * @param mixed  $identity
      * @param string $targetType
+     *
+     * @return object
      * @throws \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
-     * @return object
      */
-    protected function fetchObjectFromPersistence($identity, $targetType) {
+    protected function fetchObjectFromPersistence($identity, string $targetType): object {
         $object = null;
         if (ctype_digit((string)$identity)) {
             // load Object via API
-            $eventRepository = $this->objectManager->get('ScoutNet\ShScoutnetWebservice\Domain\Repository\EventRepository');
+            /** @var EventRepository $eventRepository */
+            $eventRepository = GeneralUtility::makeInstance(EventRepository::class);
 
             try {
                 $object = $eventRepository->findByUid($identity);

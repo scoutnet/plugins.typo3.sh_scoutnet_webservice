@@ -39,19 +39,19 @@ class Event extends AbstractEntity {
 	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
 	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=80)
 	 */
-	protected $title = '';
+	protected $title;
 
 	/**
 	 * @var string
 	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=255)
 	 */
-	protected $organizer = '';
+	protected $organizer;
 
 	/**
 	 * @var string
 	 * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=255)
 	 */
-	protected $targetGroup = '';
+	protected $targetGroup;
 
 	/**
 	 * @var \DateTime
@@ -102,21 +102,20 @@ class Event extends AbstractEntity {
 	protected $description;
 
 	/**
-	 * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Stufe[]
+	 * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Section[]
 	 */
-	protected $stufen = array();
+	protected $sections = [];
 
 	/**
-	 * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Categorie[]
+	 * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Category[]
 	 */
-	protected $categories = array();
+	protected $categories = [];
 	
 	/**
 	 * Kalender
 	 *
 	 * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure
-	 * validate NotEmpty
-	 * @TYPO3\\CMS\\Extbase\\Annotation\\ORM\\Lazy
+     * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
 	 */
 	protected $structure = NULL;
 
@@ -151,302 +150,361 @@ class Event extends AbstractEntity {
 	/**
 	 * @return string
 	 */
-	public function getTitle () {
-		return $this->title;
+	public function getTitle(): string {
+		return $this->title??'';
 	}
 
-	/**
-	 * @param string $title
-	 */
-	public function setTitle ($title) {
+    /**
+     * @param string $title
+     */
+	public function setTitle(string $title) {
 		$this->title = $title;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getOrganizer () {
-		return $this->organizer;
+	public function getOrganizer(): string {
+		return $this->organizer??'';
 	}
 
-	/**
-	 * @param string $organizer
-	 */
-	public function setOrganizer ($organizer) {
+    /**
+     * @param string $organizer
+     */
+	public function setOrganizer(string $organizer) {
 		$this->organizer = $organizer;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getTargetGroup () {
-		return $this->targetGroup;
+	public function getTargetGroup(): string {
+		return $this->targetGroup??'';
 	}
 
-	/**
-	 * @param string $targetGroup
-	 */
-	public function setTargetGroup ($targetGroup) {
+    /**
+     * @param string $targetGroup
+     */
+	public function setTargetGroup(string $targetGroup) {
 		$this->targetGroup = $targetGroup;
 	}
 
 	/**
 	 * @return \DateTime
 	 */
-	public function getStartDate () {
+	public function getStartDate(): ?DateTime {
 		return $this->startDate;
 	}
 
 	/**
 	 * @param \DateTime $startDate
 	 */
-	public function setStartDate ($startDate) {
+	public function setStartDate(DateTime $startDate) {
 		$this->startDate = $startDate;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getStartTime () {
+	public function getStartTime(): ?string {
 		return $this->startTime;
 	}
 
-	/**
-	 * @param string $startTime
-	 */
-	public function setStartTime ($startTime) {
+    /**
+     * @param string|null $startTime
+     */
+	public function setStartTime(?string $startTime) {
 		$this->startTime = $startTime;
 	}
 
 	/**
 	 * @return \DateTime
 	 */
-	public function getEndDate () {
+	public function getEndDate(): ?DateTime {
 		return $this->endDate;
 	}
 
-	/**
-	 * @param \DateTime $endDate
-	 */
-	public function setEndDate ($endDate) {
+    /**
+     * @param \DateTime|null $endDate
+     */
+	public function setEndDate(?DateTime $endDate) {
 		$this->endDate = $endDate;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getEndTime () {
+	public function getEndTime(): ?string {
 		return $this->endTime;
 	}
 
-	/**
-	 * @param string $endTime
-	 */
-	public function setEndTime ($endTime) {
+    /**
+     * @param string|null $endTime
+     */
+	public function setEndTime(?string $endTime) {
 		$this->endTime = $endTime;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getZip () {
-		return $this->zip;
+	public function getZip(): string {
+		return $this->zip??'';
 	}
 
-	/**
-	 * @param string $zip
-	 */
-	public function setZip ($zip) {
+    /**
+     * @param string $zip
+     */
+	public function setZip(string $zip) {
 		$this->zip = $zip;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getLocation () {
-		return $this->location;
+	public function getLocation(): string {
+		return $this->location??'';
 	}
 
-	/**
-	 * @param string $location
-	 */
-	public function setLocation ($location) {
+    /**
+     * @param string $location
+     */
+	public function setLocation(string $location) {
 		$this->location = $location;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getUrlText () {
-		return $this->urlText;
+	public function getUrlText(): string {
+		return $this->urlText??'';
 	}
 
-	/**
-	 * @param string $urlText
-	 */
-	public function setUrlText ($urlText) {
+    /**
+     * @param string $urlText
+     */
+	public function setUrlText(string $urlText) {
 		$this->urlText = $urlText;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getUrl () {
-		return $this->url;
+	public function getUrl(): string {
+		return $this->url??'';
 	}
 
-	/**
-	 * @param string $url
-	 */
-	public function setUrl ($url) {
+    /**
+     * @param string $url
+     */
+	public function setUrl(string $url) {
 		$this->url = $url;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getDescription () {
-		return $this->description;
+	public function getDescription(): string {
+		return $this->description??'';
 	}
 
-	/**
-	 * @param string $description
-	 */
-	public function setDescription ($description) {
+    /**
+     * @param string $description
+     */
+	public function setDescription(string $description) {
 		$this->description = $description;
 	}
 
 	/**
 	 * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure
 	 */
-	public function getStructure () {
+	public function getStructure(): ?Structure {
 		return $this->structure;
 	}
 
 	/**
 	 * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure $structure
 	 */
-	public function setStructure ($structure) {
+	public function setStructure(Structure $structure) {
 		$this->structure = $structure;
 	}
 
 	/**
 	 * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\User
 	 */
-	public function getChangedBy () {
+	public function getChangedBy(): ?User {
 		return $this->changedBy;
 	}
 
-	/**
-	 * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\User $changedBy
-	 */
-	public function setChangedBy ($changedBy) {
+    /**
+     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\User $changedBy
+     */
+	public function setChangedBy(User $changedBy) {
 		$this->changedBy = $changedBy;
 	}
 
 	/**
 	 * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\User
 	 */
-	public function getCreatedBy () {
+	public function getCreatedBy(): ?User {
 		return $this->createdBy;
 	}
 
-	/**
-	 * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\User $createdBy
-	 */
-	public function setCreatedBy ($createdBy) {
+    /**
+     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\User $createdBy
+     */
+	public function setCreatedBy(User $createdBy) {
 		$this->createdBy = $createdBy;
 	}
 
 	/**
 	 * @return \DateTime
 	 */
-	public function getCreatedAt () {
+	public function getCreatedAt(): ?DateTime {
 		return $this->createdAt;
 	}
 
-	/**
-	 * @param \DateTime $createdAt
-	 */
-	public function setCreatedAt ($createdAt) {
+    /**
+     * @param \DateTime $createdAt
+     */
+	public function setCreatedAt(DateTime $createdAt) {
 		$this->createdAt = $createdAt;
 	}
 
 	/**
 	 * @return \DateTime
 	 */
-	public function getChangedAt () {
+	public function getChangedAt(): DateTime {
 		return $this->changedAt;
 	}
 
-	/**
-	 * @param \DateTime $changedAt
-	 */
-	public function setChangedAt ($changedAt) {
+    /**
+     * @param \DateTime $changedAt
+     */
+	public function setChangedAt(DateTime $changedAt) {
 		$this->changedAt = $changedAt;
 	}
 
 	/**
 	 * @return array
 	 */
-	public function getCategories () {
+	public function getCategories(): array {
 		return $this->categories;
 	}
 
-	/**
-	 * @param array $categories
-	 */
-	public function setCategories ($categories) {
+    /**
+     * @param array $categories
+     */
+	public function setCategories(array $categories) {
 		$this->categories = $categories;
 	}
 
 	/**
-	 * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Categorie $categorie
+	 * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Category $category
      */
-	public function addCategorie(Categorie $categorie) {
-		$this->categories[$categorie->getUid()] = $categorie;
+	public function addCategory(Category $category) {
+		$this->categories[$category->getUid()] = $category;
 	}
 
+    /**
+     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\User|null
+     * @deprecated
+     */
 
-	public function getAuthor() {
+	public function getAuthor(): ?User {
 		if ($this->changedBy != null) return $this->changedBy;
 		return $this->createdBy;
 	}
 
+    /**
+     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Section[]
+     * @deprecated
+     */
+    public function getStufen(): array {
+        return $this->getSections();
+    }
+
+    /**
+     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Section[] $sections
+     * @deprecated
+     */
+    public function setStufen(array $sections) {
+        $this->setSections($sections);
+    }
+
+    /**
+     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Section $stufe
+     * @deprecated
+     */
+    public function addStufe(Section $stufe) {
+        $this->addSection($stufe);
+    }
+
+    /**
+     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Section[]
+     */
+    public function getSections(): array {
+        return $this->sections;
+    }
+
+    /**
+     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Section[] $sections
+     */
+    public function setSections(array $sections) {
+        $this->sections = $sections;
+    }
+
+    /**
+     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Section $section
+     */
+    public function addSection(Section $section) {
+        $this->sections[] = $section;
+    }
+
 	/**
 	 * @return string
+     * @deprecated
      */
-	public function getStufenImages() {
-		if (isset($this->stufen) && $this->stufen != null) {
-			
-			$stufen = "";
-			foreach ($this->stufen as $stufe) {
-				$stufen .= $stufe->getImageURL();
-			}
+	public function getStufenImages(): string {
+	    return $this->getSectionImages();
+    }
 
-			return (string) $stufen;
-		}
-		return (string) "";
+    /**
+     * @return string
+     */
+    public function getSectionImages(): string {
+        $sections = "";
+	    foreach ($this->getSections() as $section) {
+            $sections .= $section->getImageURL();
+        }
+        return (string) $sections;
 	}
 
-	public function getStufenCategories() {
-		$categories = array();
-		foreach ($this->stufen as $stufe) {
-			$cat = new Categorie();
-			$cat->setUid($stufe->getCategorieId());
-			$cat->setText($stufe->getBezeichnung());
+    /**
+     * @return array
+     * @deprecated
+     */
+	public function getStufenCategories(): array {
+	    return $this->getSectionCategories();
+    }
 
+    /**
+     * @return array
+     */
+    public function getSectionCategories(): array {
+		$categories = [];
+		foreach ($this->getSections() as $section) {
+			$cat = $section->getCategory();
 			$categories[$cat->getUid()] = $cat;
 		}
 
 		return $categories;
 	}
 
-
-
-
-
-	public function getStartTimestamp() {
+    /**
+     * @return \DateTime
+     */
+	public function getStartTimestamp(): DateTime {
 		if ($this->startTime) {
 			$startTimestamp = DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' '.$this->startTime.(substr_count($this->startTime,':') == 1?':00':''));
 		} else {
@@ -456,7 +514,10 @@ class Event extends AbstractEntity {
 		return $startTimestamp;
 	}
 
-	public function getEndTimestamp() {
+    /**
+     * @return \DateTime
+     */
+	public function getEndTimestamp(): DateTime {
 		if ($this->endDate && $this->endTime) {
 			$endTimestamp = DateTime::createFromFormat('Y-m-d H:i:s',$this->endDate->format('Y-m-d').' '.$this->endTime.(substr_count($this->endTime,':') == 1?':00':''));
 		} elseif ($this->endTime) {
@@ -469,66 +530,70 @@ class Event extends AbstractEntity {
 		return $endTimestamp;
 	}
 
-	public function getShowEndDateOrTime() {
+    /**
+     * @return bool
+     */
+	public function getShowEndDateOrTime(): bool {
 		return $this->getShowEndDate() || $this->getShowEndTime();
 	}
 
-	public function getShowEndDate() {
+    /**
+     * @return bool
+     */
+	public function getShowEndDate(): bool {
 		return !is_null($this->endDate) && $this->endDate != 0 && $this->endDate != $this->startDate;
 	}
 
-	public function getShowEndTime() {
+    /**
+     * @return bool
+     */
+	public function getShowEndTime(): bool {
 		return !is_null($this->endTime);
 	}
 
-	public function getAllDayEvent() {
+    /**
+     * @return bool
+     */
+	public function getAllDayEvent(): bool {
 		return is_null($this->startTime);
 	}
 
-	public function getStartYear() {
+    /**
+     * @return string
+     */
+	public function getStartYear(): string {
 		return $this->startDate->format('Y');
 	}
-	public function getStartMonth() {
+
+    /**
+     * @return string
+     */
+	public function getStartMonth(): string {
 		return $this->startDate->format('m');
 	}
 
-	/**
-	 * @return mixed
-	 */
-	public function getStufen () {
-		return $this->stufen;
-	}
-
-	/**
-	 * @param mixed $stufen
-	 */
-	public function setStufen ($stufen) {
-		$this->stufen = $stufen;
-	}
-
-	/**
-	 * @param $stufe
+    /**
+     * @return bool
      */
-	public function addStufe($stufe) {
-		$this->stufen[] = $stufe;
-	}
-
-	public function getShowDetails() {
+	public function getShowDetails(): bool {
 		return trim($this->getDescription().$this->getZip().$this->getLocation().$this->getOrganizer().$this->getTargetGroup().$this->getUrl()) !== '';
 	}
 
 	/**
-	 * @param $uid
+	 * @param int $uid
      */
-	public function setUid ($uid) {
+	public function setUid (int $uid) {
 		$this->uid = $uid;
 	}
 
-	public function copyProperties($event) {
+    /**
+     * @param Event $event
+     */
+	public function copyProperties(Event $event) {
 		$copyProperties = array( 'title', 'organizer', 'targetGroup', 'startDate', 'startTime', 'endDate', 'endTime', 'zip', 'location', 'urlText', 'url', 'description', 'structure', 'categories');
 
-		foreach ($copyProperties as $propertie) {
-			$this->{$propertie} = $event->{$propertie};
+		foreach ($copyProperties as $property) {
+			$this->{$property} = $event->{$property};
 		}
 	}
 }

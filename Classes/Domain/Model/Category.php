@@ -24,7 +24,7 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class Categorie {
+class Category {
     /**
      * @var integer
      */
@@ -43,42 +43,42 @@ class Categorie {
     /**
      * @return int
      */
-    public function getUid () {
-        return $this->uid;
+    public function getUid(): int {
+        return $this->uid??-1;
     }
 
     /**
      * @param int $uid
      */
-    public function setUid ($uid) {
+    public function setUid(int $uid) {
         $this->uid = $uid;
     }
 
     /**
      * @return string
      */
-    public function getText () {
-        return $this->text;
+    public function getText(): string {
+        return $this->text??'';
     }
 
     /**
      * @param string $text
      */
-    public function setText ($text) {
+    public function setText(string $text) {
         $this->text = $text;
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
-    public function getAvailable () {
-        return $this->available;
+    public function getAvailable(): bool {
+        return $this->available??false;
     }
 
     /**
-     * @param mixed $available
+     * @param bool $available
      */
-    public function setAvailable ($available) {
+    public function setAvailable(bool $available) {
         $this->available = $available;
     }
 }

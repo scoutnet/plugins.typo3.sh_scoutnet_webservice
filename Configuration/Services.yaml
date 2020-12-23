@@ -6,3 +6,14 @@ services:
 
   ScoutNet\ShScoutnetWebservice\:
     resource: '../Classes/*'
+
+  ScoutNet\ShScoutnetWebservice\Domain\Repository\CategoryRepository:
+    public: true
+  ScoutNet\ShScoutnetWebservice\Domain\Repository\EventRepository:
+    public: true
+  ScoutNet\ShScoutnetWebservice\Domain\Repository\SectionRepository:
+    public: true
+  ScoutNet\ShScoutnetWebservice\Domain\Repository\StructureRepository:
+    public: true
+  ScoutNet\ShScoutnetWebservice\Domain\Repository\UserRepository:
+    public: true

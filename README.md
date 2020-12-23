@@ -49,7 +49,7 @@ you can use the -phpx suffix to indicate which php version you want to check e.g
 for only testing a special function or php version there are different suffixes. For Example:
 
 - `make lintTest-php73`
-- `make unitTest-php73`
+- `make unitTest-php74`
 - `make unitTest`        Will call Unit tests with php7.3 and php 7.4
 
 Testing with PhpStorm: Setup new remote PHP interpreter.

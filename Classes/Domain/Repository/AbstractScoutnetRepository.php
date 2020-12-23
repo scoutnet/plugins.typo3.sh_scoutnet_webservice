@@ -3,8 +3,6 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
 use ScoutNet\ShScoutnetWebservice\Helpers\AuthHelper;
 use ScoutNet\ShScoutnetWebservice\Helpers\JsonRPCClientHelper;
-use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
-use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -71,17 +69,13 @@ class AbstractScoutnetRepository {
     }
 
     /**
-     * Set the SN variable to the configured api url
+     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
+     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException
      */
 	public function initializeObject(){
 	    /** @var ExtensionConfiguration $extensionConfiguration */
         $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
-
-        try {
-            $extConfig = $extensionConfiguration->get('sh_scoutnet_webservice');
-        } catch (ExtensionConfigurationExtensionNotConfiguredException $e) {
-        } catch (ExtensionConfigurationPathDoesNotExistException $e) {
-        }
+        $extConfig = $extensionConfiguration->get('sh_scoutnet_webservice');
 
         $api_url = $extConfig['ScoutnetJsonAPIUrl']??'localhost';
 
@@ -95,7 +89,7 @@ class AbstractScoutnetRepository {
 	 * @return array
      */
     protected function loadDataFromScoutnet(?array $ids, $query): array {
-		return $this->SN->get_data_by_global_id($ids, $query);
-	}
+        return $this->SN->get_data_by_global_id($ids, $query);
+    }
 }
 

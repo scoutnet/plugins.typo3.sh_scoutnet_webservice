@@ -32,41 +32,39 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser {
      *
      * @var string
      */
-    protected $txShscoutnetUsername= '';
+    protected $scoutnetUsername= '';
 
     /**
      *
      * @var string
      */
-    protected $txShscoutnetApikey = '';
+    protected $scoutnetApikey = '';
 
     /**
      * @return string
      */
-    public function getTxShscoutnetUsername(): string {
-        return $this->txShscoutnetUsername;
+    public function getScoutnetUsername(): string {
+        return $this->scoutnetUsername;
     }
 
     /**
-     * @param string $txShscoutnetUsername
+     * @param string $scoutnetUsername
      */
-    public function setTxShscoutnetUsername(string $txShscoutnetUsername) {
-        $this->txShscoutnetUsername = $txShscoutnetUsername;
+    public function setScoutnetUsername(string $scoutnetUsername): void {
+        $this->scoutnetUsername = $scoutnetUsername;
     }
 
     /**
      * @return string
      */
-    public function getTxShscoutnetApikey(): string {
-        return $this->txShscoutnetApikey;
+    public function getScoutnetApikey(): string {
+        return $this->scoutnetApikey;
     }
 
     /**
-     * @param string $txShscoutnetApikey
+     * @param string $scoutnetApikey
      */
-    public function setTxShscoutnetApikey(string $txShscoutnetApikey) {
-        $this->txShscoutnetApikey = $txShscoutnetApikey;
+    public function setScoutnetApikey(string $scoutnetApikey): void {
+        $this->scoutnetApikey = $scoutnetApikey;
     }
-
-
 }

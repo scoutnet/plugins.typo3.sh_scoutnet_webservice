@@ -18,6 +18,14 @@ use ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser;
 return [
     BackendUser::class => [
         'tableName' => 'be_users',
+        'properties' => [
+            'scoutnetUsername' => [
+                'fieldname' => 'tx_shscoutnet_username',
+            ],
+            'scoutnetApikey' => [
+                'fieldname' => 'tx_shscoutnet_apikey',
+            ],
+        ],
     ],
 ];
 

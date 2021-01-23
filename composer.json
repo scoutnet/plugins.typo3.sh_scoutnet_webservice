@@ -11,12 +11,11 @@
 			"role": "Developer"
 		}
 	],
-	"license": ["GPL-2.0+"],
+	"license": ["GPL-2.0-or-later"],
 	"keywords": ["TYPO3 CMS", "ScoutNet", "Pfadfinder", "ScoutNet API"],
 	"support": {
 		"issues": "https://github.com/scoutnet/plugins.typo3.sh_scoutnet_webservice/issues"
 	},
-	"version": "2.0.5",
 	"require": {
 		"typo3/cms": "^7.6.0"
 	},
@@ -26,8 +25,7 @@
 		}
 	},
 	"replace": {
-		"typo3-ter/sh-scoutnet-webservice": "self.version",
-		"sh_scoutnet_webservice": "self.version"
+		"typo3-ter/sh-scoutnet-webservice": "self.version"
 	},
 	"extra": {
 		"branch-alias": {

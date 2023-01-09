@@ -198,17 +198,14 @@ class Event extends AbstractEntity
     }
 
     /**
+     * Start date, without time, as \DateTime object
      * @return \DateTime
+     * @deprecated 6.0.0 Don't return full \DateTime object
+     * @see Event::getStart()
      */
     public function getStartDate(): ?DateTime
     {
-        if ($this->startTime) {
-            $startDate = DateTime::createFromFormat('Y-m-d H:i:s', $this->startDate->format('Y-m-d') . ' ' . $this->startTime . (substr_count($this->startTime, ':') == 1 ? ':00' : ''));
-        } else {
-            $startDate = DateTime::createFromFormat('Y-m-d H:i:s', $this->startDate->format('Y-m-d') . ' 00:00:00');
-        }
-
-        return $startDate;
+        return $this->startDate;
     }
 
     /**
@@ -236,20 +233,14 @@ class Event extends AbstractEntity
     }
 
     /**
+     * End date, without time, as \DateTime object.
      * @return \DateTime
+     * @deprecated 6.0.0 Don't return full \DateTime object
+     * @see Event::getEnd()
      */
     public function getEndDate(): ?DateTime
     {
-        if ($this->endDate && $this->endTime) {
-            $endDate = DateTime::createFromFormat('Y-m-d H:i:s', $this->endDate->format('Y-m-d') . ' ' . $this->endTime . (substr_count($this->endTime, ':') == 1 ? ':00' : ''));
-        } elseif ($this->endTime) {
-            $endDate = DateTime::createFromFormat('Y-m-d H:i:s', $this->startDate->format('Y-m-d') . ' ' . $this->endTime . (substr_count($this->endTime, ':') == 1 ? ':00' : ''));
-        } elseif ($this->endDate) {
-            $endDate = DateTime::createFromFormat('Y-m-d H:i:s', $this->endDate->format('Y-m-d') . ' 00:00:00');
-        } else {
-            $endDate = $this->getStartDate();
-        }
-        return $endDate;
+        return $this->endDate;
     }
 
     /**
@@ -567,19 +558,52 @@ class Event extends AbstractEntity
     }
 
     /**
-     * @return int Start time in seconds since the Unix Epoch
+     * @return \DateTime
+     * @deprecated 6.0.0 Don't return timestamp; Confusing name
+     * @see Event::getStart()
      */
-    public function getStartTimestamp(): int
+    public function getStartTimestamp(): \DateTime
     {
-        return $this->getStartDate()->format("U");
+        return $this->getStart();
     }
 
     /**
-     * @return int End time in seconds since the Unix Epoch
+     * @return \DateTime
+     * @deprecated 6.0.0 Don't return timestamp; Confusing name
+     * @see Event::getEnd()
      */
-    public function getEndTimestamp(): int
+    public function getEndTimestamp(): \DateTime
     {
-        return $this->getEndDate()->format("U");
+        return $this->getEnd();
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getStart(): \DateTime {
+        if ($this->startTime) {
+            $startDate = DateTime::createFromFormat('Y-m-d H:i:s', $this->startDate->format('Y-m-d') . ' ' . $this->startTime . (substr_count($this->startTime, ':') == 1 ? ':00' : ''));
+        } else {
+            $startDate = DateTime::createFromFormat('Y-m-d H:i:s', $this->startDate->format('Y-m-d') . ' 00:00:00');
+        }
+
+        return $startDate;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getEnd(): \DateTime {
+        if ($this->endDate && $this->endTime) {
+            $endDate = DateTime::createFromFormat('Y-m-d H:i:s', $this->endDate->format('Y-m-d') . ' ' . $this->endTime . (substr_count($this->endTime, ':') == 1 ? ':00' : ''));
+        } elseif ($this->endTime) {
+            $endDate = DateTime::createFromFormat('Y-m-d H:i:s', $this->startDate->format('Y-m-d') . ' ' . $this->endTime . (substr_count($this->endTime, ':') == 1 ? ':00' : ''));
+        } elseif ($this->endDate) {
+            $endDate = DateTime::createFromFormat('Y-m-d H:i:s', $this->endDate->format('Y-m-d') . ' 00:00:00');
+        } else {
+            $endDate = $this->getStartTimestamp();
+        }
+        return $endDate;
     }
 
     /**
@@ -616,6 +640,8 @@ class Event extends AbstractEntity
 
     /**
      * @return string
+     * @deprecated 6.0.0
+     * @see Event::getStart() Use DateTime with format("Y") instead.
      */
     public function getStartYear(): string
     {
@@ -624,6 +650,8 @@ class Event extends AbstractEntity
 
     /**
      * @return string
+     * @deprecated 6.0.0
+     * @see Event::getStart() Use DateTime with format("m") instead.
      */
     public function getStartMonth(): string
     {

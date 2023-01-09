@@ -110,7 +110,7 @@ class Event extends AbstractEntity {
 	 * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Category[]
 	 */
 	protected $categories = [];
-	
+
 	/**
 	 * Kalender
 	 *
@@ -193,7 +193,13 @@ class Event extends AbstractEntity {
 	 * @return \DateTime
 	 */
 	public function getStartDate(): ?DateTime {
-		return $this->startDate;
+        if ($this->startTime) {
+            $startDate = DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' '.$this->startTime.(substr_count($this->startTime,':') == 1?':00':''));
+        } else {
+            $startDate = DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' 00:00:00');
+        }
+
+        return $startDate;
 	}
 
 	/**
@@ -221,7 +227,16 @@ class Event extends AbstractEntity {
 	 * @return \DateTime
 	 */
 	public function getEndDate(): ?DateTime {
-		return $this->endDate;
+    	if ($this->endDate && $this->endTime) {
+            $endDate = DateTime::createFromFormat('Y-m-d H:i:s',$this->endDate->format('Y-m-d').' '.$this->endTime.(substr_count($this->endTime,':') == 1?':00':''));
+        } elseif ($this->endTime) {
+            $endDate = DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' '.$this->endTime.(substr_count($this->endTime,':') == 1?':00':''));
+        } elseif ($this->endDate) {
+            $endDate = DateTime::createFromFormat('Y-m-d H:i:s',$this->endDate->format('Y-m-d').' 00:00:00');
+        } else {
+            $endDate = $this->getStartDate();
+        }
+        return $endDate;
 	}
 
     /**
@@ -502,32 +517,17 @@ class Event extends AbstractEntity {
 	}
 
     /**
-     * @return \DateTime
+     * @return int Start time in seconds since the Unix Epoch
      */
-	public function getStartTimestamp(): DateTime {
-		if ($this->startTime) {
-			$startTimestamp = DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' '.$this->startTime.(substr_count($this->startTime,':') == 1?':00':''));
-		} else {
-			$startTimestamp = DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' 00:00:00');
-		}
-
-		return $startTimestamp;
+	public function getStartTimestamp(): int {
+        return $this->getStartDate()->format("U");
 	}
 
     /**
-     * @return \DateTime
+     * @return int End time in seconds since the Unix Epoch
      */
-	public function getEndTimestamp(): DateTime {
-		if ($this->endDate && $this->endTime) {
-			$endTimestamp = DateTime::createFromFormat('Y-m-d H:i:s',$this->endDate->format('Y-m-d').' '.$this->endTime.(substr_count($this->endTime,':') == 1?':00':''));
-		} elseif ($this->endTime) {
-			$endTimestamp = DateTime::createFromFormat('Y-m-d H:i:s',$this->startDate->format('Y-m-d').' '.$this->endTime.(substr_count($this->endTime,':') == 1?':00':''));
-		} elseif ($this->endDate) {
-			$endTimestamp = DateTime::createFromFormat('Y-m-d H:i:s',$this->endDate->format('Y-m-d').' 00:00:00');
-		} else {
-			$endTimestamp = $this->getStartTimestamp();
-		}
-		return $endTimestamp;
+	public function getEndTimestamp(): int {
+        return $this->getEndDate()->format("U");
 	}
 
     /**

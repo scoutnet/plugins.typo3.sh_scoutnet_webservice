@@ -1,4 +1,5 @@
 <?php
+
 namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
@@ -30,188 +31,208 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
  * Kalender
- *
  */
-class Structure extends AbstractEntity {
-	/**
-	 * @var String
+class Structure extends AbstractEntity
+{
+    /**
+     * @var string
      */
-	protected $level;
-	/**
-	 * @var String
+    protected $level;
+    /**
+     * @var string
      */
-	protected $name;
-	/**
-	 * @var String
+    protected $name;
+    /**
+     * @var string
      */
-	protected $verband;
-	/**
-	 * @var String
+    protected $verband;
+    /**
+     * @var string
      */
-	protected $ident;
-	/**
-	 * @var Integer
+    protected $ident;
+    /**
+     * @var int
      */
-	protected $levelId;
-	/**
-	 * @var array
+    protected $levelId;
+    /**
+     * @var array
      */
-	protected $usedCategories;
-	/**
-	 * @var array
+    protected $usedCategories;
+    /**
+     * @var array
      */
-	protected $forcedCategories;
-
-	/**
-	 * @param Integer $uid
-     */
-	public function setUid(int $uid) {
-		$this->uid = $uid;
-	}
+    protected $forcedCategories;
 
     /**
-     * @return String
+     * @param int $uid
      */
-    public function getLevel(): string {
+    public function setUid(int $uid)
+    {
+        $this->uid = $uid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLevel(): string
+    {
         return $this->level??'';
     }
 
     /**
-     * @param String $level
+     * @param string $level
      */
-    public function setLevel(string $level): void {
+    public function setLevel(string $level): void
+    {
         $this->level = $level;
     }
 
-	/**
-	 * @return String
-     * @deprecated
-	 */
-	public function getEbene(): string {
-		return $this->getLevel();
-	}
-
-	/**
-	 * @param String $ebene
+    /**
+     * @return string
      * @deprecated
      */
-	public function setEbene(string $ebene) {
-	    $this->setLevel($ebene);
-	}
+    public function getEbene(): string
+    {
+        return $this->getLevel();
+    }
 
-	/**
-	 * @return String
-	 */
-	public function getVerband(): string {
-		return $this->verband;
-	}
+    /**
+     * @param string $ebene
+     * @deprecated
+     */
+    public function setEbene(string $ebene)
+    {
+        $this->setLevel($ebene);
+    }
 
-	/**
-	 * @param String $verband
-	 */
-	public function setVerband(string $verband) {
-		$this->verband = $verband;
-	}
+    /**
+     * @return string
+     */
+    public function getVerband(): string
+    {
+        return $this->verband;
+    }
 
-	/**
-	 * @return String
-	 */
-	public function getIdent(): string {
-		return $this->ident;
-	}
+    /**
+     * @param string $verband
+     */
+    public function setVerband(string $verband)
+    {
+        $this->verband = $verband;
+    }
 
-	/**
-	 * @param String $ident
-	 */
-	public function setIdent(string $ident) {
-		$this->ident = $ident;
-	}
+    /**
+     * @return string
+     */
+    public function getIdent(): string
+    {
+        return $this->ident;
+    }
+
+    /**
+     * @param string $ident
+     */
+    public function setIdent(string $ident)
+    {
+        $this->ident = $ident;
+    }
 
     /**
      * @return int
      */
-    public function getLevelId(): int {
+    public function getLevelId(): int
+    {
         return $this->levelId??-1;
     }
 
     /**
      * @param int $levelId
      */
-    public function setLevelId(int $levelId): void {
+    public function setLevelId(int $levelId): void
+    {
         $this->levelId = $levelId;
     }
 
-	/**
-	 * @return int
-     * @deprecated
-	 */
-	public function getEbeneId(): int {
-	    return $this->getLevelId();
-	}
-
-	/**
-	 * @param int $ebeneId
+    /**
+     * @return int
      * @deprecated
      */
-	public function setEbeneId(int $ebeneId) {
-	    $this->setLevelId($ebeneId);
-	}
+    public function getEbeneId(): int
+    {
+        return $this->getLevelId();
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getUsedCategories(): array {
-		return $this->usedCategories??[];
-	}
+    /**
+     * @param int $ebeneId
+     * @deprecated
+     */
+    public function setEbeneId(int $ebeneId)
+    {
+        $this->setLevelId($ebeneId);
+    }
+
+    /**
+     * @return array
+     */
+    public function getUsedCategories(): array
+    {
+        return $this->usedCategories??[];
+    }
 
     /**
      * @param array $usedCategories
      */
-	public function setUsedCategories(array $usedCategories) {
-		$this->usedCategories = $usedCategories;
-	}
+    public function setUsedCategories(array $usedCategories)
+    {
+        $this->usedCategories = $usedCategories;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getForcedCategories(): array {
-		return $this->forcedCategories??[];
-	}
+    /**
+     * @return array
+     */
+    public function getForcedCategories(): array
+    {
+        return $this->forcedCategories??[];
+    }
 
     /**
      * @param array $forcedCategories
      */
-	public function setForcedCategories(array $forcedCategories) {
-		$this->forcedCategories = $forcedCategories;
-	}
-
-	/**
-	 * @return String
-     */
-	public function getName(): string {
-		return $this->name??'';
-	}
+    public function setForcedCategories(array $forcedCategories)
+    {
+        $this->forcedCategories = $forcedCategories;
+    }
 
     /**
-     * @param String $name
+     * @return string
      */
-	public function setName(string $name) {
-		$this->name = $name;
-	}
+    public function getName(): string
+    {
+        return $this->name??'';
+    }
 
-
-	/**
-	 * @return string
+    /**
+     * @param string $name
      */
-	public function getLongName(): string {
-		return (string) $this->getLevel().' '.(($this->getLevelId() >= 7)?$this->getName():"");
-	}
+    public function setName(string $name)
+    {
+        $this->name = $name;
+    }
 
-	/**
-	 * @return string
-	 * @deprecated
+    /**
+     * @return string
      */
-	public function get_Name(): string {
-		return (string) $this->getLevel().(($this->getLevelId() >= 7)?'&nbsp;'.$this->getName():"");
-	}
+    public function getLongName(): string
+    {
+        return (string)$this->getLevel() . ' ' . (($this->getLevelId() >= 7)?$this->getName():'');
+    }
+
+    /**
+     * @return string
+     * @deprecated
+     */
+    public function get_Name(): string
+    {
+        return (string)$this->getLevel() . (($this->getLevelId() >= 7)?'&nbsp;' . $this->getName():'');
+    }
 }

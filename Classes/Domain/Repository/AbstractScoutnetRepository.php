@@ -1,4 +1,5 @@
 <?php
+
 namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
 use ScoutNet\ShScoutnetWebservice\Helpers\AuthHelper;
@@ -33,38 +34,37 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Service "SN" for the "sh_scoutnet_webservice" extension.
  *
  * @author	Stefan Horst <muetze@scoutnet.de>
- * @package	TYPO3
- * @subpackage	tx_shscoutnetwebservice
- *
-
  */
-class AbstractScoutnetRepository {
-	/**
-	 * @var \ScoutNet\ShScoutnetWebservice\Helpers\AuthHelper
-	 */
-	protected $authHelper = null;
+class AbstractScoutnetRepository
+{
+    /**
+     * @var \ScoutNet\ShScoutnetWebservice\Helpers\AuthHelper
+     */
+    protected $authHelper;
 
-	/**
-	 * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\BackendUserRepository
-	 */
-	protected $backendUserRepository = null;
+    /**
+     * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\BackendUserRepository
+     */
+    protected $backendUserRepository;
 
-	/**
-	 * @var \ScoutNet\ShScoutnetWebservice\Helpers\JsonRPCClientHelper
-	 */
-	var $SN = null;
+    /**
+     * @var \ScoutNet\ShScoutnetWebservice\Helpers\JsonRPCClientHelper
+     */
+    public $SN;
 
     /**
      * @param \ScoutNet\ShScoutnetWebservice\Helpers\AuthHelper $authHelper
      */
-    public function injectAuthHelper(AuthHelper $authHelper) {
-	    $this->authHelper = $authHelper;
+    public function injectAuthHelper(AuthHelper $authHelper)
+    {
+        $this->authHelper = $authHelper;
     }
 
     /**
      * @param \ScoutNet\ShScoutnetWebservice\Domain\Repository\BackendUserRepository $backendUserRepository
      */
-    public function injectBackendUserRepository(BackendUserRepository $backendUserRepository) {
+    public function injectBackendUserRepository(BackendUserRepository $backendUserRepository)
+    {
         $this->backendUserRepository = $backendUserRepository;
     }
 
@@ -72,24 +72,25 @@ class AbstractScoutnetRepository {
      * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
      * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException
      */
-	public function initializeObject(){
-	    /** @var ExtensionConfiguration $extensionConfiguration */
+    public function initializeObject()
+    {
+        /** @var ExtensionConfiguration $extensionConfiguration */
         $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
         $extConfig = $extensionConfiguration->get('sh_scoutnet_webservice');
 
         $api_url = $extConfig['ScoutnetJsonAPIUrl']??'localhost';
 
-		$this->SN = GeneralUtility::makeInstance(JsonRPCClientHelper::class, $api_url);
-	}
+        $this->SN = GeneralUtility::makeInstance(JsonRPCClientHelper::class, $api_url);
+    }
 
-	/**
-	 * @param mixed $ids
-	 * @param mixed $query
-	 *
-	 * @return array
+    /**
+     * @param mixed $ids
+     * @param mixed $query
+     *
+     * @return array
      */
-    protected function loadDataFromScoutnet(?array $ids, $query): array {
+    protected function loadDataFromScoutnet(?array $ids, $query): array
+    {
         return $this->SN->get_data_by_global_id($ids, $query);
     }
 }
-

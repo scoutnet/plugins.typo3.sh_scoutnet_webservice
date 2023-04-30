@@ -32,14 +32,15 @@ use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class StructureConverter extends PersistentObjectConverter {
+class StructureConverter extends PersistentObjectConverter
+{
     /**
      * @var string
      */
     protected $targetType = Structure::class;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $priority = 1;
 
@@ -53,9 +54,10 @@ class StructureConverter extends PersistentObjectConverter {
      * @throws \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
      */
-    protected function fetchObjectFromPersistence($identity, string $targetType): object {
+    protected function fetchObjectFromPersistence($identity, string $targetType): object
+    {
         $object = null;
-        $identity = str_replace(Structure::class.':','',$identity);
+        $identity = str_replace(Structure::class . ':', '', $identity);
         if (ctype_digit((string)$identity)) {
             // load Object via API
             /** @var StructureRepository $structureRepository */
@@ -70,11 +72,10 @@ class StructureConverter extends PersistentObjectConverter {
             throw new InvalidSourceException('The identity property "' . $identity . '" is no UID.', 1297931020);
         }
 
-        if ($object === NULL) {
-            throw new TargetNotFoundException('Object with identity "' . print_r($identity, TRUE) . '" not found.', 1297933823);
+        if ($object === null) {
+            throw new TargetNotFoundException('Object with identity "' . print_r($identity, true) . '" not found.', 1297933823);
         }
 
         return $object;
     }
-
 }

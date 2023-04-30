@@ -12,16 +12,16 @@
  ************************************************************************
  */
 
-
 namespace ScoutNet\ShScoutnetWebservice\Tests\Unit\Fixtures;
-
 
 use ScoutNet\ShScoutnetWebservice\Helpers\JsonRPCClientHelper;
 use TYPO3\CMS\Core\Exception;
 
 // we need this fixture, since prophecy cannot stup __call methods
-class JsonRPCClientHelperFixture extends JsonRPCClientHelper{
-    function get_data_by_global_id($globalid, $filter) {
-        throw new Exception("Function not moked!!");
+class JsonRPCClientHelperFixture extends JsonRPCClientHelper
+{
+    public function get_data_by_global_id($globalid, $filter)
+    {
+        throw new Exception('Function not moked!!');
     }
 }

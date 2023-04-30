@@ -1,4 +1,5 @@
 <?php
+
 namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
 
 use ScoutNet\ShScoutnetWebservice\Domain\Repository\CategoryRepository;
@@ -33,154 +34,168 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /**
  * Section
  */
-class Section extends AbstractEntity {
-
-	/**
-	 * @var String
-	 */
-	protected $verband;
-
-	/**
-	 * @var String
-	 */
-	protected $bezeichnung;
-
-	/**
-	 * @var String
-	 */
-	protected $farbe;
-
-	/**
-	 * @var Integer
-	 */
-	protected $startalter;
-
-	/**
-	 * @var Integer
-	 */
-	protected $endalter;
-
-	/**
-	 * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Category
-	 */
-	protected $category;
-
-	/**
-	 * @param Int $uid
+class Section extends AbstractEntity
+{
+    /**
+     * @var string
      */
-	public function setUid(int $uid) {
-		$this->uid = $uid;
-	}
-
-	/**
-	 * @return String
-	 */
-	public function getVerband(): string {
-		return $this->verband??'';
-	}
+    protected $verband;
 
     /**
-     * @param String $verband
+     * @var string
      */
-	public function setVerband(string $verband) {
-		$this->verband = $verband;
-	}
-
-	/**
-	 * @return String
-	 */
-	public function getBezeichnung(): string {
-		return $this->bezeichnung??'';
-	}
+    protected $bezeichnung;
 
     /**
-     * @param String $bezeichnung
+     * @var string
      */
-	public function setBezeichnung(string $bezeichnung) {
-		$this->bezeichnung = $bezeichnung;
-	}
-
-	/**
-	 * @return String
-	 */
-	public function getFarbe(): string {
-		return $this->farbe??'';
-	}
+    protected $farbe;
 
     /**
-     * @param String $farbe
+     * @var int
      */
-	public function setFarbe(string $farbe) {
-		$this->farbe = $farbe;
-	}
+    protected $startalter;
 
-	/**
-	 * @return int
-	 */
-	public function getStartalter(): int {
-		return $this->startalter??-1;
-	}
+    /**
+     * @var int
+     */
+    protected $endalter;
 
-	/**
-	 * @param int $startalter
-	 */
-	public function setStartalter(int $startalter) {
-		$this->startalter = $startalter;
-	}
+    /**
+     * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Category
+     */
+    protected $category;
 
-	/**
-	 * @return int
-	 */
-	public function getEndalter(): int {
-		return $this->endalter??-1;
-	}
+    /**
+     * @param int $uid
+     */
+    public function setUid(int $uid)
+    {
+        $this->uid = $uid;
+    }
 
-	/**
-	 * @param int $endalter
-	 */
-	public function setEndalter(int $endalter) {
-		$this->endalter = $endalter;
-	}
+    /**
+     * @return string
+     */
+    public function getVerband(): string
+    {
+        return $this->verband??'';
+    }
+
+    /**
+     * @param string $verband
+     */
+    public function setVerband(string $verband)
+    {
+        $this->verband = $verband;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBezeichnung(): string
+    {
+        return $this->bezeichnung??'';
+    }
+
+    /**
+     * @param string $bezeichnung
+     */
+    public function setBezeichnung(string $bezeichnung)
+    {
+        $this->bezeichnung = $bezeichnung;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFarbe(): string
+    {
+        return $this->farbe??'';
+    }
+
+    /**
+     * @param string $farbe
+     */
+    public function setFarbe(string $farbe)
+    {
+        $this->farbe = $farbe;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStartalter(): int
+    {
+        return $this->startalter??-1;
+    }
+
+    /**
+     * @param int $startalter
+     */
+    public function setStartalter(int $startalter)
+    {
+        $this->startalter = $startalter;
+    }
+
+    /**
+     * @return int
+     */
+    public function getEndalter(): int
+    {
+        return $this->endalter??-1;
+    }
+
+    /**
+     * @param int $endalter
+     */
+    public function setEndalter(int $endalter)
+    {
+        $this->endalter = $endalter;
+    }
 
     /**
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Category
      */
-    public function getCategory(): ?Category {
+    public function getCategory(): ?Category
+    {
         return $this->category;
     }
 
     /**
      * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Category $category
      */
-    public function setCategory(Category $category): void {
+    public function setCategory(Category $category): void
+    {
         $this->category = $category;
     }
 
-
-	/**
-	 * @return String
+    /**
+     * @return string
      * @deprecated
      */
-	public function getCategorieId(): string {
-	    return $this->category->getUid();
-	}
+    public function getCategorieId(): string
+    {
+        return $this->category->getUid();
+    }
 
     /**
      * @param int $categoryId
      * @deprecated
      */
-	public function setCategorieId(int $categoryId) {
-	    /** @var CategoryRepository $categoryRepository */
-	    $categoryRepository = GeneralUtility::makeInstance(CategoryRepository::class);
-	    $this->category = $categoryRepository->findByUid($categoryId);
-	}
+    public function setCategorieId(int $categoryId)
+    {
+        /** @var CategoryRepository $categoryRepository */
+        $categoryRepository = GeneralUtility::makeInstance(CategoryRepository::class);
+        $this->category = $categoryRepository->findByUid($categoryId);
+    }
 
     /**
      * @return string
      */
-	public function getImageURL(): string {
+    public function getImageURL(): string
+    {
         // TODO: make this configurable
-		return (string) "<img src='https://kalender.scoutnet.de/2.0/images/".$this->getUid().".gif' alt='".htmlentities($this->getBezeichnung(), ENT_COMPAT|ENT_HTML401, 'UTF-8')."' />";
-	}
-
+        return (string)"<img src='https://kalender.scoutnet.de/2.0/images/" . $this->getUid() . ".gif' alt='" . htmlentities($this->getBezeichnung(), ENT_COMPAT|ENT_HTML401, 'UTF-8') . "' />";
+    }
 }

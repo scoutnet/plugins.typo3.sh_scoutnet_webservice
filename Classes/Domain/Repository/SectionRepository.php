@@ -1,4 +1,5 @@
 <?php
+
 namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
 use ScoutNet\ShScoutnetWebservice\Domain\Model\Section;
@@ -32,18 +33,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * The repository for User
  */
-class SectionRepository extends AbstractScoutnetRepository {
+class SectionRepository extends AbstractScoutnetRepository
+{
     private $section_cache = [];
     private $section_cache_uid = [];
 
     /**
      * It searches for UIDs
      *
-     * @param integer $uid
+     * @param int $uid
      *
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Section|null returns Null if Section is not cached
      */
-    public function findByUid(int $uid): ?Section {
+    public function findByUid(int $uid): ?Section
+    {
         $categoryId = $this->section_cache_uid[$uid]??null;
 
         return $categoryId?$this->section_cache[$categoryId]??null:null;
@@ -54,7 +57,8 @@ class SectionRepository extends AbstractScoutnetRepository {
      *
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Section|null returns Null if Section is not cached
      */
-    public function findByCategoryId(int $categoryId): ?Section {
+    public function findByCategoryId(int $categoryId): ?Section
+    {
         return $this->section_cache[$categoryId]??null; // return null if key does not exists
     }
 
@@ -65,7 +69,8 @@ class SectionRepository extends AbstractScoutnetRepository {
      *
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Section
      */
-    public function convertToSection(array $array): Section {
+    public function convertToSection(array $array): Section
+    {
         /** @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\CategoryRepository $categoryRepository */
         $categoryRepository = GeneralUtility::makeInstance(CategoryRepository::class);
         $category = $categoryRepository->findByUid($array['Keywords_ID']);
@@ -76,8 +81,8 @@ class SectionRepository extends AbstractScoutnetRepository {
         $section->setVerband($array['verband']);
         $section->setBezeichnung($array['bezeichnung']);
         $section->setFarbe($array['farbe']);
-        $section->setStartalter(intval($array['startalter']));
-        $section->setEndalter(intval($array['endalter']));
+        $section->setStartalter((int)($array['startalter']));
+        $section->setEndalter((int)($array['endalter']));
         $section->setCategory($category);
 
         // save new object to cache

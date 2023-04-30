@@ -1,4 +1,5 @@
 <?php
+
 namespace ScoutNet\ShScoutnetWebservice\Helpers;
 
 use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException;
@@ -31,7 +32,8 @@ use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException;
 /**
  * AESHelper
  */
-class AESHelper {
+class AESHelper
+{
     // The number of 32-bit words comprising the plaintext and columns comprising the state matrix of an AES cipher.
     private static $Nb = 4;
     // The number of 32-bit words comprising the cipher key in this AES cipher.
@@ -40,7 +42,7 @@ class AESHelper {
     private $Nr;
 
     // The S-Box substitution table.
-    private static $sBox = array(
+    private static $sBox = [
         0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5,
         0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
         0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0,
@@ -72,11 +74,11 @@ class AESHelper {
         0xe1, 0xf8, 0x98, 0x11, 0x69, 0xd9, 0x8e, 0x94,
         0x9b, 0x1e, 0x87, 0xe9, 0xce, 0x55, 0x28, 0xdf,
         0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68,
-        0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16
-    );
+        0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16,
+    ];
 
     // The inverse S-Box substitution table.
-    private static $invSBox = array(
+    private static $invSBox = [
         0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38,
         0xbf, 0x40, 0xa3, 0x9e, 0x81, 0xf3, 0xd7, 0xfb,
         0x7c, 0xe3, 0x39, 0x82, 0x9b, 0x2f, 0xff, 0x87,
@@ -108,11 +110,11 @@ class AESHelper {
         0xa0, 0xe0, 0x3b, 0x4d, 0xae, 0x2a, 0xf5, 0xb0,
         0xc8, 0xeb, 0xbb, 0x3c, 0x83, 0x53, 0x99, 0x61,
         0x17, 0x2b, 0x04, 0x7e, 0xba, 0x77, 0xd6, 0x26,
-        0xe1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0c, 0x7d
-    );
+        0xe1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0c, 0x7d,
+    ];
 
     // Log table based on 0xe5
-    private static $ltable = array(
+    private static $ltable = [
         0x00, 0xff, 0xc8, 0x08, 0x91, 0x10, 0xd0, 0x36,
         0x5a, 0x3e, 0xd8, 0x43, 0x99, 0x77, 0xfe, 0x18,
         0x23, 0x20, 0x07, 0x70, 0xa1, 0x6c, 0x0c, 0x7f,
@@ -144,11 +146,11 @@ class AESHelper {
         0x22, 0x88, 0x94, 0xce, 0x19, 0x01, 0x71, 0x4c,
         0xa5, 0xe3, 0xc5, 0x31, 0xbb, 0xcc, 0x1f, 0x2d,
         0x3b, 0x52, 0x6f, 0xf6, 0x2e, 0x89, 0xf7, 0xc0,
-        0x68, 0x1b, 0x64, 0x04, 0x06, 0xbf, 0x83, 0x38
-    );
+        0x68, 0x1b, 0x64, 0x04, 0x06, 0xbf, 0x83, 0x38,
+    ];
 
     // Inverse log table
-    private static $atable = array(
+    private static $atable = [
         0x01, 0xe5, 0x4c, 0xb5, 0xfb, 0x9f, 0xfc, 0x12,
         0x03, 0x34, 0xd4, 0xc4, 0x16, 0xba, 0x1f, 0x36,
         0x05, 0x5c, 0x67, 0x57, 0x3a, 0xd5, 0x21, 0x5a,
@@ -180,8 +182,8 @@ class AESHelper {
         0x1e, 0xd3, 0x49, 0xe9, 0x9c, 0xc8, 0xc6, 0xc7,
         0x22, 0x6e, 0xdb, 0x20, 0xbf, 0x43, 0x51, 0x52,
         0x66, 0xb2, 0x76, 0x60, 0xda, 0xc5, 0xf3, 0xf6,
-        0xaa, 0xcd, 0x9a, 0xa0, 0x75, 0x54, 0x0e, 0x01
-    );
+        0xaa, 0xcd, 0x9a, 0xa0, 0x75, 0x54, 0x0e, 0x01,
+    ];
 
     // The key schedule in this AES cipher.
     private $w;
@@ -191,7 +193,7 @@ class AESHelper {
     //private $keyLength;
 
     private $mode;
-    private $iv = array();
+    private $iv = [];
 
     /**
      * constructs an AES cipher using a specific key.
@@ -202,16 +204,18 @@ class AESHelper {
      *
      * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException
      */
-    public function __construct (string $z, string $mode = 'ECB', string $iv = '1234567890123456') {
+    public function __construct(string $z, string $mode = 'ECB', string $iv = '1234567890123456')
+    {
         $this->Nk = strlen($z) / 4;
         $this->Nr = $this->Nk + self::$Nb + 2;
 
-        if ($this->Nk != 4 && $this->Nk != 6 && $this->Nk != 8)
-            throw new ScoutNetException("Key is " . ($this->Nk * 32) . " bits long. *not* 128, 192, or 256.", 1572194460);
+        if ($this->Nk != 4 && $this->Nk != 6 && $this->Nk != 8) {
+            throw new ScoutNetException('Key is ' . ($this->Nk * 32) . ' bits long. *not* 128, 192, or 256.', 1572194460);
+        }
 
         $this->Nr = $this->Nk + self::$Nb + 2;
-        $this->w = array(); // Nb*(Nr+1) 32-bit words
-        $this->s = array(array());  // 2-D array of Nb columns and 4 rows
+        $this->w = []; // Nb*(Nr+1) 32-bit words
+        $this->s = [[]];  // 2-D array of Nb columns and 4 rows
 
         $this->KeyExpansion($z); // places expanded key in w
         $this->mode = $mode;
@@ -220,8 +224,9 @@ class AESHelper {
         for ($j = 0; $j < 16; $j++) {
             if (($j) < $xsize) {
                 $this->iv[$j] = $iv[$j];
-            } else
+            } else {
                 $this->iv[$j] = chr(0);
+            }
         }
     }
 
@@ -235,9 +240,10 @@ class AESHelper {
      *
      * @return string ciphertext
      **/
-    public function encrypt(string $plaintext): string {
-        $t = ""; // 16-byte block
-        $ciphertext = "";
+    public function encrypt(string $plaintext): string
+    {
+        $t = ''; // 16-byte block
+        $ciphertext = '';
 
         // put a 16-byte block into t
         $xsize = strlen($plaintext);
@@ -245,12 +251,12 @@ class AESHelper {
             for ($j = 0; $j < 16; $j++) {
                 if (($i + $j) < $xsize) {
                     $t[$j] = $plaintext[$i + $j];
-                } else
+                } else {
                     $t[$j] = chr(0);
+                }
             }
 
             $ciphertext .= $this->encryptBlock($t);
-
         }
 
         return $ciphertext;
@@ -266,18 +272,20 @@ class AESHelper {
      *
      * @return string plaintext
      */
-    public function decrypt(string $ciphertext): string {
-        $t = ""; // 16-byte block
-        $plaintext = ""; // returned plain text;
+    public function decrypt(string $ciphertext): string
+    {
+        $t = ''; // 16-byte block
+        $plaintext = ''; // returned plain text;
 
         // put a 16-byte block into t
         $ysize = strlen($ciphertext);
         for ($i = 0; $i < $ysize; $i += 16) {
             for ($j = 0; $j < 16; $j++) {
-                if (($i + $j) < $ysize)
+                if (($i + $j) < $ysize) {
                     $t[$j] = $ciphertext[$i + $j];
-                else
+                } else {
                     $t[$j] = chr(0);
+                }
             }
 
             $plaintext .= $this->decryptBlock($t);
@@ -292,12 +300,13 @@ class AESHelper {
      *
      * @return string 16-byte ciphertext
      */
-    public function encryptBlock(string $x): string {
-        $y = ""; // 16-byte string
+    public function encryptBlock(string $x): string
+    {
+        $y = ''; // 16-byte string
 
         // place input x into the initial state matrix in column order
         for ($i = 0; $i < 4 * self::$Nb; $i++) {
-            if ($this->mode === "CBC") {
+            if ($this->mode === 'CBC') {
                 $x[$i] = chr(ord($this->iv[$i]) ^ ord($x[$i]));
             }
             // we want integer division for the second index
@@ -330,11 +339,10 @@ class AESHelper {
         // add round key
         $this->addRoundKey($i);
 
-
         // place state matrix s into y in column order
         for ($i = 0; $i < 4 * self::$Nb; $i++) {
             $enc = chr($this->s[$i % 4][($i - $i % self::$Nb) / self::$Nb]);
-            if ($this->mode === "CBC") {
+            if ($this->mode === 'CBC') {
                 $this->iv[$i] = $enc;
             }
 
@@ -350,12 +358,14 @@ class AESHelper {
      *
      * @return string 16-byte plaintext
      **/
-    public function decryptBlock(string $y): string {
-        $x = ""; // 16-byte string
+    public function decryptBlock(string $y): string
+    {
+        $x = ''; // 16-byte string
 
         // place input y into the initial state matrix in column order
-        for ($i = 0; $i < 4 * self::$Nb; $i++)
+        for ($i = 0; $i < 4 * self::$Nb; $i++) {
             $this->s[$i % 4][($i - $i % self::$Nb) / self::$Nb] = ord($y[$i]);
+        }
 
         // add round key
         $this->addRoundKey($this->Nr);
@@ -387,13 +397,13 @@ class AESHelper {
         for ($i = 0; $i < 4 * self::$Nb; $i++) {
             $dec = chr($this->s[$i % 4][($i - $i % self::$Nb) / self::$Nb]);
 
-            if ($this->mode === "CBC") {
+            if ($this->mode === 'CBC') {
                 $dec = chr(ord($this->iv[$i]) ^ ord($dec));
                 $this->iv[$i] = $y[$i];
             }
 
             // Used to remove filled null characters.
-            $x .= ($dec == chr(0) ? "" : $dec);
+            $x .= ($dec == chr(0) ? '' : $dec);
         }
 
         return $x;
@@ -402,7 +412,8 @@ class AESHelper {
     /**
      * Deconstructs Class, removes w and s from memory
      */
-    public function __destruct () {
+    public function __destruct()
+    {
         unset($this->w);
         unset($this->s);
     }
@@ -410,12 +421,11 @@ class AESHelper {
     /** makes a big key out of a small one
      *
      * @param string $z
-     *
-     * @return void
      */
-    private function KeyExpansion(string $z) {
+    private function KeyExpansion(string $z)
+    {
         // Rcon is the round constant
-        static $Rcon = array(
+        static $Rcon = [
             0x00000000,
             0x01000000,
             0x02000000,
@@ -432,8 +442,8 @@ class AESHelper {
             0xab000000,
             0x4d000000,
             0x9a000000,
-            0x2f000000
-        );
+            0x2f000000,
+        ];
 
         // the first Nk words of w are the cipher key z
         for ($i = 0; $i < $this->Nk; $i++) {
@@ -449,14 +459,14 @@ class AESHelper {
             $this->w[$i] += ord($z[4 * $i + 3]);
         }
 
-
         for (; $i < self::$Nb * ($this->Nr + 1); $i++) {
             $temp = $this->w[$i - 1];
 
-            if ($i % $this->Nk == 0)
-                $temp = $this->subWord($this->rotWord($temp)) ^ $Rcon[intval($i / $this->Nk)];
-            else if ($this->Nk > 6 && $i % $this->Nk == 4)
+            if ($i % $this->Nk == 0) {
+                $temp = $this->subWord($this->rotWord($temp)) ^ $Rcon[(int)($i / $this->Nk)];
+            } elseif ($this->Nk > 6 && $i % $this->Nk == 4) {
                 $temp = $this->subWord($temp);
+            }
 
             $this->w[$i] = $this->w[$i - $this->Nk] ^ $temp;
 
@@ -466,11 +476,10 @@ class AESHelper {
 
     /** adds the key schedule for a round to a state matrix.
      *
-     * @param integer $round
-     *
-     * @return void
+     * @param int $round
      */
-    private function addRoundKey(int $round) {
+    private function addRoundKey(int $round)
+    {
         for ($i = 0; $i < 4; $i++) {
             for ($j = 0; $j < self::$Nb; $j++) {
                 // place the i-th byte of the j-th word from expanded key w into temp
@@ -487,9 +496,9 @@ class AESHelper {
 
     /** reverse mix for each column of a state matrix.
      *
-     * @return void
      **/
-    private function invMixColumns() {
+    private function invMixColumns()
+    {
         //$s0 = $s1 = $s2 = $s3 = '';
 
         // There are Nb columns
@@ -503,38 +512,41 @@ class AESHelper {
             $this->s[1][$i] = $this->mult(0x09, $s0) ^ $this->mult(0x0e, $s1) ^ $this->mult(0x0b, $s2) ^ $this->mult(0x0d, $s3);
             $this->s[2][$i] = $this->mult(0x0d, $s0) ^ $this->mult(0x09, $s1) ^ $this->mult(0x0e, $s2) ^ $this->mult(0x0b, $s3);
             $this->s[3][$i] = $this->mult(0x0b, $s0) ^ $this->mult(0x0d, $s1) ^ $this->mult(0x09, $s2) ^ $this->mult(0x0e, $s3);
-
         }
     }
 
     /** applies an inverse cyclic shift to the last 3 rows of a state matrix.
      *
-     * @return void
      **/
-    private function invShiftRows() {
+    private function invShiftRows()
+    {
         $temp = [];
         for ($i = 1; $i < 4; $i++) {
-            for ($j = 0; $j < self::$Nb; $j++)
+            for ($j = 0; $j < self::$Nb; $j++) {
                 $temp[($i + $j) % self::$Nb] = $this->s[$i][$j];
-            for ($j = 0; $j < self::$Nb; $j++)
+            }
+            for ($j = 0; $j < self::$Nb; $j++) {
                 $this->s[$i][$j] = $temp[$j];
+            }
         }
     }
 
     /** applies inverse S-Box substitution to each byte of a state matrix.
      *
-     * @return void
      **/
-    private function invSubBytes() {
-        for ($i = 0; $i < 4; $i++)
-            for ($j = 0; $j < self::$Nb; $j++)
+    private function invSubBytes()
+    {
+        for ($i = 0; $i < 4; $i++) {
+            for ($j = 0; $j < self::$Nb; $j++) {
                 $this->s[$i][$j] = self::$invSBox[$this->s[$i][$j]];
+            }
+        }
     }
 
     /** mixes each column of a state matrix.
-     * @return void
      **/
-    private function mixColumns() {
+    private function mixColumns()
+    {
         //$s0 = $s1 = $s2 = $s3 = '';
 
         // There are Nb columns
@@ -553,53 +565,57 @@ class AESHelper {
 
     /** applies a cyclic shift to the last 3 rows of a state matrix.
      *
-     * @return void
      **/
-    private function shiftRows () {
+    private function shiftRows()
+    {
         $temp = [];
         for ($i = 1; $i < 4; $i++) {
-            for ($j = 0; $j < self::$Nb; $j++)
+            for ($j = 0; $j < self::$Nb; $j++) {
                 $temp[$j] = $this->s[$i][($j + $i) % self::$Nb];
-            for ($j = 0; $j < self::$Nb; $j++)
+            }
+            for ($j = 0; $j < self::$Nb; $j++) {
                 $this->s[$i][$j] = $temp[$j];
+            }
         }
     }
 
     /** applies S-Box substitution to each byte of a state matrix.
      *
-     * @return void
      **/
-    private function subBytes () {
-
+    private function subBytes()
+    {
         for ($i = 0; $i < 4; $i++) {
-            for ($j = 0; $j < self::$Nb; $j++)
+            for ($j = 0; $j < self::$Nb; $j++) {
                 $this->s[$i][$j] = self::$sBox[$this->s[$i][$j]];
+            }
         }
     }
 
     /** multiplies two polynomials a(x), b(x) in GF(2^8) modulo the irreducible polynomial m(x) = x^8+x^4+x^3+x+1
      *
-     * @param integer $a
-     * @param integer $b
+     * @param int $a
+     * @param int $b
      *
-     * @return integer 8-bit value
+     * @return int 8-bit value
      */
-    private static function mult(int $a, int $b): int {
+    private static function mult(int $a, int $b): int
+    {
         $sum = self::$ltable[$a] + self::$ltable[$b];
         $sum %= 255;
         // Get the anti log
         $sum = self::$atable[$sum];
 
-        return ($a == 0 ? 0 : ($b == 0 ? 0 : $sum));
+        return $a == 0 ? 0 : ($b == 0 ? 0 : $sum);
     }
 
     /** applies a cyclic permutation to a 4-byte word.
      *
-     * @param integer $w
+     * @param int $w
      *
-     * @return integer 32-bit
+     * @return int 32-bit
      */
-    private static function rotWord(int $w): int {
+    private static function rotWord(int $w): int
+    {
         $temp = $w >> 24; // put the first 8-bits into temp
         $w <<= 8; // make room for temp to fill the lower end of the word
         self::make32BitWord($w);
@@ -612,11 +628,12 @@ class AESHelper {
 
     /** applies S-box substitution to each byte of a 4-byte word.
      *
-     * @param integer $w
+     * @param int $w
      *
-     * @return integer 32-bit
+     * @return int 32-bit
      */
-    private static function subWord(int $w): int {
+    private static function subWord(int $w): int
+    {
         // loop through 4 bytes of a word
         for ($i = 0; $i < 4; $i++) {
             $temp = $w >> 24; // put the first 8-bits into temp
@@ -634,11 +651,10 @@ class AESHelper {
 
     /** reduces a 64-bit word to a 32-bit word
      *
-     * @param integer $w
-     *
-     * @return void
+     * @param int $w
      */
-    private static function make32BitWord(int &$w) {
+    private static function make32BitWord(int &$w)
+    {
         // Reduce this 64-bit word to 32-bits on 64-bit machines
         $w &= 0x00000000FFFFFFFF;
     }

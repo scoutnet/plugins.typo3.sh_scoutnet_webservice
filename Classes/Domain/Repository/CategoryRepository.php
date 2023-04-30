@@ -29,21 +29,23 @@ use ScoutNet\ShScoutnetWebservice\Domain\Model\Structure;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class CategoryRepository extends AbstractScoutnetRepository {
+class CategoryRepository extends AbstractScoutnetRepository
+{
     protected $categoriesCache = [];
 
     /**
      * checks if Category with UID is in Cache, otherwise loads category from Scoutnet API
      *
-     * @param integer $uid
+     * @param int $uid
      *
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Category|null
      */
-    public function findByUid(int $uid): ?Category {
+    public function findByUid(int $uid): ?Category
+    {
         // if the category is not Cached, load from Scoutnet
-        if (!isset($this->categoriesCache[$uid]))
+        if (!isset($this->categoriesCache[$uid])) {
             try {
-                foreach ($this->loadDataFromScoutnet(null , ['categories' => ['uid' => $uid]]) as $record) {
+                foreach ($this->loadDataFromScoutnet(null, ['categories' => ['uid' => $uid]]) as $record) {
                     if ($record['type'] === 'categorie') {
                         // convert and save to cache
                         $this->convertToCategory($record['content']);
@@ -53,6 +55,7 @@ class CategoryRepository extends AbstractScoutnetRepository {
                 // it is not in cache and we get an error from scoutnet
                 return null;
             }
+        }
 
         return $this->categoriesCache[$uid]??null;
     }
@@ -62,9 +65,10 @@ class CategoryRepository extends AbstractScoutnetRepository {
      *
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Category[]
      */
-    public function findAll(): array {
+    public function findAll(): array
+    {
         try {
-            foreach ($this->loadDataFromScoutnet(null , ['categories' => ['all' => True]]) as $record) {
+            foreach ($this->loadDataFromScoutnet(null, ['categories' => ['all' => true]]) as $record) {
                 if ($record['type'] === 'categorie') {
                     // convert and save to cache
                     $this->convertToCategory($record['content']);
@@ -84,7 +88,8 @@ class CategoryRepository extends AbstractScoutnetRepository {
      *
      * @return mixed
      */
-    public function getAllCategoriesForStructureAndEvent(Structure $structure, Event $event): array {
+    public function getAllCategoriesForStructureAndEvent(Structure $structure, Event $event): array
+    {
         $generatedCategories = [];
         try {
             foreach ($this->loadDataFromScoutnet($structure->getUid(), ['categories' => ['generatedCategoriesForEventId' => $event->getUid() != null?$event->getUid():-1]]) as $record) {
@@ -115,7 +120,8 @@ class CategoryRepository extends AbstractScoutnetRepository {
      *
      * @return Category[] List of all Categories
      */
-    private function convertArrayToCategories(array $array, Event $event): array {
+    private function convertArrayToCategories(array $array, Event $event): array
+    {
         $categories = [];
         foreach ($array as $key => $text) {
             $category = new Category();
@@ -137,7 +143,8 @@ class CategoryRepository extends AbstractScoutnetRepository {
      *
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Category
      */
-    public function convertToCategory(array $array): Category {
+    public function convertToCategory(array $array): Category
+    {
         $category = new Category();
 
         $category->setUid($array['ID']);
@@ -148,5 +155,4 @@ class CategoryRepository extends AbstractScoutnetRepository {
 
         return $category;
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
 use ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser;
@@ -32,7 +33,8 @@ use ScoutNet\ShScoutnetWebservice\Domain\Model\Structure;
 /**
  * The repository for Event
  */
-class StructureRepository extends AbstractScoutnetRepository {
+class StructureRepository extends AbstractScoutnetRepository
+{
     const AUTH_NO_RIGHT = 1;
     const AUTH_WRITE_ALLOWED = 0;
     const AUTH_PENDING = 2;
@@ -48,10 +50,11 @@ class StructureRepository extends AbstractScoutnetRepository {
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure[]
      * @deprecated
      */
-    public function findKalenderByGlobalid($ids): array {
+    public function findKalenderByGlobalid($ids): array
+    {
         $kalenders = [];
         foreach ($this->loadDataFromScoutnet($ids, ['kalenders' => []]) as $record) {
-            if ($record['type'] === 'kalender'){
+            if ($record['type'] === 'kalender') {
                 $kalender = $this->convertToStructure($record['content']);
                 $kalenders[] = $kalender;
             }
@@ -63,17 +66,18 @@ class StructureRepository extends AbstractScoutnetRepository {
     /**
      * Finds all Structures by their UIDs
      *
-     * @param integer[] $uids
+     * @param int[] $uids
      *
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure[]
      */
-    public function findByUids(array $uids): array {
+    public function findByUids(array $uids): array
+    {
         $structures = [];
         $uidsToLoad = [];
 
         // check cache
         foreach ($uids as $uid) {
-            if (isset($this->structure_cache[$uid])){
+            if (isset($this->structure_cache[$uid])) {
                 $structures[] = $this->structure_cache[$uid];
             } else {
                 $uidsToLoad[] = $uid;
@@ -81,7 +85,7 @@ class StructureRepository extends AbstractScoutnetRepository {
         }
 
         if (count($uidsToLoad) > 0) {
-            foreach ($this->loadDataFromScoutnet($uidsToLoad, array('kalenders' => array())) as $record) {
+            foreach ($this->loadDataFromScoutnet($uidsToLoad, ['kalenders' => []]) as $record) {
                 if ($record['type'] === 'kalender') {
                     $structures[] = $this->convertToStructure($record['content']);
                 }
@@ -94,11 +98,12 @@ class StructureRepository extends AbstractScoutnetRepository {
     /**
      * find a Single Structure by UID
      *
-     * @param integer $uid
+     * @param int $uid
      *
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure
      */
-    public function findByUid(int $uid): Structure {
+    public function findByUid(int $uid): Structure
+    {
         return $this->findByUids([$uid])[0];
     }
 
@@ -109,15 +114,16 @@ class StructureRepository extends AbstractScoutnetRepository {
      * @return mixed
      * @throws \Exception
      */
-    public function hasWritePermissionsToStructure(Structure $structure, BackendUser $be_user=null) {
+    public function hasWritePermissionsToStructure(Structure $structure, BackendUser $be_user=null)
+    {
         if ($be_user === null) {
-            $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user["uid"]);
+            $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user['uid']);
         }
 
         $type = 'event';
-        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetApikey(),$type.$structure->getUid().$be_user->getTxShscoutnetUsername());
+        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetApikey(), $type . $structure->getUid() . $be_user->getTxShscoutnetUsername());
 
-        return $this->SN->checkPermission($type,$structure->getUid(),$be_user->getTxShscoutnetUsername(),$auth);
+        return $this->SN->checkPermission($type, $structure->getUid(), $be_user->getTxShscoutnetUsername(), $auth);
     }
 
     /**
@@ -127,14 +133,15 @@ class StructureRepository extends AbstractScoutnetRepository {
      * @return mixed
      * @throws \Exception
      */
-    public function requestWritePermissionsForStructure(Structure $structure, BackendUser $be_user=null) {
+    public function requestWritePermissionsForStructure(Structure $structure, BackendUser $be_user=null)
+    {
         if ($be_user === null) {
-            $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user["uid"]);
+            $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user['uid']);
         }
 
         $type = 'event';
-        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetApikey(),$type.$structure->getUid().$be_user->getTxShscoutnetUsername());
-        return $this->SN->requestPermission($type,$structure->getUid(),$be_user->getTxShscoutnetUsername(),$auth);
+        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetApikey(), $type . $structure->getUid() . $be_user->getTxShscoutnetUsername());
+        return $this->SN->requestPermission($type, $structure->getUid(), $be_user->getTxShscoutnetUsername(), $auth);
     }
 
     /**
@@ -142,7 +149,8 @@ class StructureRepository extends AbstractScoutnetRepository {
      *
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure
      */
-    public function convertToStructure(array $array): Structure {
+    public function convertToStructure(array $array): Structure
+    {
         $structure = new Structure();
 
         $structure->setUid($array['ID']);

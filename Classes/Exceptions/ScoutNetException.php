@@ -1,4 +1,5 @@
 <?php
+
 namespace ScoutNet\ShScoutnetWebservice\Exceptions;
 
 use Exception;
@@ -26,7 +27,6 @@ use Exception;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
-class ScoutNetException extends Exception {
-
+class ScoutNetException extends Exception
+{
 }

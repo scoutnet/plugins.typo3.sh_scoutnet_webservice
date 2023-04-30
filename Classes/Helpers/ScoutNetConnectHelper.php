@@ -1,4 +1,5 @@
 <?php
+
 namespace ScoutNet\ShScoutnetWebservice\Helpers;
 
 use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar;
@@ -34,10 +35,9 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * Service "SN" for the "sh_scoutnet_webservice" extension.
  *
  * @author	Stefan Horst <muetze@scoutnet.de>
- * @package	TYPO3
- * @subpackage	tx_shscoutnetwebservice
  */
-class ScoutNetConnectHelper {
+class ScoutNetConnectHelper
+{
     /**
      * @param string $returnUrl
      * @param bool   $requestApiKey
@@ -47,9 +47,10 @@ class ScoutNetConnectHelper {
      * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
      * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException
      */
-	public function getScoutNetConnectLoginButton(string $returnUrl = '',bool $requestApiKey = false): string {
-	    // TODO: use a template here!!
-//		$lang = $GLOBALS['LANG']->lang;
+    public function getScoutNetConnectLoginButton(string $returnUrl = '', bool $requestApiKey = false): string
+    {
+        // TODO: use a template here!!
+        //		$lang = $GLOBALS['LANG']->lang;
 //        $lang = $TSFE->sys_language_isocode;
         // TODO: make this work again, deprecation
         $lang = '';
@@ -60,27 +61,27 @@ class ScoutNetConnectHelper {
         // load configuration for this Extension
         $extConfig = $extensionConfiguration->get('sh_scoutnet_webservice');
 
+        if ($lang == 'default') {
+            $lang = 'en';
+        }
 
-        if ($lang == 'default')
-			$lang = 'en';
+        $this->_checkConfigValues($extConfig);
+        $button = '<form action="' . $extConfig['ScoutnetLoginPage'] . '" id="scoutnetLogin" method="post" target="_self">';
 
-		$this->_checkConfigValues($extConfig);
-		$button = '<form action="'.$extConfig['ScoutnetLoginPage'].'" id="scoutnetLogin" method="post" target="_self">';
+        $button .= $returnUrl == ''?'':'<input type="hidden" name="redirect_url" value="' . $returnUrl . '" />';
+        $button .= '<input type="hidden" name="lang" value="' . $lang . '"/>';
+        $button .= '<input type="hidden" name="provider" value="' . $extConfig['ScoutnetProviderName'] . '" />';
+        $button .= $requestApiKey?'<input type="hidden" name="createApiKey" value="1" />':'';
 
-		$button .= $returnUrl == ''?'':'<input type="hidden" name="redirect_url" value="'.$returnUrl.'" />';
-		$button .= '<input type="hidden" name="lang" value="'.$lang.'"/>';
-		$button .= '<input type="hidden" name="provider" value="'.$extConfig['ScoutnetProviderName'].'" />';
-		$button .= $requestApiKey?'<input type="hidden" name="createApiKey" value="1" />':'';
-		
-		$button .= '<a href="#" onclick="document.getElementById(\'scoutnetLogin\').submit(); return false;">';
+        $button .= '<a href="#" onclick="document.getElementById(\'scoutnetLogin\').submit(); return false;">';
 
-		$button .= '<img src="'. PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath('sh_scoutnet_webservice').'Resources/Public/Images/scoutnetConnect.png').'" title="scoutnet" alt="scoutnet"/>';
-		$button .= '</a>';
-		
-		$button .= '</form>';
+        $button .= '<img src="' . PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath('sh_scoutnet_webservice') . 'Resources/Public/Images/scoutnetConnect.png') . '" title="scoutnet" alt="scoutnet"/>';
+        $button .= '</a>';
 
-		return $button;
-	}
+        $button .= '</form>';
+
+        return $button;
+    }
 
     /**
      * Checks if $config contains all relevant parameters, otherwise throw Exception
@@ -89,12 +90,14 @@ class ScoutNetConnectHelper {
      *
      * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar
      */
-	private function _checkConfigValues(array $config){
-		$configVars = array('AES_key','AES_iv','ScoutnetLoginPage','ScoutnetProviderName');
+    private function _checkConfigValues(array $config)
+    {
+        $configVars = ['AES_key', 'AES_iv', 'ScoutnetLoginPage', 'ScoutnetProviderName'];
 
-		foreach ($configVars as $configVar) {
-			if (trim($config[$configVar]) == '')
-				throw new ScoutNetExceptionMissingConfVar($configVar);
-		}
-	}
+        foreach ($configVars as $configVar) {
+            if (trim($config[$configVar]) == '') {
+                throw new ScoutNetExceptionMissingConfVar($configVar);
+            }
+        }
+    }
 }

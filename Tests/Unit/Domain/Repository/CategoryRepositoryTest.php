@@ -24,8 +24,9 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CategoryRepositoryTest extends UnitTestCase {
-    protected $categoryRepository = null;
+class CategoryRepositoryTest extends UnitTestCase
+{
+    protected $categoryRepository;
     private $prophet;
 
     const CATEGORY_1_ARRAY = [
@@ -42,7 +43,8 @@ class CategoryRepositoryTest extends UnitTestCase {
     /**
      * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Category[]
      */
-    static private function generateCategories(): array {
+    private static function generateCategories(): array
+    {
         $cat1 = new Category();
         $cat1->setUid(1);
         $cat1->setText('testCategory');
@@ -59,24 +61,25 @@ class CategoryRepositoryTest extends UnitTestCase {
         ];
     }
 
-    public function setUp(): void {
+    public function setUp(): void
+    {
         parent::setUp();
         $this->categoryRepository = new CategoryRepository();
-        $this->prophet = new Prophet;
+        $this->prophet = new Prophet();
     }
 
-    protected function tearDown(): void {
+    protected function tearDown(): void
+    {
         $this->prophet->checkPredictions();
     }
 
-
-
-    public function testFindAll() {
+    public function testFindAll()
+    {
         list($cat1, $cat2) = self::generateCategories();
 
         // mock json rpc client
         $sn = $this->prophet->prophesize(JsonRPCClientHelperFixture::class);
-        $sn->get_data_by_global_id(null, array('categories' => array('all' => True)))->willReturn([
+        $sn->get_data_by_global_id(null, ['categories' => ['all' => true]])->willReturn([
             // TODO: set correct ids like the API does
             [
                 'type' => 'categorie',
@@ -85,7 +88,7 @@ class CategoryRepositoryTest extends UnitTestCase {
             [
                 'type' => 'categorie',
                 'content'=> self::CATEGORY_2_ARRAY,
-            ]
+            ],
         ]);
 
         GeneralUtility::addInstance(JsonRPCClientHelper::class, $sn->reveal());
@@ -99,7 +102,8 @@ class CategoryRepositoryTest extends UnitTestCase {
                 'AES_iv' => '1234567890123456',
                 'ScoutnetLoginPage' => 'https://www.scoutnet.de/auth',
                 'ScoutnetProviderName' => 'unitTest',
-            ]);
+            ]
+        );
 
         GeneralUtility::addInstance(ExtensionConfiguration::class, $em->reveal());
 
@@ -107,11 +111,11 @@ class CategoryRepositoryTest extends UnitTestCase {
 
         $act = $this->categoryRepository->findAll();
 
-        $this->assertEquals([$cat1, $cat2], $act);
-
+        self::assertEquals([$cat1, $cat2], $act);
     }
 
-    public function dataProviderFindByUid() {
+    public function dataProviderFindByUid()
+    {
         list($cat1, $cat2) = self::generateCategories();
 
         return [
@@ -132,11 +136,12 @@ class CategoryRepositoryTest extends UnitTestCase {
      *
      * @dataProvider dataProviderFindByUid
      */
-    public function testFindByUid($uid, $exp) {
+    public function testFindByUid($uid, $exp)
+    {
         // mok json rpc client
         $sn = $this->prophet->prophesize(JsonRPCClientHelperFixture::class);
         $sn->get_data_by_global_id(null, Argument::any())->will(
-            function($args) {
+            function ($args) {
                 $req = $args[1];
 
                 $uid = $req['categories']['uid'];
@@ -151,7 +156,8 @@ class CategoryRepositoryTest extends UnitTestCase {
                     'type' => 'categorie',
                     'content'=> $cat,
                 ]];
-            });
+            }
+        );
 
         GeneralUtility::addInstance(JsonRPCClientHelper::class, $sn->reveal());
 
@@ -164,7 +170,8 @@ class CategoryRepositoryTest extends UnitTestCase {
                 'AES_iv' => '1234567890123456',
                 'ScoutnetLoginPage' => 'https://www.scoutnet.de/auth',
                 'ScoutnetProviderName' => 'unitTest',
-            ]);
+            ]
+        );
 
         GeneralUtility::addInstance(ExtensionConfiguration::class, $em->reveal());
 
@@ -172,11 +179,11 @@ class CategoryRepositoryTest extends UnitTestCase {
 
         $act = $this->categoryRepository->findByUid($uid);
 
-        $this->assertEquals($exp, $act);
+        self::assertEquals($exp, $act);
     }
 
-
-    public function dataProviderConvertToCategory() {
+    public function dataProviderConvertToCategory()
+    {
         list($cat1, $cat2) = self::generateCategories();
 
         return [
@@ -197,13 +204,14 @@ class CategoryRepositoryTest extends UnitTestCase {
      * @param array                                                $test
      * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Category $exp
      */
-    public function testConvertToCategory(array $test, Category $exp) {
+    public function testConvertToCategory(array $test, Category $exp)
+    {
         $act = $this->categoryRepository->convertToCategory($test);
 
-        $this->assertEquals($exp, $act);
+        self::assertEquals($exp, $act);
     }
 
-    public function testGetAllCategoriesForStructureAndEvent() {
-
+    public function testGetAllCategoriesForStructureAndEvent()
+    {
     }
 }

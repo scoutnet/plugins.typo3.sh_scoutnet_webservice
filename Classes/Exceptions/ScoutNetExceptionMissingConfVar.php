@@ -1,4 +1,5 @@
 <?php
+
 namespace ScoutNet\ShScoutnetWebservice\Exceptions;
 
 /***************************************************************
@@ -24,8 +25,10 @@ namespace ScoutNet\ShScoutnetWebservice\Exceptions;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class ScoutNetExceptionMissingConfVar extends ScoutNetException {
-	public function __construct( $var ){
-		parent::__construct( "Missing '$var'. Please Contact your Typo3 Admin to enter a valid AES key. You can request via <a href=\"mailto:scoutnetconnect@scoutnet.de\">scoutnetConnect@ScoutNet.de</a>." );
-	}
+class ScoutNetExceptionMissingConfVar extends ScoutNetException
+{
+    public function __construct($var)
+    {
+        parent::__construct("Missing '$var'. Please Contact your Typo3 Admin to enter a valid AES key. You can request via <a href=\"mailto:scoutnetconnect@scoutnet.de\">scoutnetConnect@ScoutNet.de</a>.");
+    }
 }

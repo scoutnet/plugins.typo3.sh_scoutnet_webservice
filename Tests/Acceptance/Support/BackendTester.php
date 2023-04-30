@@ -1,4 +1,5 @@
 <?php
+
 namespace ScoutNet\ShScoutnetWebservice\Tests\Acceptance\Support;
 
 use Codeception\Actor;

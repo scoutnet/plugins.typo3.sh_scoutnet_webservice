@@ -1,5 +1,7 @@
 <?php
+
 namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,19 +25,17 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Model for backend user
  */
-class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser {
+class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser
+{
     /**
-     *
      * @var string
      */
     protected $scoutnetUsername= '';
 
     /**
-     *
      * @var string
      */
     protected $scoutnetApikey = '';
@@ -43,28 +43,32 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser {
     /**
      * @return string
      */
-    public function getScoutnetUsername(): string {
+    public function getScoutnetUsername(): string
+    {
         return $this->scoutnetUsername;
     }
 
     /**
      * @param string $scoutnetUsername
      */
-    public function setScoutnetUsername(string $scoutnetUsername): void {
+    public function setScoutnetUsername(string $scoutnetUsername): void
+    {
         $this->scoutnetUsername = $scoutnetUsername;
     }
 
     /**
      * @return string
      */
-    public function getScoutnetApikey(): string {
+    public function getScoutnetApikey(): string
+    {
         return $this->scoutnetApikey;
     }
 
     /**
      * @param string $scoutnetApikey
      */
-    public function setScoutnetApikey(string $scoutnetApikey): void {
+    public function setScoutnetApikey(string $scoutnetApikey): void
+    {
         $this->scoutnetApikey = $scoutnetApikey;
     }
 }

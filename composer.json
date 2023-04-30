@@ -70,7 +70,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "5.x-dev",
+			"dev-main": "5.x-dev",
 			"dev-typo3_v10": "4.x-dev",
 			"dev-typo3_v9": "3.x-dev"
 		},

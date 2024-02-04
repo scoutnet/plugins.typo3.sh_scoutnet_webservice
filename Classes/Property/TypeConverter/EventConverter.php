@@ -3,7 +3,6 @@
 namespace ScoutNet\ShScoutnetWebservice\Property\TypeConverter;
 
 use Exception;
-use ScoutNet\ShScoutnetWebservice\Domain\Model\Event;
 use ScoutNet\ShScoutnetWebservice\Domain\Repository\EventRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;

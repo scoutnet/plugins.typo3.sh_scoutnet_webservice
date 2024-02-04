@@ -28,7 +28,6 @@ namespace ScoutNet\ShScoutnetWebservice\Helpers;
  ***************************************************************/
 
 use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException;
-use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
 
 /**
  * JsonRPCClientHelper

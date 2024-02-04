@@ -22,9 +22,7 @@ use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotCon
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Package\Package;
-use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Package\UnitTestPackageManager;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ScoutNetConnectHelperTest extends TestCase
@@ -56,7 +54,7 @@ class ScoutNetConnectHelperTest extends TestCase
         $package->getPackagePath()->willReturn('../../../../typo3conf/ext/sh_scoutnet_webservice/');
 
         $pm = $this->prophet->prophesize(UnitTestPackageManager::class);
-        $pm->isPackageActive('sh_scoutnet_webservice')->willReturn(True);
+        $pm->isPackageActive('sh_scoutnet_webservice')->willReturn(true);
         $pm->getPackage('sh_scoutnet_webservice')->willReturn($package->reveal());
 
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::setPackageManager($pm->reveal());

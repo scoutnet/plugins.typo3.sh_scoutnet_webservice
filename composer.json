@@ -40,14 +40,14 @@
 		}
 	},
 	"require-dev": {
-	  "roave/security-advisories": "dev-latest",
-	  "typo3/testing-framework": "^8.0",
-	  "typo3/cms-frontend": "^12.4",
-	  "typo3/cms-install": "^12.4",
-	  "typo3/cms-fluid-styled-content": "^12.4",
-	  "typo3/coding-standards": "^0.7.1",
-	  "phpspec/prophecy": "~1.0",
-	  "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": "^0.1.0"
+		"roave/security-advisories": "dev-latest",
+		"typo3/testing-framework": "^8.0",
+		"typo3/cms-frontend": "^12.4",
+		"typo3/cms-install": "^12.4",
+		"typo3/cms-fluid-styled-content": "^12.4",
+		"typo3/coding-standards": "^0.7.1",
+		"phpspec/prophecy": "~1.0",
+		"sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": "^0.1.0"
 	},
 	"autoload": {
 		"psr-4": {

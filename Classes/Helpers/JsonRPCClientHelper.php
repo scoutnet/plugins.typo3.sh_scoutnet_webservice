@@ -125,7 +125,7 @@ class JsonRPCClientHelper
         $request = json_encode($request);
         $this->debugOutput && $debug .= '***** Request *****' . "\n" . $request . "\n" . '***** End Of request *****' . "\n\n";
 
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] && extension_loaded('curl')) {
+        if (($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] ?? false) && extension_loaded('curl')) {
             // performs the HTTP POST by use of libcurl
             $options = [
                 CURLOPT_URL		=> $this->url,
@@ -145,13 +145,13 @@ class JsonRPCClientHelper
                 curl_setopt($ch, CURLOPT_COOKIE, 'XDEBUG_SESSION: ' . urlencode($_COOKIE['XDEBUG_SESSION']));
             }
 
-            if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
+            if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'] ?? false) {
                 curl_setopt($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
 
-                if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']) {
+                if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel'] ?? false) {
                     curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']);
                 }
-                if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']) {
+                if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass'] ?? false) {
                     curl_setopt($ch, CURLOPT_PROXYUSERPWD, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']);
                 }
             }

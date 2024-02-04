@@ -20,7 +20,10 @@ use ScoutNet\ShScoutnetWebservice\Domain\Model\Category;
 use ScoutNet\ShScoutnetWebservice\Domain\Repository\CategoryRepository;
 use ScoutNet\ShScoutnetWebservice\Helpers\JsonRPCClientHelper;
 use ScoutNet\ShScoutnetWebservice\Tests\Unit\Fixtures\JsonRPCClientHelperFixture;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -41,7 +44,7 @@ class CategoryRepositoryTest extends UnitTestCase
     ];
 
     /**
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Category[]
+     * @return Category[]
      */
     private static function generateCategories(): array
     {
@@ -73,9 +76,9 @@ class CategoryRepositoryTest extends UnitTestCase
         $this->prophet->checkPredictions();
     }
 
-    public function testFindAll()
+    public function testFindAll(): void
     {
-        list($cat1, $cat2) = self::generateCategories();
+        [$cat1, $cat2] = self::generateCategories();
 
         // mock json rpc client
         $sn = $this->prophet->prophesize(JsonRPCClientHelperFixture::class);
@@ -114,7 +117,7 @@ class CategoryRepositoryTest extends UnitTestCase
         self::assertEquals([$cat1, $cat2], $act);
     }
 
-    public function dataProviderFindByUid()
+    public static function dataProviderFindByUid(): array
     {
         list($cat1, $cat2) = self::generateCategories();
 
@@ -134,9 +137,12 @@ class CategoryRepositoryTest extends UnitTestCase
      * @param $uid
      * @param $exp
      *
+     * @throws ExtensionConfigurationExtensionNotConfiguredException
+     * @throws ExtensionConfigurationPathDoesNotExistException
+     * @throws Exception
      * @dataProvider dataProviderFindByUid
      */
-    public function testFindByUid($uid, $exp)
+    public function testFindByUid($uid, $exp): void
     {
         // mok json rpc client
         $sn = $this->prophet->prophesize(JsonRPCClientHelperFixture::class);
@@ -182,7 +188,7 @@ class CategoryRepositoryTest extends UnitTestCase
         self::assertEquals($exp, $act);
     }
 
-    public function dataProviderConvertToCategory()
+    public static function dataProviderConvertToCategory(): array
     {
         list($cat1, $cat2) = self::generateCategories();
 
@@ -202,14 +208,14 @@ class CategoryRepositoryTest extends UnitTestCase
      * @dataProvider dataProviderConvertToCategory
      *
      * @param array                                                $test
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Category $exp
+     * @param Category $exp
      */
-    public function testConvertToCategory(array $test, Category $exp)
+    public function testConvertToCategory(array $test, Category $exp): void
     {
         $act = $this->categoryRepository->convertToCategory($test);
 
         self::assertEquals($exp, $act);
     }
 
-    public function testGetAllCategoriesForStructureAndEvent() {}
+    public function testGetAllCategoriesForStructureAndEvent(): void {}
 }

@@ -93,6 +93,11 @@ With this the Repositorys are changed as well. The Section now knows about the C
 
 UserRepository->findByUid was renamed to findByUsername (since this is what it does)
 
+#### 4.x->5.0
+TBD
+
+#### 5.x->6.0
+TBD
 
 ### Author
 If you have any questions regarding this software, you can send me an email to muetze@scoutnet.de

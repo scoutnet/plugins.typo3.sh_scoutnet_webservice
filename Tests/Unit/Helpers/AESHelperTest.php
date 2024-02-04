@@ -15,6 +15,7 @@
 namespace ScoutNet\ShScoutnetWebservice\Tests\Unit\Helpers;
 
 use Prophecy\Prophet;
+use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException;
 use ScoutNet\ShScoutnetWebservice\Helpers\AESHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -34,9 +35,9 @@ class AESHelperTest extends UnitTestCase
     }
 
     /**
-     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException
+     * @throws ScoutNetException
      */
-    public function testEncryptDecrypt()
+    public function testEncryptDecrypt(): void
     {
         $key = [
             'key' => '12345678901234567890123456789012',
@@ -55,7 +56,7 @@ class AESHelperTest extends UnitTestCase
         self::assertEquals($aes->decrypt($crypt), $pt);
     }
 
-    public function dataProviderCorrectKeyLength()
+    public static function dataProviderCorrectKeyLength(): array
     {
         return [
             'aes128' => [
@@ -82,10 +83,10 @@ class AESHelperTest extends UnitTestCase
      * @param $key
      * @param $expExceptions
      *
-     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException
+     * @throws ScoutNetException
      * @dataProvider dataProviderCorrectKeyLength
      */
-    public function testCorrectKeyLength($key, $expExceptions = [])
+    public function testCorrectKeyLength($key, $expExceptions = []): void
     {
         if ($expExceptions and count($expExceptions) > 0) {
             foreach ($expExceptions as $expExc) {
@@ -95,7 +96,7 @@ class AESHelperTest extends UnitTestCase
         new AESHelper($key);
     }
 
-    public function dataProviderEncrypt()
+    public static function dataProviderEncrypt(): array
     {
         return [
             'short block' => [ // should be padded with 0x00
@@ -137,9 +138,9 @@ class AESHelperTest extends UnitTestCase
      * @param $plaintext
      * @param $cyphertext
      *
-     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException
+     * @throws ScoutNetException
      */
-    public function testEncrypt($key, $plaintext, $cyphertext)
+    public function testEncrypt($key, $plaintext, $cyphertext): void
     {
         $aes = new AESHelper($key['key'], $key['mode'], $key['iv']);
         $crypt = base64_encode($aes->encrypt($plaintext));
@@ -147,7 +148,7 @@ class AESHelperTest extends UnitTestCase
         self::assertEquals($cyphertext, $crypt);
     }
 
-    public function dataProviderDecrypt()
+    public static function dataProviderDecrypt(): array
     {
         return [
             'less than one block' => [
@@ -198,9 +199,9 @@ class AESHelperTest extends UnitTestCase
      * @param $cyphertext
      * @param $plaintext
      *
-     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException
+     * @throws ScoutNetException
      */
-    public function testDecrypt($key, $cyphertext, $plaintext)
+    public function testDecrypt($key, $cyphertext, $plaintext): void
     {
         $aes = new AESHelper($key['key'], $key['mode'], $key['iv']);
         $plain = $aes->decrypt(base64_decode($cyphertext));

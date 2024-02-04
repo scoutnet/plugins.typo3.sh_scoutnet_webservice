@@ -33,7 +33,7 @@ class JsonRPCClientHelperTest extends UnitTestCase
         $this->prophet->checkPredictions();
     }
 
-    public function dataProviderConnect()
+    public static function dataProviderConnect(): array
     {
         return [
             'unable to connect' => [
@@ -59,7 +59,7 @@ class JsonRPCClientHelperTest extends UnitTestCase
      * @param             $expectedExceptions
      * @param bool|string $expReturn
      */
-    public function testConnect($url, $expectedExceptions, $expReturn = false)
+    public function testConnect($url, $expectedExceptions, $expReturn = false): void
     {
         if ($expectedExceptions and count($expectedExceptions) > 0) {
             foreach ($expectedExceptions as $expExc) {

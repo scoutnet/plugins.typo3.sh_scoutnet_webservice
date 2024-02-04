@@ -16,8 +16,15 @@ namespace ScoutNet\ShScoutnetWebservice\Tests\Unit\Helpers;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophet;
+use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar;
 use ScoutNet\ShScoutnetWebservice\Helpers\ScoutNetConnectHelper;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Package\Package;
+use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Package\UnitTestPackageManager;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ScoutNetConnectHelperTest extends TestCase
@@ -44,6 +51,15 @@ class ScoutNetConnectHelperTest extends TestCase
         );
 
         GeneralUtility::addInstance(ExtensionConfiguration::class, $em->reveal());
+
+        $package = $this->prophet->prophesize(Package::class);
+        $package->getPackagePath()->willReturn('../../../../typo3conf/ext/sh_scoutnet_webservice/');
+
+        $pm = $this->prophet->prophesize(UnitTestPackageManager::class);
+        $pm->isPackageActive('sh_scoutnet_webservice')->willReturn(True);
+        $pm->getPackage('sh_scoutnet_webservice')->willReturn($package->reveal());
+
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::setPackageManager($pm->reveal());
     }
 
     protected function tearDown(): void
@@ -51,7 +67,7 @@ class ScoutNetConnectHelperTest extends TestCase
         $this->prophet->checkPredictions();
     }
 
-    public function dataProviderGetScoutNetConnectLoginButton()
+    public static function dataProviderGetScoutNetConnectLoginButton(): array
     {
         return [
             'no url and no apikey' => [
@@ -82,10 +98,12 @@ class ScoutNetConnectHelperTest extends TestCase
      * @param $requestApiKey
      * @param $exp
      *
+     * @throws ScoutNetExceptionMissingConfVar
+     * @throws ExtensionConfigurationExtensionNotConfiguredException
+     * @throws ExtensionConfigurationPathDoesNotExistException
      * @dataProvider dataProviderGetScoutNetConnectLoginButton
-     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar
      */
-    public function testGetScoutNetConnectLoginButton($returnUrl, $requestApiKey, $exp)
+    public function testGetScoutNetConnectLoginButton($returnUrl, $requestApiKey, $exp): void
     {
         $ret = $this->scoutNetConnectHelper->getScoutNetConnectLoginButton($returnUrl, $requestApiKey);
         self::assertEquals($exp, $ret);

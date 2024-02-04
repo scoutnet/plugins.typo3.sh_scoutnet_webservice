@@ -43,7 +43,7 @@ class AuthHelperTest extends UnitTestCase
     /**
      * @return array
      */
-    public function dataProviderGenerateAuth()
+    public static function dataProviderGenerateAuth(): array
     {
         return [
             'normal' => [
@@ -70,7 +70,7 @@ class AuthHelperTest extends UnitTestCase
      * @throws \Exception
      * @dataProvider dataProviderGenerateAuth
      */
-    public function testGenerateAuth($apiKey, $checkValue, $expectedResult, $expectedExceptions = [])
+    public function testGenerateAuth($apiKey, $checkValue, $expectedResult, $expectedExceptions = []): void
     {
         if ($expectedExceptions and count($expectedExceptions) > 0) {
             foreach ($expectedExceptions as $expExc) {
@@ -93,7 +93,7 @@ class AuthHelperTest extends UnitTestCase
         self::assertEquals($expectedResult, $ret);
     }
 
-    public function dataProviderGetApiKeyFromData()
+    public static function dataProviderGetApiKeyFromData(): array
     {
         return [
             'empty auth' => [
@@ -144,7 +144,7 @@ class AuthHelperTest extends UnitTestCase
      * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException
      * @dataProvider dataProviderGetApiKeyFromData
      */
-    public function testGetApiKeyFromData($data, $expectedExceptions, $expectedReturn = false, $fix_time = false)
+    public function testGetApiKeyFromData($data, $expectedExceptions, $expectedReturn = false, $fix_time = false): void
     {
         // fix extension Configuration
         $em = $this->prophet->prophesize(ExtensionConfiguration::class);

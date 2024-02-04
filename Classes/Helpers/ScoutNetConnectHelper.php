@@ -3,6 +3,8 @@
 namespace ScoutNet\ShScoutnetWebservice\Helpers;
 
 use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -43,9 +45,9 @@ class ScoutNetConnectHelper
      * @param bool   $requestApiKey
      *
      * @return string
-     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar
-     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
-     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException
+     * @throws ScoutNetExceptionMissingConfVar
+     * @throws ExtensionConfigurationExtensionNotConfiguredException
+     * @throws ExtensionConfigurationPathDoesNotExistException
      */
     public function getScoutNetConnectLoginButton(string $returnUrl = '', bool $requestApiKey = false): string
     {
@@ -61,7 +63,7 @@ class ScoutNetConnectHelper
         // load configuration for this Extension
         $extConfig = $extensionConfiguration->get('sh_scoutnet_webservice');
 
-        if ($lang == 'default') {
+        if ($lang === 'default') {
             $lang = 'en';
         }
 
@@ -88,7 +90,7 @@ class ScoutNetConnectHelper
      *
      * @param array $config
      *
-     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar
+     * @throws ScoutNetExceptionMissingConfVar
      */
     private function _checkConfigValues(array $config)
     {

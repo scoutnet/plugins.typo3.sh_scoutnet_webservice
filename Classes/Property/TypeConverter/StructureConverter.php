@@ -41,8 +41,8 @@ class StructureConverter extends PersistentObjectConverter
      * @param string $targetType
      *
      * @return object
-     * @throws \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException
-     * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
+     * @throws TargetNotFoundException
+     * @throws InvalidSourceException
      */
     protected function fetchObjectFromPersistence($identity, string $targetType): object
     {

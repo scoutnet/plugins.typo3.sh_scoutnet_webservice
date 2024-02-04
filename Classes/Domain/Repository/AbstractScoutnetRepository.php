@@ -78,7 +78,7 @@ class AbstractScoutnetRepository
         $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
         $extConfig = $extensionConfiguration->get('sh_scoutnet_webservice');
 
-        $api_url = $extConfig['ScoutnetJsonAPIUrl']??'localhost';
+        $api_url = $extConfig['ScoutnetJsonAPIUrl'] ?? 'localhost';
 
         $this->SN = GeneralUtility::makeInstance(JsonRPCClientHelper::class, $api_url);
     }

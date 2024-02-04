@@ -45,7 +45,7 @@ class AuthHelper
      */
     private $snData;
 
-    const UNSECURE_START_IV = '1234567890123456';
+    public const UNSECURE_START_IV = '1234567890123456';
 
     /**
      * @param string $data

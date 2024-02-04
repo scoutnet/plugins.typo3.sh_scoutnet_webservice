@@ -35,9 +35,9 @@ use ScoutNet\ShScoutnetWebservice\Domain\Model\Structure;
  */
 class StructureRepository extends AbstractScoutnetRepository
 {
-    const AUTH_NO_RIGHT = 1;
-    const AUTH_WRITE_ALLOWED = 0;
-    const AUTH_PENDING = 2;
+    public const AUTH_NO_RIGHT = 1;
+    public const AUTH_WRITE_ALLOWED = 0;
+    public const AUTH_PENDING = 2;
 
     /**
      * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure[]
@@ -114,7 +114,7 @@ class StructureRepository extends AbstractScoutnetRepository
      * @return mixed
      * @throws \Exception
      */
-    public function hasWritePermissionsToStructure(Structure $structure, BackendUser $be_user=null)
+    public function hasWritePermissionsToStructure(Structure $structure, BackendUser $be_user = null)
     {
         if ($be_user === null) {
             $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user['uid']);
@@ -133,7 +133,7 @@ class StructureRepository extends AbstractScoutnetRepository
      * @return mixed
      * @throws \Exception
      */
-    public function requestWritePermissionsForStructure(Structure $structure, BackendUser $be_user=null)
+    public function requestWritePermissionsForStructure(Structure $structure, BackendUser $be_user = null)
     {
         if ($be_user === null) {
             $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user['uid']);

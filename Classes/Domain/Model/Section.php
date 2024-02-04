@@ -79,7 +79,7 @@ class Section extends AbstractEntity
      */
     public function getVerband(): string
     {
-        return $this->verband??'';
+        return $this->verband ?? '';
     }
 
     /**
@@ -95,7 +95,7 @@ class Section extends AbstractEntity
      */
     public function getBezeichnung(): string
     {
-        return $this->bezeichnung??'';
+        return $this->bezeichnung ?? '';
     }
 
     /**
@@ -111,7 +111,7 @@ class Section extends AbstractEntity
      */
     public function getFarbe(): string
     {
-        return $this->farbe??'';
+        return $this->farbe ?? '';
     }
 
     /**
@@ -127,7 +127,7 @@ class Section extends AbstractEntity
      */
     public function getStartalter(): int
     {
-        return $this->startalter??-1;
+        return $this->startalter ?? -1;
     }
 
     /**
@@ -143,7 +143,7 @@ class Section extends AbstractEntity
      */
     public function getEndalter(): int
     {
-        return $this->endalter??-1;
+        return $this->endalter ?? -1;
     }
 
     /**
@@ -196,6 +196,6 @@ class Section extends AbstractEntity
     public function getImageURL(): string
     {
         // TODO: make this configurable
-        return (string)"<img src='https://kalender.scoutnet.de/2.0/images/" . $this->getUid() . ".gif' alt='" . htmlentities($this->getBezeichnung(), ENT_COMPAT|ENT_HTML401, 'UTF-8') . "' />";
+        return (string)"<img src='https://kalender.scoutnet.de/2.0/images/" . $this->getUid() . ".gif' alt='" . htmlentities($this->getBezeichnung(), ENT_COMPAT | ENT_HTML401, 'UTF-8') . "' />";
     }
 }

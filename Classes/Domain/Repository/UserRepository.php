@@ -54,7 +54,7 @@ class UserRepository extends AbstractScoutnetRepository
      */
     public function findByUsername(string $username): ?User
     {
-        return $this->user_cache[$username]??null;
+        return $this->user_cache[$username] ?? null;
     }
 
     /**

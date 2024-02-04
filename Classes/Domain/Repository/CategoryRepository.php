@@ -57,7 +57,7 @@ class CategoryRepository extends AbstractScoutnetRepository
             }
         }
 
-        return $this->categoriesCache[$uid]??null;
+        return $this->categoriesCache[$uid] ?? null;
     }
 
     /**
@@ -92,7 +92,7 @@ class CategoryRepository extends AbstractScoutnetRepository
     {
         $generatedCategories = [];
         try {
-            foreach ($this->loadDataFromScoutnet($structure->getUid(), ['categories' => ['generatedCategoriesForEventId' => $event->getUid() != null?$event->getUid():-1]]) as $record) {
+            foreach ($this->loadDataFromScoutnet($structure->getUid(), ['categories' => ['generatedCategoriesForEventId' => $event->getUid() != null ? $event->getUid() : -1]]) as $record) {
                 if ($record['type'] === 'categorie') {
                     // convert and save to cache
                     $generatedCategories[] = $this->convertToCategory($record['content']);
@@ -149,7 +149,7 @@ class CategoryRepository extends AbstractScoutnetRepository
 
         $category->setUid($array['ID']);
         $category->setText($array['Text']);
-        $category->setAvailable($array['Selected']=='yes');
+        $category->setAvailable($array['Selected'] == 'yes');
 
         $this->categoriesCache[$category->getUid()] = $category;
 

@@ -33,7 +33,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser
     /**
      * @var string
      */
-    protected $scoutnetUsername= '';
+    protected $scoutnetUsername = '';
 
     /**
      * @var string

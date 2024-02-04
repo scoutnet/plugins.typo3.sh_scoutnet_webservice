@@ -90,7 +90,7 @@ class JsonRPCClientHelper
      */
     public function setRPCNotification(bool $notification)
     {
-        empty($notification) ?$this->notification = false:$this->notification = true;
+        empty($notification) ? $this->notification = false : $this->notification = true;
     }
 
     /**
@@ -138,7 +138,7 @@ class JsonRPCClientHelper
             'id' => $currentId,
         ];
         $request = json_encode($request);
-        $this->debugOutput && $debug .='***** Request *****' . "\n" . $request . "\n" . '***** End Of request *****' . "\n\n";
+        $this->debugOutput && $debug .= '***** Request *****' . "\n" . $request . "\n" . '***** End Of request *****' . "\n\n";
 
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] && extension_loaded('curl')) {
             // performs the HTTP POST by use of libcurl
@@ -173,7 +173,7 @@ class JsonRPCClientHelper
 
             $response = trim(curl_exec($ch));
 
-            $this->debugOutput && $debug.='***** Server response *****' . "\n" . $response . '***** End of server response *****' . "\n";
+            $this->debugOutput && $debug .= '***** Server response *****' . "\n" . $response . '***** End of server response *****' . "\n";
             $response = json_decode($response, true);
             curl_close($ch);
         } else {
@@ -189,9 +189,9 @@ class JsonRPCClientHelper
             if ($fp = @fopen($this->url, 'r', false, $context)) {
                 $response = '';
                 while ($row = fgets($fp)) {
-                    $response.= trim($row) . "\n";
+                    $response .= trim($row) . "\n";
                 }
-                $this->debugOutput && $debug.='***** Server response *****' . "\n" . $response . '***** End of server response *****' . "\n";
+                $this->debugOutput && $debug .= '***** Server response *****' . "\n" . $response . '***** End of server response *****' . "\n";
                 $response = json_decode($response, true);
             } else {
                 throw new ScoutNetException('Unable to connect to ' . $this->url, 1572202683);

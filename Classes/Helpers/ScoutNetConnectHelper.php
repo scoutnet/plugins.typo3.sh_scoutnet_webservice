@@ -51,7 +51,7 @@ class ScoutNetConnectHelper
     {
         // TODO: use a template here!!
         //		$lang = $GLOBALS['LANG']->lang;
-//        $lang = $TSFE->sys_language_isocode;
+        //        $lang = $TSFE->sys_language_isocode;
         // TODO: make this work again, deprecation
         $lang = '';
 
@@ -68,10 +68,10 @@ class ScoutNetConnectHelper
         $this->_checkConfigValues($extConfig);
         $button = '<form action="' . $extConfig['ScoutnetLoginPage'] . '" id="scoutnetLogin" method="post" target="_self">';
 
-        $button .= $returnUrl == ''?'':'<input type="hidden" name="redirect_url" value="' . $returnUrl . '" />';
+        $button .= $returnUrl == '' ? '' : '<input type="hidden" name="redirect_url" value="' . $returnUrl . '" />';
         $button .= '<input type="hidden" name="lang" value="' . $lang . '"/>';
         $button .= '<input type="hidden" name="provider" value="' . $extConfig['ScoutnetProviderName'] . '" />';
-        $button .= $requestApiKey?'<input type="hidden" name="createApiKey" value="1" />':'';
+        $button .= $requestApiKey ? '<input type="hidden" name="createApiKey" value="1" />' : '';
 
         $button .= '<a href="#" onclick="document.getElementById(\'scoutnetLogin\').submit(); return false;">';
 

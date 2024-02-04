@@ -76,7 +76,7 @@ class Structure extends AbstractEntity
      */
     public function getLevel(): string
     {
-        return $this->level??'';
+        return $this->level ?? '';
     }
 
     /**
@@ -142,7 +142,7 @@ class Structure extends AbstractEntity
      */
     public function getLevelId(): int
     {
-        return $this->levelId??-1;
+        return $this->levelId ?? -1;
     }
 
     /**
@@ -176,7 +176,7 @@ class Structure extends AbstractEntity
      */
     public function getUsedCategories(): array
     {
-        return $this->usedCategories??[];
+        return $this->usedCategories ?? [];
     }
 
     /**
@@ -192,7 +192,7 @@ class Structure extends AbstractEntity
      */
     public function getForcedCategories(): array
     {
-        return $this->forcedCategories??[];
+        return $this->forcedCategories ?? [];
     }
 
     /**
@@ -208,7 +208,7 @@ class Structure extends AbstractEntity
      */
     public function getName(): string
     {
-        return $this->name??'';
+        return $this->name ?? '';
     }
 
     /**
@@ -224,7 +224,7 @@ class Structure extends AbstractEntity
      */
     public function getLongName(): string
     {
-        return (string)$this->getLevel() . ' ' . (($this->getLevelId() >= 7)?$this->getName():'');
+        return (string)$this->getLevel() . ' ' . (($this->getLevelId() >= 7) ? $this->getName() : '');
     }
 
     /**
@@ -233,6 +233,6 @@ class Structure extends AbstractEntity
      */
     public function get_Name(): string
     {
-        return (string)$this->getLevel() . (($this->getLevelId() >= 7)?'&nbsp;' . $this->getName():'');
+        return (string)$this->getLevel() . (($this->getLevelId() >= 7) ? '&nbsp;' . $this->getName() : '');
     }
 }

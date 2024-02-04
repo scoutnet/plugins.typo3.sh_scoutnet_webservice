@@ -46,7 +46,7 @@ class Category
      */
     public function getUid(): int
     {
-        return $this->uid??-1;
+        return $this->uid ?? -1;
     }
 
     /**
@@ -62,7 +62,7 @@ class Category
      */
     public function getText(): string
     {
-        return $this->text??'';
+        return $this->text ?? '';
     }
 
     /**
@@ -78,7 +78,7 @@ class Category
      */
     public function getAvailable(): bool
     {
-        return $this->available??false;
+        return $this->available ?? false;
     }
 
     /**

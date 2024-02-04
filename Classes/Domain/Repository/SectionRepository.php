@@ -47,9 +47,9 @@ class SectionRepository extends AbstractScoutnetRepository
      */
     public function findByUid(int $uid): ?Section
     {
-        $categoryId = $this->section_cache_uid[$uid]??null;
+        $categoryId = $this->section_cache_uid[$uid] ?? null;
 
-        return $categoryId?$this->section_cache[$categoryId]??null:null;
+        return $categoryId ? $this->section_cache[$categoryId] ?? null : null;
     }
 
     /**
@@ -59,7 +59,7 @@ class SectionRepository extends AbstractScoutnetRepository
      */
     public function findByCategoryId(int $categoryId): ?Section
     {
-        return $this->section_cache[$categoryId]??null; // return null if key does not exists
+        return $this->section_cache[$categoryId] ?? null; // return null if key does not exists
     }
 
     /**

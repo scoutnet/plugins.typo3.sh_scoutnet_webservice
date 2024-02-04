@@ -80,6 +80,7 @@ class JsonRPCClientHelperTest extends UnitTestCase
 }
 
 // hooks for stream
+
 namespace ScoutNet\ShScoutnetWebservice\Helpers;
 
 function stream_context_create($opts)

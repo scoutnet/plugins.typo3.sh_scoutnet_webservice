@@ -104,7 +104,7 @@ class EventRepository extends AbstractScoutnetRepository
         // get UIDs from Structure Objects
         $ids = array_map(function (Structure $structure) {return $structure->getUid();}, $structures);
 
-        return $this->convertRecords($this->loadDataFromScoutnet($ids, ['events' =>$filter]));
+        return $this->convertRecords($this->loadDataFromScoutnet($ids, ['events' => $filter]));
     }
 
     /**
@@ -114,7 +114,7 @@ class EventRepository extends AbstractScoutnetRepository
      */
     public function findByFilter(array $filter): array
     {
-        return $this->convertRecords($this->loadDataFromScoutnet(null, ['events' =>$filter]));
+        return $this->convertRecords($this->loadDataFromScoutnet(null, ['events' => $filter]));
     }
 
     /**
@@ -152,7 +152,7 @@ class EventRepository extends AbstractScoutnetRepository
     public function findByUid(int $uid): Event
     {
         // search in all Calendars
-        return $this->event_cache[$uid]??$this->findByFilter(['event_ids'=> [$uid]])[0];
+        return $this->event_cache[$uid] ?? $this->findByFilter(['event_ids' => [$uid]])[0];
     }
 
     /**
@@ -227,9 +227,9 @@ class EventRepository extends AbstractScoutnetRepository
         $event->setOrganizer($array['Organizer']);
         $event->setTargetGroup($array['Target_Group']);
         $event->setStartDate(DateTime::createFromFormat('Y-m-d H:i:s', gmstrftime('%Y-%m-%d 00:00:00', $array['Start'])));
-        $event->setStartTime($array['All_Day']?null:gmstrftime('%H:%M:00', $array['Start']));
-        $event->setEndDate($array['End'] == 0?null: DateTime::createFromFormat('Y-m-d H:i:s', gmstrftime('%Y-%m-%d 00:00:00', $array['End'])));
-        $event->setEndTime($array['All_Day']?null:gmstrftime('%H:%M:00', $array['End']));
+        $event->setStartTime($array['All_Day'] ? null : gmstrftime('%H:%M:00', $array['Start']));
+        $event->setEndDate($array['End'] == 0 ? null : DateTime::createFromFormat('Y-m-d H:i:s', gmstrftime('%Y-%m-%d 00:00:00', $array['End'])));
+        $event->setEndTime($array['All_Day'] ? null : gmstrftime('%H:%M:00', $array['End']));
 
         $event->setZip($array['ZIP']);
 
@@ -241,8 +241,8 @@ class EventRepository extends AbstractScoutnetRepository
         $event->setChangedBy($this->userRepository->findByUsername($array['Last_Modified_By']));
         $event->setCreatedBy($this->userRepository->findByUsername($array['Created_By']));
 
-        $event->setChangedAt($array['Last_Modified_At'] == 0?null: DateTime::createFromFormat('U', $array['Last_Modified_At']));
-        $event->setCreatedAt($array['Created_At'] == 0?null: DateTime::createFromFormat('U', $array['Created_At']));
+        $event->setChangedAt($array['Last_Modified_At'] == 0 ? null : DateTime::createFromFormat('U', $array['Last_Modified_At']));
+        $event->setCreatedAt($array['Created_At'] == 0 ? null : DateTime::createFromFormat('U', $array['Created_At']));
 
         if (isset($array['Stufen'])) {
             foreach ($array['Stufen'] as $sectionId) {
@@ -257,7 +257,7 @@ class EventRepository extends AbstractScoutnetRepository
 
         if (isset($array['Keywords'])) {
             foreach ($array['Keywords'] as $id => $text) {
-                $category = $this->categoryRepository->convertToCategory(['ID'=>$id, 'Text'=>$text]);
+                $category = $this->categoryRepository->convertToCategory(['ID' => $id, 'Text' => $text]);
                 if ($category != null) {
                     $event->addCategory($category);
                 }
@@ -280,13 +280,13 @@ class EventRepository extends AbstractScoutnetRepository
     public function convertFromEvent(Event $event): array
     {
         $array = [
-            'ID' => $event->getUid()??-1,
+            'ID' => $event->getUid() ?? -1,
             'SSID' => $event->getStructure()->getUid(),
             'Title' => $event->getTitle(),
             'Organizer' => $event->getOrganizer(),
             'Target_Group' => $event->getTargetGroup(),
-            'Start' => $event->getStartTimestamp() instanceof DateTime? DateTime::createFromFormat('d.m.Y H:i:s T', $event->getStartTimestamp()->format('d.m.Y H:i:s') . ' UTC')->format('U'):'',
-            'End' => $event->getEndTimestamp() instanceof DateTime? DateTime::createFromFormat('d.m.Y H:i:s T', $event->getEndTimestamp()->format('d.m.Y H:i:s') . ' UTC')->format('U'):'',
+            'Start' => $event->getStartTimestamp() instanceof DateTime ? DateTime::createFromFormat('d.m.Y H:i:s T', $event->getStartTimestamp()->format('d.m.Y H:i:s') . ' UTC')->format('U') : '',
+            'End' => $event->getEndTimestamp() instanceof DateTime ? DateTime::createFromFormat('d.m.Y H:i:s T', $event->getEndTimestamp()->format('d.m.Y H:i:s') . ' UTC')->format('U') : '',
             'All_Day' => $event->getAllDayEvent(),
             'ZIP' => $event->getZip(),
             'Location' => $event->getLocation(),

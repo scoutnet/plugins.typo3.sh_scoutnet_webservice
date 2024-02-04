@@ -80,7 +80,7 @@ class User extends AbstractEntity
 
     public function getFirstName(): string
     {
-        return trim($this->firstName)?trim($this->firstName):$this->getUsername();
+        return trim($this->firstName) ? trim($this->firstName) : $this->getUsername();
     }
 
     /**

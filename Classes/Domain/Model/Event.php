@@ -153,7 +153,7 @@ class Event extends AbstractEntity
      */
     public function getTitle(): string
     {
-        return $this->title??'';
+        return $this->title ?? '';
     }
 
     /**
@@ -169,7 +169,7 @@ class Event extends AbstractEntity
      */
     public function getOrganizer(): string
     {
-        return $this->organizer??'';
+        return $this->organizer ?? '';
     }
 
     /**
@@ -185,7 +185,7 @@ class Event extends AbstractEntity
      */
     public function getTargetGroup(): string
     {
-        return $this->targetGroup??'';
+        return $this->targetGroup ?? '';
     }
 
     /**
@@ -265,7 +265,7 @@ class Event extends AbstractEntity
      */
     public function getZip(): string
     {
-        return $this->zip??'';
+        return $this->zip ?? '';
     }
 
     /**
@@ -281,7 +281,7 @@ class Event extends AbstractEntity
      */
     public function getLocation(): string
     {
-        return $this->location??'';
+        return $this->location ?? '';
     }
 
     /**
@@ -297,7 +297,7 @@ class Event extends AbstractEntity
      */
     public function getUrlText(): string
     {
-        return $this->urlText??'';
+        return $this->urlText ?? '';
     }
 
     /**
@@ -313,7 +313,7 @@ class Event extends AbstractEntity
      */
     public function getUrl(): string
     {
-        return $this->url??'';
+        return $this->url ?? '';
     }
 
     /**
@@ -329,7 +329,7 @@ class Event extends AbstractEntity
      */
     public function getDescription(): string
     {
-        return $this->description??'';
+        return $this->description ?? '';
     }
 
     /**
@@ -557,7 +557,7 @@ class Event extends AbstractEntity
     public function getStartTimestamp(): DateTime
     {
         if ($this->startTime) {
-            $startTimestamp = DateTime::createFromFormat('Y-m-d H:i:s', $this->startDate->format('Y-m-d') . ' ' . $this->startTime . (substr_count($this->startTime, ':') == 1?':00':''));
+            $startTimestamp = DateTime::createFromFormat('Y-m-d H:i:s', $this->startDate->format('Y-m-d') . ' ' . $this->startTime . (substr_count($this->startTime, ':') == 1 ? ':00' : ''));
         } else {
             $startTimestamp = DateTime::createFromFormat('Y-m-d H:i:s', $this->startDate->format('Y-m-d') . ' 00:00:00');
         }
@@ -571,9 +571,9 @@ class Event extends AbstractEntity
     public function getEndTimestamp(): DateTime
     {
         if ($this->endDate && $this->endTime) {
-            $endTimestamp = DateTime::createFromFormat('Y-m-d H:i:s', $this->endDate->format('Y-m-d') . ' ' . $this->endTime . (substr_count($this->endTime, ':') == 1?':00':''));
+            $endTimestamp = DateTime::createFromFormat('Y-m-d H:i:s', $this->endDate->format('Y-m-d') . ' ' . $this->endTime . (substr_count($this->endTime, ':') == 1 ? ':00' : ''));
         } elseif ($this->endTime) {
-            $endTimestamp = DateTime::createFromFormat('Y-m-d H:i:s', $this->startDate->format('Y-m-d') . ' ' . $this->endTime . (substr_count($this->endTime, ':') == 1?':00':''));
+            $endTimestamp = DateTime::createFromFormat('Y-m-d H:i:s', $this->startDate->format('Y-m-d') . ' ' . $this->endTime . (substr_count($this->endTime, ':') == 1 ? ':00' : ''));
         } elseif ($this->endDate) {
             $endTimestamp = DateTime::createFromFormat('Y-m-d H:i:s', $this->endDate->format('Y-m-d') . ' 00:00:00');
         } else {

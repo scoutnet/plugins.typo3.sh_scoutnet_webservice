@@ -14,13 +14,11 @@ class ModuleCest
      */
     public function _before(BackendTester $I)
     {
-//        $I->useExistingSession('admin');
+        //        $I->useExistingSession('admin');
     }
 
     /**
      * @param BackendTester $I
      */
-    public function dummyTest(BackendTester $I)
-    {
-    }
+    public function dummyTest(BackendTester $I) {}
 }

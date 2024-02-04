@@ -29,12 +29,12 @@ class CategoryRepositoryTest extends UnitTestCase
     protected $categoryRepository;
     private $prophet;
 
-    const CATEGORY_1_ARRAY = [
+    public const CATEGORY_1_ARRAY = [
         'ID' => 1,
         'Text' => 'testCategory',
         'Selected' => 'no',
     ];
-    const CATEGORY_2_ARRAY = [
+    public const CATEGORY_2_ARRAY = [
         'ID' => 2,
         'Text' => 'testCategory2',
         'Selected' => 'yes',
@@ -83,11 +83,11 @@ class CategoryRepositoryTest extends UnitTestCase
             // TODO: set correct ids like the API does
             [
                 'type' => 'categorie',
-                'content'=> self::CATEGORY_1_ARRAY,
+                'content' => self::CATEGORY_1_ARRAY,
             ],
             [
                 'type' => 'categorie',
-                'content'=> self::CATEGORY_2_ARRAY,
+                'content' => self::CATEGORY_2_ARRAY,
             ],
         ]);
 
@@ -154,7 +154,7 @@ class CategoryRepositoryTest extends UnitTestCase
 
                 return [[
                     'type' => 'categorie',
-                    'content'=> $cat,
+                    'content' => $cat,
                 ]];
             }
         );
@@ -211,7 +211,5 @@ class CategoryRepositoryTest extends UnitTestCase
         self::assertEquals($exp, $act);
     }
 
-    public function testGetAllCategoriesForStructureAndEvent()
-    {
-    }
+    public function testGetAllCategoriesForStructureAndEvent() {}
 }

@@ -2,6 +2,7 @@
 
 namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
+use Exception;
 use ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser;
 use ScoutNet\ShScoutnetWebservice\Domain\Model\Structure;
 
@@ -40,14 +41,14 @@ class StructureRepository extends AbstractScoutnetRepository
     public const AUTH_PENDING = 2;
 
     /**
-     * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure[]
+     * @var Structure[]
      */
     protected $structure_cache = [];
 
     /**
      * @param array|int $ids can be both a list of IDs or one single ID
      *
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure[]
+     * @return Structure[]
      * @deprecated
      */
     public function findKalenderByGlobalid($ids): array
@@ -68,7 +69,7 @@ class StructureRepository extends AbstractScoutnetRepository
      *
      * @param int[] $uids
      *
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure[]
+     * @return Structure[]
      */
     public function findByUids(array $uids): array
     {
@@ -100,7 +101,7 @@ class StructureRepository extends AbstractScoutnetRepository
      *
      * @param int $uid
      *
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure
+     * @return Structure
      */
     public function findByUid(int $uid): Structure
     {
@@ -112,7 +113,7 @@ class StructureRepository extends AbstractScoutnetRepository
      * @param BackendUser|null $be_user    If user is not set, we use current logged in User
      *
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function hasWritePermissionsToStructure(Structure $structure, BackendUser $be_user = null)
     {
@@ -131,7 +132,7 @@ class StructureRepository extends AbstractScoutnetRepository
      * @param BackendUser|null $be_user
      *
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function requestWritePermissionsForStructure(Structure $structure, BackendUser $be_user = null)
     {
@@ -145,9 +146,9 @@ class StructureRepository extends AbstractScoutnetRepository
     }
 
     /**
-     * @param $array
+     * @param array $array
      *
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure
+     * @return Structure
      */
     public function convertToStructure(array $array): Structure
     {

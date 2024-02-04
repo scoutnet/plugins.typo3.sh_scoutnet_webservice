@@ -28,7 +28,7 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Model;
 /**
  * Model for backend user
  */
-class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser
+class BackendUser
 {
     /**
      * @var string

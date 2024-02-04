@@ -2,6 +2,8 @@
 
 namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,4 +26,4 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository {}
+class BackendUserRepository extends Repository {}

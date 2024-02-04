@@ -28,16 +28,3 @@ return [
         ],
     ],
 ];
-
-//config.tx_extbase.persistence.classes{
-//    TYPO3\CMS\Extbase\Domain\Model\BackendUser {
-//        subclasses {
-//            BackendUser = ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser
-//		}
-//	}
-//	ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser {
-//        mapping {
-//            tableName = be_users
-//		}
-//	}
-//}

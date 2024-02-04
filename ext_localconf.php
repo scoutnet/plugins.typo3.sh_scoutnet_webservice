@@ -1,9 +1,6 @@
 <?php
 
-if (!defined ('TYPO3_MODE')) {
- 	die ('Access denied.');
-}
-
+defined ('TYPO3') || die ('Access denied.');
 
 // add converter for our objects
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter('ScoutNet\ShScoutnetWebservice\Property\TypeConverter\EventConverter');

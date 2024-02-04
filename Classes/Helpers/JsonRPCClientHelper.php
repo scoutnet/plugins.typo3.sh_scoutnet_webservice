@@ -47,26 +47,26 @@ class JsonRPCClientHelper
      *
      * @var bool
      */
-    private $debugOutput;
+    private bool $debugOutput;
 
     /**
      * The server URL
      *
      * @var string
      */
-    private $url;
+    private string $url;
     /**
      * The request id
      *
      * @var int
      */
-    private $id;
+    private int $request_id;
     /**
      * If true, notifications are performed instead of requests
      *
      * @var bool
      */
-    private $notification = false;
+    private bool $notification = false;
 
     /**
      * Takes the connection parameters
@@ -80,7 +80,7 @@ class JsonRPCClientHelper
         $this->url = $url;
         $this->debugOutput = $debug;
         // message id
-        $this->id = 1;
+        $this->request_id = 1;
     }
 
     /**
@@ -88,7 +88,7 @@ class JsonRPCClientHelper
      *
      * @param bool $notification
      */
-    public function setRPCNotification(bool $notification)
+    public function setRPCNotification(bool $notification): void
     {
         empty($notification) ? $this->notification = false : $this->notification = true;
     }
@@ -97,38 +97,24 @@ class JsonRPCClientHelper
      * Performs a jsonRCP request and gets the results as an array
      *
      * @param string $method
-     * @param array  $params
+     * @param array $params
      *
      * @return array|bool
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException
-     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException
-     * @noinspection PhpComposerExtensionStubsInspection
+     * @throws ScoutNetException
      */
     public function __call(string $method, array $params)
     {
         $debug = '';
 
-        // check
-        if (!is_scalar($method)) {
-            // only possible if someone calls __call directly
-            throw new InvalidArgumentValueException('Method name has no scalar value', 1572203129);
-        }
-
-        // check
-        if (is_array($params)) {
-            // no keys
-            $params = array_values($params);
-        } else {
-            // only possible if someone calls __call directly
-            throw new InvalidArgumentValueException('Params must be given as array', 1572203170);
-        }
+        // no keys
+        $params = array_values($params);
 
         // sets notification or request task
         if ($this->notification) {
             $currentId = null;
         } else {
-            $currentId = $this->id;
-            $this->id += 1;
+            $currentId = $this->request_id;
+            ++$this->request_id;
         }
 
         // prepares the request
@@ -206,10 +192,10 @@ class JsonRPCClientHelper
         // final checks and return
         if (!$this->notification) {
             // check
-            if ($response['id'] != $currentId) {
+            if ((int)$response['id'] !== $currentId) {
                 throw new ScoutNetException('Incorrect response id (request id: ' . $currentId . ', response id: ' . $response['id'] . ')', 1572203283);
             }
-            if (isset($response['error']) && !is_null($response['error'])) {
+            if (isset($response['error'])) {
                 if (is_array($response['error'])) {
                     throw new ScoutNetException('Request error: ' . $response['error']['message'] . ' (' . $response['error']['code'] . ')', 1572203301);
                 }

@@ -35,16 +35,6 @@ use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 class StructureConverter extends PersistentObjectConverter
 {
     /**
-     * @var string
-     */
-    protected $targetType = Structure::class;
-
-    /**
-     * @var int
-     */
-    protected $priority = 1;
-
-    /**
      * Fetch an object from persistence layer.
      *
      * @param mixed  $identity

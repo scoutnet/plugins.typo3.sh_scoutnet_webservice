@@ -17,3 +17,17 @@ services:
     public: true
   ScoutNet\ShScoutnetWebservice\Domain\Repository\UserRepository:
     public: true
+
+  ScoutNet\ShScoutnetWebservice\Property\TypeConverter\EventConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 1
+        target: ScoutNet\ShScoutnetWebservice\Domain\Model\Event
+        sources: boolean,string
+
+  ScoutNet\ShScoutnetWebservice\Property\TypeConverter\StructureConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 1
+        target: ScoutNet\ShScoutnetWebservice\Domain\Model\Structure
+        sources: boolean,string

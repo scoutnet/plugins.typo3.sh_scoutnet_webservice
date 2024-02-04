@@ -35,16 +35,6 @@ use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 class EventConverter extends PersistentObjectConverter
 {
     /**
-     * @var string
-     */
-    protected $targetType = Event::class;
-
-    /**
-     * @var int
-     */
-    protected $priority = 1;
-
-    /**
      * Fetch an object from persistence layer.
      *
      * @param mixed  $identity

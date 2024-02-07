@@ -74,6 +74,12 @@ Set up new Run Configuration for `Functional Tests`:
  
 Happy Testing
 
+#### Without docker:
+CGL Test: `.Build/bin/php-cs-fixer fix -v --dry-run --diff --config=.Build/vendor/typo3/coding-standards/templates/extension
+_php-cs-fixer.dist.php  --using-cache=no Classes/ Resources/ Tests/`
+
+Unit Test: `.Build/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml Tests/Unit`
+
 ### Update
 
 #### 1.x->3.0

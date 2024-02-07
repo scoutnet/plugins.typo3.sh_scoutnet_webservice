@@ -71,7 +71,6 @@
 			"dev-typo3_v9": "3.x-dev"
 		},
 		"typo3/cms": {
-			"app-dir": ".Build",
 			"cms-package-dir": "{$vendor-dir}/typo3/cms",
 			"web-dir": ".Build/Web",
 			"extension-key": "sh_scoutnet_webservice"

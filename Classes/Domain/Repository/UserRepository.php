@@ -35,12 +35,12 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException;
  */
 class UserRepository extends AbstractScoutnetRepository
 {
-    private $user_cache = [];
+    private array $user_cache = [];
 
     /**
      * @param int $uid
      *
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException
+     * @throws UnsupportedMethodException
      */
     public function findByUid(int $uid)
     {
@@ -50,7 +50,7 @@ class UserRepository extends AbstractScoutnetRepository
     /**
      * @param string $username
      *
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\User
+     * @return User|null
      */
     public function findByUsername(string $username): ?User
     {
@@ -60,7 +60,7 @@ class UserRepository extends AbstractScoutnetRepository
     /**
      * @param array $array
      *
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\User
+     * @return User
      */
     public function convertToUser(array $array): User
     {

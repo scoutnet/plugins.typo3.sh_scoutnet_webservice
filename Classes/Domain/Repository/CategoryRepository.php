@@ -31,14 +31,14 @@ use ScoutNet\ShScoutnetWebservice\Domain\Model\Structure;
  ***************************************************************/
 class CategoryRepository extends AbstractScoutnetRepository
 {
-    protected $categoriesCache = [];
+    protected array $categoriesCache = [];
 
     /**
      * checks if Category with UID is in Cache, otherwise loads category from Scoutnet API
      *
      * @param int $uid
      *
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Category|null
+     * @return Category|null
      */
     public function findByUid(int $uid): ?Category
     {
@@ -63,7 +63,7 @@ class CategoryRepository extends AbstractScoutnetRepository
     /**
      * Loads All Categories from Scoutnet API, regardless of local cache, but updates Cache in the Process
      *
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Category[]
+     * @return Category[]
      */
     public function findAll(): array
     {
@@ -83,8 +83,8 @@ class CategoryRepository extends AbstractScoutnetRepository
     }
 
     /**
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure $structure
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Event     $event
+     * @param Structure $structure
+     * @param Event $event
      *
      * @return mixed
      */
@@ -116,7 +116,7 @@ class CategoryRepository extends AbstractScoutnetRepository
      * Checks if the Category is used by the event and if so, marks the Category as available
      *
      * @param array                                             $array
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event
+     * @param Event $event
      *
      * @return Category[] List of all Categories
      */
@@ -141,7 +141,7 @@ class CategoryRepository extends AbstractScoutnetRepository
      *
      * @param array $array
      *
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Category
+     * @return Category
      */
     public function convertToCategory(array $array): Category
     {

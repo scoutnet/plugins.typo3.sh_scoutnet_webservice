@@ -40,8 +40,8 @@ class EventConverter extends PersistentObjectConverter
      * @param string $targetType
      *
      * @return object
-     * @throws \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException
-     * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
+     * @throws TargetNotFoundException
+     * @throws InvalidSourceException
      */
     protected function fetchObjectFromPersistence($identity, string $targetType): object
     {
@@ -53,8 +53,7 @@ class EventConverter extends PersistentObjectConverter
 
             try {
                 $object = $eventRepository->findByUid($identity);
-            } catch (Exception $e) {
-                $object = null;
+            } catch (Exception) {
             }
         } else {
             throw new InvalidSourceException('The identity property "' . $identity . '" is no UID.', 1297931020);

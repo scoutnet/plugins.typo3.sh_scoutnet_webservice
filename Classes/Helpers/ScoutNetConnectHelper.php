@@ -92,7 +92,7 @@ class ScoutNetConnectHelper
      *
      * @throws ScoutNetExceptionMissingConfVar
      */
-    private function _checkConfigValues(array $config)
+    private function _checkConfigValues(array $config): void
     {
         $configVars = ['AES_key', 'AES_iv', 'ScoutnetLoginPage', 'ScoutnetProviderName'];
 

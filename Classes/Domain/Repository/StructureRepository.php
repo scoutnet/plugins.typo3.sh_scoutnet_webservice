@@ -43,7 +43,7 @@ class StructureRepository extends AbstractScoutnetRepository
     /**
      * @var Structure[]
      */
-    protected $structure_cache = [];
+    protected array $structure_cache = [];
 
     /**
      * @param array|int $ids can be both a list of IDs or one single ID
@@ -115,7 +115,7 @@ class StructureRepository extends AbstractScoutnetRepository
      * @return mixed
      * @throws Exception
      */
-    public function hasWritePermissionsToStructure(Structure $structure, BackendUser $be_user = null)
+    public function hasWritePermissionsToStructure(Structure $structure, BackendUser $be_user = null): mixed
     {
         if ($be_user === null) {
             $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user['uid']);
@@ -134,7 +134,7 @@ class StructureRepository extends AbstractScoutnetRepository
      * @return mixed
      * @throws Exception
      */
-    public function requestWritePermissionsForStructure(Structure $structure, BackendUser $be_user = null)
+    public function requestWritePermissionsForStructure(Structure $structure, BackendUser $be_user = null): mixed
     {
         if ($be_user === null) {
             $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user['uid']);

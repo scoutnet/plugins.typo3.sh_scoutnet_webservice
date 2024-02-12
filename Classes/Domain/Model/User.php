@@ -39,28 +39,28 @@ class User extends AbstractEntity
      * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
      * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=80)
      */
-    protected $username = '';
+    protected string $username = '';
 
     /**
      * @var string
      * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
      * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=80)
      */
-    protected $firstName = '';
+    protected string $firstName = '';
 
     /**
      * @var string
      * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
      * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=80)
      */
-    protected $lastName = '';
+    protected string $lastName = '';
 
     /**
      * @var string
      * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
      * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=1, maximum=80)
      */
-    protected $sex = '';
+    protected string $sex = '';
 
     /**
      * @return string
@@ -73,7 +73,7 @@ class User extends AbstractEntity
     /**
      * @param string $username
      */
-    public function setUsername(string $username)
+    public function setUsername(string $username): void
     {
         $this->username = $username;
     }
@@ -86,7 +86,7 @@ class User extends AbstractEntity
     /**
      * @param string $firstName
      */
-    public function setFirstName(string $firstName)
+    public function setFirstName(string $firstName): void
     {
         $this->firstName = $firstName;
     }
@@ -102,7 +102,7 @@ class User extends AbstractEntity
     /**
      * @param string $lastName
      */
-    public function setLastName(string $lastName)
+    public function setLastName(string $lastName): void
     {
         $this->lastName = $lastName;
     }
@@ -118,7 +118,7 @@ class User extends AbstractEntity
     /**
      * @param string $sex
      */
-    public function setSex(string $sex)
+    public function setSex(string $sex): void
     {
         $this->sex = $sex;
     }

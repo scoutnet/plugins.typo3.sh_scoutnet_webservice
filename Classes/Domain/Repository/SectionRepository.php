@@ -35,15 +35,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SectionRepository extends AbstractScoutnetRepository
 {
-    private $section_cache = [];
-    private $section_cache_uid = [];
+    private array $section_cache = [];
+    private array $section_cache_uid = [];
 
     /**
      * It searches for UIDs
      *
      * @param int $uid
      *
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Section|null returns Null if Section is not cached
+     * @return Section|null returns Null if Section is not cached
      */
     public function findByUid(int $uid): ?Section
     {
@@ -55,7 +55,7 @@ class SectionRepository extends AbstractScoutnetRepository
     /**
      * @param int $categoryId
      *
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Section|null returns Null if Section is not cached
+     * @return Section|null returns Null if Section is not cached
      */
     public function findByCategoryId(int $categoryId): ?Section
     {
@@ -67,11 +67,11 @@ class SectionRepository extends AbstractScoutnetRepository
      *
      * @param array $array
      *
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Section
+     * @return Section
      */
     public function convertToSection(array $array): Section
     {
-        /** @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\CategoryRepository $categoryRepository */
+        /** @var CategoryRepository $categoryRepository */
         $categoryRepository = GeneralUtility::makeInstance(CategoryRepository::class);
         $category = $categoryRepository->findByUid($array['Keywords_ID']);
 

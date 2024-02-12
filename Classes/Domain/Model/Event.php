@@ -40,113 +40,113 @@ class Event extends AbstractEntity
      * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
      * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=80)
      */
-    protected $title;
+    protected string $title;
 
     /**
      * @var string
      * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=255)
      */
-    protected $organizer;
+    protected string $organizer;
 
     /**
      * @var string
      * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=255)
      */
-    protected $targetGroup;
+    protected string $targetGroup;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
      */
-    protected $startDate;
+    protected DateTime $startDate;
     /**
      * @var string
      */
-    protected $startTime;
+    protected string $startTime;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
-    protected $endDate;
+    protected DateTime $endDate;
     /**
      * @var string
      */
-    protected $endTime;
+    protected string $endTime;
 
     /**
      * @var string
      * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=3, maximum=255)
      */
-    protected $zip;
+    protected string $zip;
 
     /**
      * @var string
      * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=2, maximum=255)
      */
-    protected $location;
+    protected string $location;
 
     /**
      * @var string
      * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=3, maximum=255)
      */
-    protected $urlText;
+    protected string $urlText;
 
     /**
      * @var string
      * @TYPO3\\CMS\\Extbase\\Annotation\\Validate StringLength(minimum=3, maximum=255)
      */
-    protected $url;
+    protected string $url;
 
     /**
      * @var string
      */
-    protected $description;
+    protected string $description;
 
     /**
-     * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Section[]
+     * @var Section[]
      */
-    protected $sections = [];
+    protected array $sections = [];
 
     /**
-     * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Category[]
+     * @var Category[]
      */
-    protected $categories = [];
+    protected array $categories = [];
 
     /**
      * Kalender
      *
-     * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure
+     * @var Structure
      * @TYPO3\\CMS\\Extbase\\Annotation\\Validate NotEmpty
      */
-    protected $structure;
+    protected Structure $structure;
 
     /**
      * changedBy
      *
-     * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\User
+     * @var User
      */
-    protected $changedBy;
+    protected User $changedBy;
 
     /**
      * changedBy
      *
-     * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\User
+     * @var User
      */
-    protected $createdBy;
+    protected User $createdBy;
 
     /**
      * createdAt
      *
-     * @var \DateTime
+     * @var DateTime
      */
-    protected $createdAt;
+    protected DateTime $createdAt;
 
     /**
      * changedAt
      *
-     * @var \DateTime
+     * @var DateTime
      */
-    protected $changedAt;
+    protected DateTime $changedAt;
 
     /**
      * @return string
@@ -159,7 +159,7 @@ class Event extends AbstractEntity
     /**
      * @param string $title
      */
-    public function setTitle(string $title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
@@ -175,7 +175,7 @@ class Event extends AbstractEntity
     /**
      * @param string $organizer
      */
-    public function setOrganizer(string $organizer)
+    public function setOrganizer(string $organizer): void
     {
         $this->organizer = $organizer;
     }
@@ -191,13 +191,13 @@ class Event extends AbstractEntity
     /**
      * @param string $targetGroup
      */
-    public function setTargetGroup(string $targetGroup)
+    public function setTargetGroup(string $targetGroup): void
     {
         $this->targetGroup = $targetGroup;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime|null
      */
     public function getStartDate(): ?DateTime
     {
@@ -205,15 +205,15 @@ class Event extends AbstractEntity
     }
 
     /**
-     * @param \DateTime $startDate
+     * @param DateTime $startDate
      */
-    public function setStartDate(DateTime $startDate)
+    public function setStartDate(DateTime $startDate): void
     {
         $this->startDate = $startDate;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getStartTime(): ?string
     {
@@ -223,13 +223,13 @@ class Event extends AbstractEntity
     /**
      * @param string|null $startTime
      */
-    public function setStartTime(?string $startTime)
+    public function setStartTime(?string $startTime): void
     {
         $this->startTime = $startTime;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime|null
      */
     public function getEndDate(): ?DateTime
     {
@@ -237,15 +237,15 @@ class Event extends AbstractEntity
     }
 
     /**
-     * @param \DateTime|null $endDate
+     * @param DateTime|null $endDate
      */
-    public function setEndDate(?DateTime $endDate)
+    public function setEndDate(?DateTime $endDate): void
     {
         $this->endDate = $endDate;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getEndTime(): ?string
     {
@@ -255,7 +255,7 @@ class Event extends AbstractEntity
     /**
      * @param string|null $endTime
      */
-    public function setEndTime(?string $endTime)
+    public function setEndTime(?string $endTime): void
     {
         $this->endTime = $endTime;
     }
@@ -271,7 +271,7 @@ class Event extends AbstractEntity
     /**
      * @param string $zip
      */
-    public function setZip(string $zip)
+    public function setZip(string $zip): void
     {
         $this->zip = $zip;
     }
@@ -287,7 +287,7 @@ class Event extends AbstractEntity
     /**
      * @param string $location
      */
-    public function setLocation(string $location)
+    public function setLocation(string $location): void
     {
         $this->location = $location;
     }
@@ -303,7 +303,7 @@ class Event extends AbstractEntity
     /**
      * @param string $urlText
      */
-    public function setUrlText(string $urlText)
+    public function setUrlText(string $urlText): void
     {
         $this->urlText = $urlText;
     }
@@ -319,7 +319,7 @@ class Event extends AbstractEntity
     /**
      * @param string $url
      */
-    public function setUrl(string $url)
+    public function setUrl(string $url): void
     {
         $this->url = $url;
     }
@@ -335,13 +335,13 @@ class Event extends AbstractEntity
     /**
      * @param string $description
      */
-    public function setDescription(string $description)
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
     /**
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure
+     * @return Structure|null
      */
     public function getStructure(): ?Structure
     {
@@ -349,15 +349,15 @@ class Event extends AbstractEntity
     }
 
     /**
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Structure $structure
+     * @param Structure $structure
      */
-    public function setStructure(Structure $structure)
+    public function setStructure(Structure $structure): void
     {
         $this->structure = $structure;
     }
 
     /**
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\User
+     * @return User|null
      */
     public function getChangedBy(): ?User
     {
@@ -365,15 +365,15 @@ class Event extends AbstractEntity
     }
 
     /**
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\User $changedBy
+     * @param User $changedBy
      */
-    public function setChangedBy(User $changedBy)
+    public function setChangedBy(User $changedBy): void
     {
         $this->changedBy = $changedBy;
     }
 
     /**
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\User
+     * @return User|null
      */
     public function getCreatedBy(): ?User
     {
@@ -381,15 +381,15 @@ class Event extends AbstractEntity
     }
 
     /**
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\User $createdBy
+     * @param User $createdBy
      */
-    public function setCreatedBy(User $createdBy)
+    public function setCreatedBy(User $createdBy): void
     {
         $this->createdBy = $createdBy;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime|null
      */
     public function getCreatedAt(): ?DateTime
     {
@@ -397,15 +397,15 @@ class Event extends AbstractEntity
     }
 
     /**
-     * @param \DateTime $createdAt
+     * @param DateTime $createdAt
      */
-    public function setCreatedAt(DateTime $createdAt)
+    public function setCreatedAt(DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getChangedAt(): DateTime
     {
@@ -413,9 +413,9 @@ class Event extends AbstractEntity
     }
 
     /**
-     * @param \DateTime $changedAt
+     * @param DateTime $changedAt
      */
-    public function setChangedAt(DateTime $changedAt)
+    public function setChangedAt(DateTime $changedAt): void
     {
         $this->changedAt = $changedAt;
     }
@@ -431,21 +431,21 @@ class Event extends AbstractEntity
     /**
      * @param array $categories
      */
-    public function setCategories(array $categories)
+    public function setCategories(array $categories): void
     {
         $this->categories = $categories;
     }
 
     /**
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Category $category
+     * @param Category $category
      */
-    public function addCategory(Category $category)
+    public function addCategory(Category $category): void
     {
         $this->categories[$category->getUid()] = $category;
     }
 
     /**
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\User|null
+     * @return User|null
      * @deprecated
      */
     public function getAuthor(): ?User
@@ -457,7 +457,7 @@ class Event extends AbstractEntity
     }
 
     /**
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Section[]
+     * @return Section[]
      * @deprecated
      */
     public function getStufen(): array
@@ -466,25 +466,25 @@ class Event extends AbstractEntity
     }
 
     /**
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Section[] $sections
+     * @param Section[] $sections
      * @deprecated
      */
-    public function setStufen(array $sections)
+    public function setStufen(array $sections): void
     {
         $this->setSections($sections);
     }
 
     /**
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Section $stufe
+     * @param Section $stufe
      * @deprecated
      */
-    public function addStufe(Section $stufe)
+    public function addStufe(Section $stufe): void
     {
         $this->addSection($stufe);
     }
 
     /**
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Section[]
+     * @return Section[]
      */
     public function getSections(): array
     {
@@ -492,17 +492,17 @@ class Event extends AbstractEntity
     }
 
     /**
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Section[] $sections
+     * @param Section[] $sections
      */
-    public function setSections(array $sections)
+    public function setSections(array $sections): void
     {
         $this->sections = $sections;
     }
 
     /**
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Section $section
+     * @param Section $section
      */
-    public function addSection(Section $section)
+    public function addSection(Section $section): void
     {
         $this->sections[] = $section;
     }
@@ -552,7 +552,7 @@ class Event extends AbstractEntity
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getStartTimestamp(): DateTime
     {
@@ -566,7 +566,7 @@ class Event extends AbstractEntity
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getEndTimestamp(): DateTime
     {
@@ -641,7 +641,7 @@ class Event extends AbstractEntity
     /**
      * @param int $uid
      */
-    public function setUid(int $uid)
+    public function setUid(int $uid): void
     {
         $this->uid = $uid;
     }
@@ -649,7 +649,7 @@ class Event extends AbstractEntity
     /**
      * @param Event $event
      */
-    public function copyProperties(Event $event)
+    public function copyProperties(Event $event): void
     {
         $copyProperties = [ 'title', 'organizer', 'targetGroup', 'startDate', 'startTime', 'endDate', 'endTime', 'zip', 'location', 'urlText', 'url', 'description', 'structure', 'categories'];
 

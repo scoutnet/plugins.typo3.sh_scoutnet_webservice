@@ -3,6 +3,7 @@
 namespace ScoutNet\ShScoutnetWebservice\Helpers;
 
 use DateTime;
+use Exception;
 use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException;
 use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -43,7 +44,7 @@ class AuthHelper
      * Stores the Login Data
      * @var array
      */
-    private $snData;
+    private array $snData;
 
     public const UNSECURE_START_IV = '1234567890123456';
 
@@ -51,8 +52,8 @@ class AuthHelper
      * @param string $data
      *
      * @return array|mixed
-     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar
-     * @throws \Exception
+     * @throws ScoutNetExceptionMissingConfVar
+     * @throws Exception
      */
     public function getApiKeyFromData(string $data): ?array
     {
@@ -79,7 +80,7 @@ class AuthHelper
 
         $data = json_decode(substr($aes->decrypt($base64), strlen($iv)), true);
 
-        if ($data === null || !is_array($data)) {
+        if (!is_array($data)) {
             throw new ScoutNetException('the auth is broken', 1608717350);
         }
 
@@ -118,9 +119,9 @@ class AuthHelper
     /**
      * @param array $extConfig
      *
-     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar
+     * @throws ScoutNetExceptionMissingConfVar
      */
-    private function _checkConfigValues(array $extConfig)
+    private function _checkConfigValues(array $extConfig): void
     {
         $configVars = ['AES_key', 'AES_iv', 'ScoutnetLoginPage', 'ScoutnetProviderName'];
 
@@ -142,7 +143,7 @@ class AuthHelper
      * @param string $checkValue
      *
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     public function generateAuth(string $api_key, string $checkValue): string
     {
@@ -165,7 +166,6 @@ class AuthHelper
         $random = GeneralUtility::makeInstance(Random::class);
         $first_block = $random->generateRandomBytes(16);
 
-        $auth = strtr(base64_encode($aes->encrypt($first_block . $auth)), '+/=', '-_~');
-        return $auth;
+        return strtr(base64_encode($aes->encrypt($first_block . $auth)), '+/=', '-_~');
     }
 }

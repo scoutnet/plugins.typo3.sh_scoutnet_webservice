@@ -3,6 +3,8 @@
 namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
 use DateTime;
+use Exception;
+use ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser;
 use ScoutNet\ShScoutnetWebservice\Domain\Model\Event;
 use ScoutNet\ShScoutnetWebservice\Domain\Model\Structure;
 
@@ -37,38 +39,38 @@ use ScoutNet\ShScoutnetWebservice\Domain\Model\Structure;
 class EventRepository extends AbstractScoutnetRepository
 {
     /**
-     * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\StructureRepository
+     * @var StructureRepository
      */
-    protected $structureRepository;
+    protected StructureRepository $structureRepository;
 
     /**
-     * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\CategoryRepository
+     * @var CategoryRepository
      */
-    protected $categoryRepository;
+    protected CategoryRepository $categoryRepository;
 
     /**
-     * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\UserRepository
+     * @var UserRepository
      */
-    protected $userRepository;
+    protected UserRepository $userRepository;
 
     /**
-     * @var \ScoutNet\ShScoutnetWebservice\Domain\Repository\SectionRepository
+     * @var SectionRepository
      */
-    protected $sectionRepository;
+    protected SectionRepository $sectionRepository;
 
     /**
      * Cache all events, key is UID
      * @var array
      */
-    private $event_cache = [];
+    private array $event_cache = [];
 
     /**
      * EventRepository constructor.
      *
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Repository\StructureRepository $kalenderRepository
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Repository\CategoryRepository  $categoryRepository
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Repository\UserRepository      $userRepository
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Repository\SectionRepository   $sectionRepository
+     * @param StructureRepository $kalenderRepository
+     * @param CategoryRepository $categoryRepository
+     * @param UserRepository $userRepository
+     * @param SectionRepository $sectionRepository
      */
     public function __construct(
         StructureRepository $kalenderRepository,
@@ -86,7 +88,7 @@ class EventRepository extends AbstractScoutnetRepository
      * @param Structure $structure
      * @param array                                                 $filter
      *
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Event[]
+     * @return Event[]
      */
     public function findByStructureAndFilter(Structure $structure, array $filter): array
     {
@@ -97,7 +99,7 @@ class EventRepository extends AbstractScoutnetRepository
      * @param Structure[] $structures
      * @param array $filter
      *
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Event[]
+     * @return Event[]
      */
     public function findByStructuresAndFilter(array $structures, array $filter): array
     {
@@ -110,7 +112,7 @@ class EventRepository extends AbstractScoutnetRepository
     /**
      * @param array $filter
      *
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Event[]
+     * @return Event[]
      */
     public function findByFilter(array $filter): array
     {
@@ -118,7 +120,7 @@ class EventRepository extends AbstractScoutnetRepository
     }
 
     /**
-     * @param $records
+     * @param array|null $records
      *
      * @return array
      */
@@ -147,7 +149,7 @@ class EventRepository extends AbstractScoutnetRepository
     /**
      * @param int $uid
      *
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Event
+     * @return Event
      */
     public function findByUid(int $uid): Event
     {
@@ -156,14 +158,14 @@ class EventRepository extends AbstractScoutnetRepository
     }
 
     /**
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event
+     * @param Event $event
      *
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
-    public function delete(Event $event)
+    public function delete(Event $event): mixed
     {
-        /** @var \ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser $be_user */
+        /** @var BackendUser $be_user */
         $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user['uid']);
 
         $type = 'event';
@@ -173,14 +175,14 @@ class EventRepository extends AbstractScoutnetRepository
     }
 
     /**
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event
+     * @param Event $event
      *
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
-    public function update(Event $event)
+    public function update(Event $event): mixed
     {
-        /** @var \ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser $be_user */
+        /** @var BackendUser $be_user */
         $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user['uid']);
 
         $data = $this->convertFromEvent($event);
@@ -192,14 +194,14 @@ class EventRepository extends AbstractScoutnetRepository
     }
 
     /**
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event
+     * @param Event $event
      *
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
-    public function add(Event $event)
+    public function add(Event $event): mixed
     {
-        /** @var \ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser $be_user */
+        /** @var BackendUser $be_user */
         $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user['uid']);
 
         $data = $this->convertFromEvent($event);
@@ -216,7 +218,7 @@ class EventRepository extends AbstractScoutnetRepository
      *
      * @param array $array
      *
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Event
+     * @return Event
      */
     public function convertToEvent(array $array): Event
     {
@@ -273,7 +275,7 @@ class EventRepository extends AbstractScoutnetRepository
     /**
      * Converts from Event Object to Api Data
      *
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Event $event
+     * @param Event $event
      *
      * @return array
      */

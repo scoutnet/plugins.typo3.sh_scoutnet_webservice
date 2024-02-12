@@ -37,36 +37,36 @@ class Structure extends AbstractEntity
     /**
      * @var string
      */
-    protected $level;
+    protected string $level;
     /**
      * @var string
      */
-    protected $name;
+    protected string $name;
     /**
      * @var string
      */
-    protected $verband;
+    protected string $verband;
     /**
      * @var string
      */
-    protected $ident;
+    protected string $ident;
     /**
      * @var int
      */
-    protected $levelId;
+    protected int $levelId;
     /**
      * @var array
      */
-    protected $usedCategories;
+    protected array $usedCategories;
     /**
      * @var array
      */
-    protected $forcedCategories;
+    protected array $forcedCategories;
 
     /**
      * @param int $uid
      */
-    public function setUid(int $uid)
+    public function setUid(int $uid): void
     {
         $this->uid = $uid;
     }
@@ -100,7 +100,7 @@ class Structure extends AbstractEntity
      * @param string $ebene
      * @deprecated
      */
-    public function setEbene(string $ebene)
+    public function setEbene(string $ebene): void
     {
         $this->setLevel($ebene);
     }
@@ -116,7 +116,7 @@ class Structure extends AbstractEntity
     /**
      * @param string $verband
      */
-    public function setVerband(string $verband)
+    public function setVerband(string $verband): void
     {
         $this->verband = $verband;
     }
@@ -132,7 +132,7 @@ class Structure extends AbstractEntity
     /**
      * @param string $ident
      */
-    public function setIdent(string $ident)
+    public function setIdent(string $ident): void
     {
         $this->ident = $ident;
     }
@@ -166,7 +166,7 @@ class Structure extends AbstractEntity
      * @param int $ebeneId
      * @deprecated
      */
-    public function setEbeneId(int $ebeneId)
+    public function setEbeneId(int $ebeneId): void
     {
         $this->setLevelId($ebeneId);
     }
@@ -182,7 +182,7 @@ class Structure extends AbstractEntity
     /**
      * @param array $usedCategories
      */
-    public function setUsedCategories(array $usedCategories)
+    public function setUsedCategories(array $usedCategories): void
     {
         $this->usedCategories = $usedCategories;
     }
@@ -198,7 +198,7 @@ class Structure extends AbstractEntity
     /**
      * @param array $forcedCategories
      */
-    public function setForcedCategories(array $forcedCategories)
+    public function setForcedCategories(array $forcedCategories): void
     {
         $this->forcedCategories = $forcedCategories;
     }
@@ -214,7 +214,7 @@ class Structure extends AbstractEntity
     /**
      * @param string $name
      */
-    public function setName(string $name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }

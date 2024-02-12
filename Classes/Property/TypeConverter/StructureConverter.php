@@ -55,8 +55,7 @@ class StructureConverter extends PersistentObjectConverter
 
             try {
                 $object = $structureRepository->findByUid($identity);
-            } catch (Exception $e) {
-                $object = null;
+            } catch (Exception) {
             }
         } else {
             throw new InvalidSourceException('The identity property "' . $identity . '" is no UID.', 1297931020);

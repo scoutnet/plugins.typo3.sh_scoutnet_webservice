@@ -39,37 +39,37 @@ class Section extends AbstractEntity
     /**
      * @var string
      */
-    protected $verband;
+    protected string $verband;
 
     /**
      * @var string
      */
-    protected $bezeichnung;
+    protected string $bezeichnung;
 
     /**
      * @var string
      */
-    protected $farbe;
+    protected string $farbe;
 
     /**
      * @var int
      */
-    protected $startalter;
+    protected int $startalter;
 
     /**
      * @var int
      */
-    protected $endalter;
+    protected int $endalter;
 
     /**
-     * @var \ScoutNet\ShScoutnetWebservice\Domain\Model\Category
+     * @var Category
      */
-    protected $category;
+    protected Category $category;
 
     /**
      * @param int $uid
      */
-    public function setUid(int $uid)
+    public function setUid(int $uid): void
     {
         $this->uid = $uid;
     }
@@ -85,7 +85,7 @@ class Section extends AbstractEntity
     /**
      * @param string $verband
      */
-    public function setVerband(string $verband)
+    public function setVerband(string $verband): void
     {
         $this->verband = $verband;
     }
@@ -101,7 +101,7 @@ class Section extends AbstractEntity
     /**
      * @param string $bezeichnung
      */
-    public function setBezeichnung(string $bezeichnung)
+    public function setBezeichnung(string $bezeichnung): void
     {
         $this->bezeichnung = $bezeichnung;
     }
@@ -117,7 +117,7 @@ class Section extends AbstractEntity
     /**
      * @param string $farbe
      */
-    public function setFarbe(string $farbe)
+    public function setFarbe(string $farbe): void
     {
         $this->farbe = $farbe;
     }
@@ -133,7 +133,7 @@ class Section extends AbstractEntity
     /**
      * @param int $startalter
      */
-    public function setStartalter(int $startalter)
+    public function setStartalter(int $startalter): void
     {
         $this->startalter = $startalter;
     }
@@ -149,13 +149,13 @@ class Section extends AbstractEntity
     /**
      * @param int $endalter
      */
-    public function setEndalter(int $endalter)
+    public function setEndalter(int $endalter): void
     {
         $this->endalter = $endalter;
     }
 
     /**
-     * @return \ScoutNet\ShScoutnetWebservice\Domain\Model\Category
+     * @return Category|null
      */
     public function getCategory(): ?Category
     {
@@ -163,7 +163,7 @@ class Section extends AbstractEntity
     }
 
     /**
-     * @param \ScoutNet\ShScoutnetWebservice\Domain\Model\Category $category
+     * @param Category $category
      */
     public function setCategory(Category $category): void
     {
@@ -183,7 +183,7 @@ class Section extends AbstractEntity
      * @param int $categoryId
      * @deprecated
      */
-    public function setCategorieId(int $categoryId)
+    public function setCategorieId(int $categoryId): void
     {
         /** @var CategoryRepository $categoryRepository */
         $categoryRepository = GeneralUtility::makeInstance(CategoryRepository::class);

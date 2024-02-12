@@ -29,17 +29,17 @@ class Category
     /**
      * @var int
      */
-    protected $uid;
+    protected int $uid;
 
     /**
      * @var string
      */
-    protected $text;
+    protected string $text;
 
     /**
      * @var bool
      */
-    protected $available;
+    protected bool $available;
 
     /**
      * @return int
@@ -52,7 +52,7 @@ class Category
     /**
      * @param int $uid
      */
-    public function setUid(int $uid)
+    public function setUid(int $uid): void
     {
         $this->uid = $uid;
     }
@@ -68,7 +68,7 @@ class Category
     /**
      * @param string $text
      */
-    public function setText(string $text)
+    public function setText(string $text): void
     {
         $this->text = $text;
     }
@@ -84,7 +84,7 @@ class Category
     /**
      * @param bool $available
      */
-    public function setAvailable(bool $available)
+    public function setAvailable(bool $available): void
     {
         $this->available = $available;
     }

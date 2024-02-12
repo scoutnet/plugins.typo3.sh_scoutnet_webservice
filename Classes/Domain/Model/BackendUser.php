@@ -33,12 +33,12 @@ class BackendUser
     /**
      * @var string
      */
-    protected $scoutnetUsername = '';
+    protected string $scoutnetUsername = '';
 
     /**
      * @var string
      */
-    protected $scoutnetApikey = '';
+    protected string $scoutnetApikey = '';
 
     /**
      * @return string

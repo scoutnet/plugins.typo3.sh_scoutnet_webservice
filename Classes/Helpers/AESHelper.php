@@ -35,14 +35,14 @@ use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException;
 class AESHelper
 {
     // The number of 32-bit words comprising the plaintext and columns comprising the state matrix of an AES cipher.
-    private static $Nb = 4;
+    private static int $Nb = 4;
     // The number of 32-bit words comprising the cipher key in this AES cipher.
-    private $Nk;
+    private int $Nk;
     // The number of rounds in this AES cipher.
-    private $Nr;
+    private int $Nr;
 
     // The S-Box substitution table.
-    private static $sBox = [
+    private static array $sBox = [
         0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5,
         0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
         0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0,
@@ -78,7 +78,7 @@ class AESHelper
     ];
 
     // The inverse S-Box substitution table.
-    private static $invSBox = [
+    private static array $invSBox = [
         0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38,
         0xbf, 0x40, 0xa3, 0x9e, 0x81, 0xf3, 0xd7, 0xfb,
         0x7c, 0xe3, 0x39, 0x82, 0x9b, 0x2f, 0xff, 0x87,
@@ -114,7 +114,7 @@ class AESHelper
     ];
 
     // Log table based on 0xe5
-    private static $ltable = [
+    private static array $ltable = [
         0x00, 0xff, 0xc8, 0x08, 0x91, 0x10, 0xd0, 0x36,
         0x5a, 0x3e, 0xd8, 0x43, 0x99, 0x77, 0xfe, 0x18,
         0x23, 0x20, 0x07, 0x70, 0xa1, 0x6c, 0x0c, 0x7f,
@@ -150,7 +150,7 @@ class AESHelper
     ];
 
     // Inverse log table
-    private static $atable = [
+    private static array $atable = [
         0x01, 0xe5, 0x4c, 0xb5, 0xfb, 0x9f, 0xfc, 0x12,
         0x03, 0x34, 0xd4, 0xc4, 0x16, 0xba, 0x1f, 0x36,
         0x05, 0x5c, 0x67, 0x57, 0x3a, 0xd5, 0x21, 0x5a,
@@ -186,26 +186,30 @@ class AESHelper
     ];
 
     // The key schedule in this AES cipher.
-    private $w;
+    private array $w;
     // The state matrix in this AES cipher with Nb columns and 4 rows
-    private $s;
+    private array $s;
     // Determines the length of key z
     //private $keyLength;
 
-    private $mode;
-    private $iv = [];
+    private string $mode;
+    private array $iv = [];
 
     /**
      * constructs an AES cipher using a specific key.
      *
-     * @param string $z
-     * @param string $mode
-     * @param string $iv
+     * @param string $z    key
+     * @param string $mode AES Mode
+     * @param string $iv   Initialisation Vector
      *
-     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException
+     * @throws ScoutNetException
      */
     public function __construct(string $z, string $mode = 'ECB', string $iv = '1234567890123456')
     {
+        if (strlen($z) % 4 != 0) {
+            throw new ScoutNetException('Key is ' . (strlen($z) * 8) . ' bits long. *not* 128, 192, or 256.', 1572194460);
+        }
+
         $this->Nk = strlen($z) / 4;
         $this->Nr = $this->Nk + self::$Nb + 2;
 
@@ -354,7 +358,7 @@ class AESHelper
 
     /** Decrypts the 16-byte cipher text.
      *
-     * @param string 16-byte ciphertext
+     * @param string $y 16-byte ciphertext
      *
      * @return string 16-byte plaintext
      **/
@@ -422,7 +426,7 @@ class AESHelper
      *
      * @param string $z
      */
-    private function KeyExpansion(string $z)
+    private function KeyExpansion(string $z): void
     {
         // Rcon is the round constant
         static $Rcon = [
@@ -478,7 +482,7 @@ class AESHelper
      *
      * @param int $round
      */
-    private function addRoundKey(int $round)
+    private function addRoundKey(int $round): void
     {
         for ($i = 0; $i < 4; $i++) {
             for ($j = 0; $j < self::$Nb; $j++) {
@@ -497,7 +501,7 @@ class AESHelper
     /** reverse mix for each column of a state matrix.
      *
      **/
-    private function invMixColumns()
+    private function invMixColumns(): void
     {
         //$s0 = $s1 = $s2 = $s3 = '';
 
@@ -518,7 +522,7 @@ class AESHelper
     /** applies an inverse cyclic shift to the last 3 rows of a state matrix.
      *
      **/
-    private function invShiftRows()
+    private function invShiftRows(): void
     {
         $temp = [];
         for ($i = 1; $i < 4; $i++) {
@@ -534,7 +538,7 @@ class AESHelper
     /** applies inverse S-Box substitution to each byte of a state matrix.
      *
      **/
-    private function invSubBytes()
+    private function invSubBytes(): void
     {
         for ($i = 0; $i < 4; $i++) {
             for ($j = 0; $j < self::$Nb; $j++) {
@@ -545,7 +549,7 @@ class AESHelper
 
     /** mixes each column of a state matrix.
      **/
-    private function mixColumns()
+    private function mixColumns(): void
     {
         //$s0 = $s1 = $s2 = $s3 = '';
 
@@ -566,7 +570,7 @@ class AESHelper
     /** applies a cyclic shift to the last 3 rows of a state matrix.
      *
      **/
-    private function shiftRows()
+    private function shiftRows(): void
     {
         $temp = [];
         for ($i = 1; $i < 4; $i++) {
@@ -582,7 +586,7 @@ class AESHelper
     /** applies S-Box substitution to each byte of a state matrix.
      *
      **/
-    private function subBytes()
+    private function subBytes(): void
     {
         for ($i = 0; $i < 4; $i++) {
             for ($j = 0; $j < self::$Nb; $j++) {
@@ -653,7 +657,7 @@ class AESHelper
      *
      * @param int $w
      */
-    private static function make32BitWord(int &$w)
+    private static function make32BitWord(int &$w): void
     {
         // Reduce this 64-bit word to 32-bits on 64-bit machines
         $w &= 0x00000000FFFFFFFF;

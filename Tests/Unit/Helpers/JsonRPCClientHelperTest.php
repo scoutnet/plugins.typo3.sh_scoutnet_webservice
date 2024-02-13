@@ -20,7 +20,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class JsonRPCClientHelperTest extends UnitTestCase
 {
-    private $prophet;
+    private Prophet $prophet;
 
     public function setup(): void
     {
@@ -55,20 +55,17 @@ class JsonRPCClientHelperTest extends UnitTestCase
     /**
      * @dataProvider dataProviderConnect
      *
-     * @param             $url
-     * @param             $expectedExceptions
+     * @param string $url
+     * @param array|null $expectedExceptions
      * @param bool|string $expReturn
      */
-    public function testConnect($url, $expectedExceptions, $expReturn = false): void
+    public function testConnect(string $url, ?array $expectedExceptions, bool|string $expReturn = false): void
     {
         if ($expectedExceptions and count($expectedExceptions) > 0) {
             foreach ($expectedExceptions as $expExc) {
                 $this->expectExceptionCode($expExc);
             }
         }
-
-        // Set this Variable, so it can be read
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] = false;
 
         $sn = new JsonRPCClientHelper($url);
         $ret = $sn->test();
@@ -83,14 +80,14 @@ class JsonRPCClientHelperTest extends UnitTestCase
 
 namespace ScoutNet\ShScoutnetWebservice\Helpers;
 
-function stream_context_create($opts)
+function stream_context_create($opts): array
 {
     return [
         'opts' => $opts,
     ];
 }
 
-function fopen($filename, $mode, $use_include_path = null, $context = null)
+function fopen($filename, $mode, $use_include_path = null, $context = null): bool|array
 {
     $param = json_decode($context['opts']['http']['content'], true);
 
@@ -110,7 +107,7 @@ function fopen($filename, $mode, $use_include_path = null, $context = null)
     ];
 }
 
-function fgets(&$fp)
+function fgets(&$fp): bool|string
 {
     $id = $fp['param']['id'];
     if (!$fp['finished']) {

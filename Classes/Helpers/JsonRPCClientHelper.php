@@ -32,11 +32,11 @@ use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException;
 /**
  * JsonRPCClientHelper
  *
- * @method get_data_by_global_id($globalid, $filter)
- * @method deleteObject($type, $globalid, $id, $username, $auth)
- * @method setData($type,$id,$object,$username,$auth)
- * @method checkPermission($type,$globalid,$username,$auth)
- * @method requestPermission($type,$globalid,$username,$auth)
+ * @method get_data_by_global_id(array|int|null $globalId, mixed $filter)
+ * @method deleteObject(string $type, ?int $globalId, int $id, string $username, $auth)
+ * @method setData(string $type,int $id, mixed $object, string $username, $auth)
+ * @method checkPermission(string $type, ?int $globalId, string $username, $auth)
+ * @method requestPermission(string $type, ?int $globalId, string $username, $auth)
  * @method test()
  */
 class JsonRPCClientHelper
@@ -125,62 +125,24 @@ class JsonRPCClientHelper
         $request = json_encode($request);
         $this->debugOutput && $debug .= '***** Request *****' . "\n" . $request . "\n" . '***** End Of request *****' . "\n\n";
 
-        if (($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] ?? false) && extension_loaded('curl')) {
-            // performs the HTTP POST by use of libcurl
-            $options = [
-                CURLOPT_URL		=> $this->url,
-                CURLOPT_POST		=> true,
-                CURLOPT_POSTFIELDS	=> $request,
-                CURLOPT_HTTPHEADER	=> ['Content-Type: application/json'],
-                CURLINFO_HEADER_OUT	=> true,
-                CURLOPT_RETURNTRANSFER	=> true,
-                CURLOPT_SSL_VERIFYHOST 	=> false,
-                CURLOPT_SSL_VERIFYPEER 	=> false,
-                CURLOPT_FOLLOWLOCATION	=> true,
-            ];
-            $ch = curl_init();
-            curl_setopt_array($ch, $options);
+        // performs the HTTP POST
+        $opts = [
+            'http' => [
+                'method'  => 'POST',
+                'header'  => 'Content-type: application/json',
+                'content' => $request,
+            ]];
+        $context  = stream_context_create($opts);
 
-            if (isset($_COOKIE['XDEBUG_SESSION'])) {
-                curl_setopt($ch, CURLOPT_COOKIE, 'XDEBUG_SESSION: ' . urlencode($_COOKIE['XDEBUG_SESSION']));
+        if ($fp = @fopen($this->url, 'r', false, $context)) {
+            $response = '';
+            while ($row = fgets($fp)) {
+                $response .= trim($row) . "\n";
             }
-
-            if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'] ?? false) {
-                curl_setopt($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
-
-                if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel'] ?? false) {
-                    curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']);
-                }
-                if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass'] ?? false) {
-                    curl_setopt($ch, CURLOPT_PROXYUSERPWD, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']);
-                }
-            }
-
-            $response = trim(curl_exec($ch));
-
             $this->debugOutput && $debug .= '***** Server response *****' . "\n" . $response . '***** End of server response *****' . "\n";
             $response = json_decode($response, true);
-            curl_close($ch);
         } else {
-            // performs the HTTP POST
-            $opts = [
-                'http' => [
-                    'method'  => 'POST',
-                    'header'  => 'Content-type: application/json',
-                    'content' => $request,
-                ]];
-            $context  = stream_context_create($opts);
-
-            if ($fp = @fopen($this->url, 'r', false, $context)) {
-                $response = '';
-                while ($row = fgets($fp)) {
-                    $response .= trim($row) . "\n";
-                }
-                $this->debugOutput && $debug .= '***** Server response *****' . "\n" . $response . '***** End of server response *****' . "\n";
-                $response = json_decode($response, true);
-            } else {
-                throw new ScoutNetException('Unable to connect to ' . $this->url, 1572202683);
-            }
+            throw new ScoutNetException('Unable to connect to ' . $this->url, 1572202683);
         }
 
         // debug output

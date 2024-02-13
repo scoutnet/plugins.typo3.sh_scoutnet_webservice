@@ -99,6 +99,15 @@ class AESHelperTest extends UnitTestCase
     public static function dataProviderEncrypt(): array
     {
         return [
+            'short iv' => [ // should be padded with 0x00
+                [
+                    'key' => '12345678901234567890123456789012',
+                    'iv' => '1234567890123', // will be padded by 0x00
+                    'mode' => 'CBC',
+                ],
+                'testtest',
+                'zckkIjpRYuWW19m0QtvxTw==', // zero padded
+            ],
             'short block' => [ // should be padded with 0x00
                 [
                     'key' => '12345678901234567890123456789012',
@@ -160,6 +169,15 @@ class AESHelperTest extends UnitTestCase
 //                'FCbM1hpe5vAbYvq3LQv5yg==', // pkcs#7
                 'ruIH7F3mHozAP9aU5cZD1A==', // zero padded
                 'testtest',
+            ],
+            'not aligned - less than one block' => [
+                [
+                    'key' => '12345678901234567890123456789012',
+                    'iv' => '1234567890123456',
+                    'mode' => 'CBC',
+                ],
+                'ruIH7F3mHozAP9aU5cZD', // missing chars
+                base64_decode('bih5rTSfnoaUeGjstwajBA=='),
             ],
             'exact one block' => [
                 [

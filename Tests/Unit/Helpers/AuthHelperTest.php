@@ -180,8 +180,11 @@ class AuthHelperTest extends UnitTestCase
         }
 
         $ret = $this->authHelper->getApiKeyFromData($data);
-
         if (!$exp) {
+            self::assertEquals($expectedReturn, $ret);
+
+            // check cache
+            $ret = $this->authHelper->getApiKeyFromData($data);
             self::assertEquals($expectedReturn, $ret);
         }
     }

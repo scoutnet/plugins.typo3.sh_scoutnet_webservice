@@ -54,9 +54,9 @@ class EventRepository extends AbstractScoutnetRepository
      */
     public function __construct(
         protected readonly StructureRepository $structureRepository,
-        protected readonly CategoryRepository  $categoryRepository,
-        protected readonly UserRepository      $userRepository,
-        protected readonly SectionRepository   $sectionRepository
+        protected readonly CategoryRepository $categoryRepository,
+        protected readonly UserRepository $userRepository,
+        protected readonly SectionRepository $sectionRepository
     ) {}
 
     /**

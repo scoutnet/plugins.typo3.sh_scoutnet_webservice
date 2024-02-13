@@ -46,12 +46,12 @@ class StructureRepository extends AbstractScoutnetRepository
     protected array $structure_cache = [];
 
     /**
-     * @param array|int $ids can be both a list of IDs or one single ID
+     * @param int|array $ids can be both a list of IDs or one single ID
      *
      * @return Structure[]
      * @deprecated
      */
-    public function findKalenderByGlobalid($ids): array
+    public function findKalenderByGlobalid(int|array $ids): array
     {
         $kalenders = [];
         foreach ($this->loadDataFromScoutnet($ids, ['kalenders' => []]) as $record) {

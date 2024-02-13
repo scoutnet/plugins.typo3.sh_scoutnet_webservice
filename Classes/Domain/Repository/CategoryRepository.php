@@ -34,7 +34,7 @@ class CategoryRepository extends AbstractScoutnetRepository
     protected array $categoriesCache = [];
 
     /**
-     * checks if Category with UID is in Cache, otherwise loads category from Scoutnet API
+     * checks if Category with UID is in Cache, otherwise loads category from ScoutNet API
      *
      * @param int $uid
      *
@@ -42,7 +42,7 @@ class CategoryRepository extends AbstractScoutnetRepository
      */
     public function findByUid(int $uid): ?Category
     {
-        // if the category is not Cached, load from Scoutnet
+        // if the category is not Cached, load from ScoutNet
         if (!isset($this->categoriesCache[$uid])) {
             try {
                 foreach ($this->loadDataFromScoutnet(null, ['categories' => ['uid' => $uid]]) as $record) {
@@ -52,7 +52,7 @@ class CategoryRepository extends AbstractScoutnetRepository
                     }
                 }
             } catch (Exception $e) {
-                // it is not in cache and we get an error from scoutnet
+                // it is not in cache and we get an error from ScoutNet
                 return null;
             }
         }
@@ -61,7 +61,7 @@ class CategoryRepository extends AbstractScoutnetRepository
     }
 
     /**
-     * Loads All Categories from Scoutnet API, regardless of local cache, but updates Cache in the Process
+     * Loads All Categories from ScoutNet API, regardless of local cache, but updates Cache in the Process
      *
      * @return Category[]
      */

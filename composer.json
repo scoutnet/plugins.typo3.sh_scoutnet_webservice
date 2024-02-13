@@ -7,7 +7,7 @@
 	],
 	"name": "scoutnet/sh-scoutnet-webservice",
 	"type": "typo3-cms-extension",
-	"description" : "This class is needed to comunicate with the scoutnet.de server.",
+	"description" : "This class is needed to communicate with the scoutnet.de server.",
 	"homepage": "https://github.com/scoutnet/plugins.typo3.sh_scoutnet_webservice",
 	"authors": [
 		{

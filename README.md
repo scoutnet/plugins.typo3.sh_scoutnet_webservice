@@ -65,11 +65,13 @@ Set up new Test Framework:
 Set up new Run Configuration for `Unit Tests`:
  - Test Scope: `<abs. Path to this dir>/Tests/Unit`
  - Custom Working Directory: `<abs. Path to this dir>/.Build/`
+ - Test Runner options: `--coverage-filter <abs. Path to this dir>/Classes`
  
 Set up new Run Configuration for `Functional Tests`:
  - Test Scope: `<abs. Path to this dir>/Tests/Functional`
  - Custom Working Directory: `<abs. Path to this dir>/.Build/`
  - Use alternative configuration File: `<aps. Path to this dir>/.Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml`
+ - Test Runner options: `--coverage-filter <abs. Path to this dir>/Classes`
  - Environment variables: `typo3DatabaseUsername=root;typo3DatabasePassword=funcp;typo3DatabaseHost=mariadb10;typo3DatabaseName=func_test`
  
 Happy Testing

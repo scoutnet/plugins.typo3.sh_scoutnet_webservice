@@ -39,26 +39,6 @@ use ScoutNet\ShScoutnetWebservice\Domain\Model\Structure;
 class EventRepository extends AbstractScoutnetRepository
 {
     /**
-     * @var StructureRepository
-     */
-    protected StructureRepository $structureRepository;
-
-    /**
-     * @var CategoryRepository
-     */
-    protected CategoryRepository $categoryRepository;
-
-    /**
-     * @var UserRepository
-     */
-    protected UserRepository $userRepository;
-
-    /**
-     * @var SectionRepository
-     */
-    protected SectionRepository $sectionRepository;
-
-    /**
      * Cache all events, key is UID
      * @var array
      */
@@ -67,28 +47,24 @@ class EventRepository extends AbstractScoutnetRepository
     /**
      * EventRepository constructor.
      *
-     * @param StructureRepository $kalenderRepository
-     * @param CategoryRepository $categoryRepository
-     * @param UserRepository $userRepository
-     * @param SectionRepository $sectionRepository
+     * @param StructureRepository $structureRepository
+     * @param CategoryRepository  $categoryRepository
+     * @param UserRepository      $userRepository
+     * @param SectionRepository   $sectionRepository
      */
     public function __construct(
-        StructureRepository $kalenderRepository,
-        CategoryRepository $categoryRepository,
-        UserRepository $userRepository,
-        SectionRepository $sectionRepository
-    ) {
-        $this->structureRepository = $kalenderRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->userRepository = $userRepository;
-        $this->sectionRepository = $sectionRepository;
-    }
+        protected readonly StructureRepository $structureRepository,
+        protected readonly CategoryRepository  $categoryRepository,
+        protected readonly UserRepository      $userRepository,
+        protected readonly SectionRepository   $sectionRepository
+    ) {}
 
     /**
      * @param Structure $structure
      * @param array                                                 $filter
      *
      * @return Event[]
+     * @api
      */
     public function findByStructureAndFilter(Structure $structure, array $filter): array
     {
@@ -100,6 +76,7 @@ class EventRepository extends AbstractScoutnetRepository
      * @param array $filter
      *
      * @return Event[]
+     * @api
      */
     public function findByStructuresAndFilter(array $structures, array $filter): array
     {
@@ -113,6 +90,7 @@ class EventRepository extends AbstractScoutnetRepository
      * @param array $filter
      *
      * @return Event[]
+     * @api
      */
     public function findByFilter(array $filter): array
     {
@@ -150,6 +128,7 @@ class EventRepository extends AbstractScoutnetRepository
      * @param int $uid
      *
      * @return Event
+     * @api
      */
     public function findByUid(int $uid): Event
     {
@@ -162,6 +141,7 @@ class EventRepository extends AbstractScoutnetRepository
      *
      * @return mixed
      * @throws Exception
+     * @api
      */
     public function delete(Event $event): mixed
     {
@@ -179,6 +159,7 @@ class EventRepository extends AbstractScoutnetRepository
      *
      * @return mixed
      * @throws Exception
+     * @api
      */
     public function update(Event $event): mixed
     {
@@ -198,6 +179,7 @@ class EventRepository extends AbstractScoutnetRepository
      *
      * @return mixed
      * @throws Exception
+     * @api
      */
     public function add(Event $event): mixed
     {

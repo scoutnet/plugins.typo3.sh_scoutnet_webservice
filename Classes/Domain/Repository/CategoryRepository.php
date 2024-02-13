@@ -39,6 +39,7 @@ class CategoryRepository extends AbstractScoutnetRepository
      * @param int $uid
      *
      * @return Category|null
+     * @api
      */
     public function findByUid(int $uid): ?Category
     {
@@ -51,8 +52,8 @@ class CategoryRepository extends AbstractScoutnetRepository
                         $this->convertToCategory($record['content']);
                     }
                 }
-            } catch (Exception $e) {
-                // it is not in cache and we get an error from ScoutNet
+            } catch (Exception) {
+                // it is not in cache, and we get an error from ScoutNet
                 return null;
             }
         }
@@ -64,6 +65,7 @@ class CategoryRepository extends AbstractScoutnetRepository
      * Loads All Categories from ScoutNet API, regardless of local cache, but updates Cache in the Process
      *
      * @return Category[]
+     * @api
      */
     public function findAll(): array
     {
@@ -74,7 +76,7 @@ class CategoryRepository extends AbstractScoutnetRepository
                     $this->convertToCategory($record['content']);
                 }
             }
-        } catch (Exception $e) {
+        } catch (Exception) {
             return [];
         }
 
@@ -87,6 +89,7 @@ class CategoryRepository extends AbstractScoutnetRepository
      * @param Event $event
      *
      * @return mixed
+     * @api
      */
     public function getAllCategoriesForStructureAndEvent(Structure $structure, Event $event): array
     {
@@ -98,9 +101,9 @@ class CategoryRepository extends AbstractScoutnetRepository
                     $generatedCategories[] = $this->convertToCategory($record['content']);
                 }
             }
-        } catch (Exception $e) {
-            // if the scoutnet Server is down, we use the Categories from the structure
-            $categories['generatedCategories'] = $this->convertArrayToCategories($structure->getUsedCategories(), $event);
+        } catch (Exception) {
+            // if the ScoutNet Server is down, we use the Categories from the structure
+            $generatedCategories = $this->convertArrayToCategories($structure->getUsedCategories(), $event);
         }
         $categories['generatedCategories'] = $generatedCategories;
 

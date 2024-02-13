@@ -29,8 +29,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class CategoryRepositoryTest extends UnitTestCase
 {
-    protected $categoryRepository;
-    private $prophet;
+    protected CategoryRepository $categoryRepository;
+    private Prophet $prophet;
 
     public const CATEGORY_1_ARRAY = [
         'ID' => 1,
@@ -76,6 +76,10 @@ class CategoryRepositoryTest extends UnitTestCase
         $this->prophet->checkPredictions();
     }
 
+    /**
+     * @throws ExtensionConfigurationPathDoesNotExistException
+     * @throws ExtensionConfigurationExtensionNotConfiguredException
+     */
     public function testFindAll(): void
     {
         [$cat1, $cat2] = self::generateCategories();
@@ -152,6 +156,7 @@ class CategoryRepositoryTest extends UnitTestCase
 
                 $uid = $req['categories']['uid'];
 
+                $cat = [];
                 if ($uid == 1) {
                     $cat = self::CATEGORY_1_ARRAY;
                 } elseif ($uid == 2) {

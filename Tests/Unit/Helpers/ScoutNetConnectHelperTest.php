@@ -23,12 +23,13 @@ use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExis
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\UnitTestPackageManager;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ScoutNetConnectHelperTest extends TestCase
 {
-    protected $scoutNetConnectHelper;
-    private $prophet;
+    protected ScoutNetConnectHelper $scoutNetConnectHelper;
+    private Prophet $prophet;
 
     public function setup(): void
     {
@@ -57,7 +58,7 @@ class ScoutNetConnectHelperTest extends TestCase
         $pm->isPackageActive('sh_scoutnet_webservice')->willReturn(true);
         $pm->getPackage('sh_scoutnet_webservice')->willReturn($package->reveal());
 
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::setPackageManager($pm->reveal());
+        ExtensionManagementUtility::setPackageManager($pm->reveal());
     }
 
     protected function tearDown(): void
@@ -92,16 +93,16 @@ class ScoutNetConnectHelperTest extends TestCase
     }
 
     /**
-     * @param $returnUrl
-     * @param $requestApiKey
-     * @param $exp
+     * @param string $returnUrl
+     * @param bool $requestApiKey
+     * @param string $exp
      *
-     * @throws ScoutNetExceptionMissingConfVar
      * @throws ExtensionConfigurationExtensionNotConfiguredException
      * @throws ExtensionConfigurationPathDoesNotExistException
+     * @throws ScoutNetExceptionMissingConfVar
      * @dataProvider dataProviderGetScoutNetConnectLoginButton
      */
-    public function testGetScoutNetConnectLoginButton($returnUrl, $requestApiKey, $exp): void
+    public function testGetScoutNetConnectLoginButton(string $returnUrl, bool $requestApiKey, string $exp): void
     {
         $ret = $this->scoutNetConnectHelper->getScoutNetConnectLoginButton($returnUrl, $requestApiKey);
         self::assertEquals($exp, $ret);

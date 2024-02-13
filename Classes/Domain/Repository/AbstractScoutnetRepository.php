@@ -86,12 +86,12 @@ class AbstractScoutnetRepository
     }
 
     /**
-     * @param mixed $ids
+     * @param array|int|null $ids
      * @param mixed $query
      *
      * @return array
      */
-    protected function loadDataFromScoutnet(?array $ids, mixed $query): array
+    protected function loadDataFromScoutnet(array|int|null $ids, mixed $query): array
     {
         return $this->SN->get_data_by_global_id($ids, $query);
     }

@@ -36,8 +36,20 @@ use ScoutNet\ShScoutnetWebservice\Domain\Model\Structure;
  */
 class StructureRepository extends AbstractScoutnetRepository
 {
+    /**
+     * @var int User has no access to Structure
+     * @api
+     */
     public const AUTH_NO_RIGHT = 1;
+    /**
+     * @var int User has Write access to Structure
+     * @api
+     */
     public const AUTH_WRITE_ALLOWED = 0;
+    /**
+     * @var int User Right is Pending, Admin need to allow Right
+     * @api
+     */
     public const AUTH_PENDING = 2;
 
     /**
@@ -50,18 +62,19 @@ class StructureRepository extends AbstractScoutnetRepository
      *
      * @return Structure[]
      * @deprecated
+     * @api
      */
     public function findKalenderByGlobalid(int|array $ids): array
     {
-        $kalenders = [];
+        $calendars = [];
         foreach ($this->loadDataFromScoutnet($ids, ['kalenders' => []]) as $record) {
             if ($record['type'] === 'kalender') {
                 $kalender = $this->convertToStructure($record['content']);
-                $kalenders[] = $kalender;
+                $calendars[] = $kalender;
             }
         }
 
-        return $kalenders;
+        return $calendars;
     }
 
     /**
@@ -70,6 +83,7 @@ class StructureRepository extends AbstractScoutnetRepository
      * @param int[] $uids
      *
      * @return Structure[]
+     * @api
      */
     public function findByUids(array $uids): array
     {
@@ -102,6 +116,7 @@ class StructureRepository extends AbstractScoutnetRepository
      * @param int $uid
      *
      * @return Structure
+     * @api
      */
     public function findByUid(int $uid): Structure
     {
@@ -110,10 +125,11 @@ class StructureRepository extends AbstractScoutnetRepository
 
     /**
      * @param Structure        $structure
-     * @param BackendUser|null $be_user    If user is not set, we use current logged in User
+     * @param BackendUser|null $be_user    If user is not set, we use current logged-in User
      *
      * @return mixed
      * @throws Exception
+     * @api
      */
     public function hasWritePermissionsToStructure(Structure $structure, BackendUser $be_user = null): mixed
     {
@@ -133,6 +149,7 @@ class StructureRepository extends AbstractScoutnetRepository
      *
      * @return mixed
      * @throws Exception
+     * @api
      */
     public function requestWritePermissionsForStructure(Structure $structure, BackendUser $be_user = null): mixed
     {

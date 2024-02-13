@@ -15,8 +15,12 @@
 namespace ScoutNet\ShScoutnetWebservice\Tests\Unit\Helpers;
 
 use DateTime;
+use Exception;
 use Prophecy\Prophet;
+use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar;
 use ScoutNet\ShScoutnetWebservice\Helpers\AuthHelper;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -25,8 +29,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AuthHelperTest extends UnitTestCase
 {
-    protected $authHelper;
-    private $prophet;
+    protected AuthHelper $authHelper;
+    private Prophet $prophet;
 
     public function setup(): void
     {
@@ -62,15 +66,15 @@ class AuthHelperTest extends UnitTestCase
     }
 
     /**
-     * @param $apiKey
-     * @param $checkValue
-     * @param $expectedResult
-     * @param $expectedExceptions
+     * @param string $apiKey
+     * @param string $checkValue
+     * @param string $expectedResult
+     * @param array $expectedExceptions
      *
-     * @throws \Exception
+     * @throws Exception
      * @dataProvider dataProviderGenerateAuth
      */
-    public function testGenerateAuth($apiKey, $checkValue, $expectedResult, $expectedExceptions = []): void
+    public function testGenerateAuth(string $apiKey, string $checkValue, string $expectedResult, array $expectedExceptions = []): void
     {
         if ($expectedExceptions and count($expectedExceptions) > 0) {
             foreach ($expectedExceptions as $expExc) {
@@ -133,18 +137,18 @@ class AuthHelperTest extends UnitTestCase
     }
 
     /**
-     * @param      $data
-     * @param      $expectedExceptions
+     * @param string $data
+     * @param array|null $expectedExceptions
      * @param bool $expectedReturn
      *
      * @param bool $fix_time
      *
-     * @throws \ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar
-     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
-     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException
+     * @throws ExtensionConfigurationExtensionNotConfiguredException
+     * @throws ExtensionConfigurationPathDoesNotExistException
+     * @throws ScoutNetExceptionMissingConfVar
      * @dataProvider dataProviderGetApiKeyFromData
      */
-    public function testGetApiKeyFromData($data, $expectedExceptions, $expectedReturn = false, $fix_time = false): void
+    public function testGetApiKeyFromData(string $data, ?array $expectedExceptions, bool|array $expectedReturn = false, bool $fix_time = false): void
     {
         // fix extension Configuration
         $em = $this->prophet->prophesize(ExtensionConfiguration::class);

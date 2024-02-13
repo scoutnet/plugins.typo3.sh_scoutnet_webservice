@@ -21,7 +21,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AESHelperTest extends UnitTestCase
 {
-    private $prophet;
+    private Prophet $prophet;
 
     public function setup(): void
     {
@@ -80,13 +80,13 @@ class AESHelperTest extends UnitTestCase
     }
 
     /**
-     * @param $key
-     * @param $expExceptions
+     * @param string $key
+     * @param array $expExceptions
      *
      * @throws ScoutNetException
      * @dataProvider dataProviderCorrectKeyLength
      */
-    public function testCorrectKeyLength($key, $expExceptions = []): void
+    public function testCorrectKeyLength(string $key, array $expExceptions = []): void
     {
         if ($expExceptions and count($expExceptions) > 0) {
             foreach ($expExceptions as $expExc) {
@@ -134,13 +134,13 @@ class AESHelperTest extends UnitTestCase
     /**
      * @dataProvider dataProviderEncrypt
      *
-     * @param $key
-     * @param $plaintext
-     * @param $cyphertext
+     * @param array $key
+     * @param string $plaintext
+     * @param string $cyphertext
      *
      * @throws ScoutNetException
      */
-    public function testEncrypt($key, $plaintext, $cyphertext): void
+    public function testEncrypt(array $key, string $plaintext, string $cyphertext): void
     {
         $aes = new AESHelper($key['key'], $key['mode'], $key['iv']);
         $crypt = base64_encode($aes->encrypt($plaintext));
@@ -195,13 +195,13 @@ class AESHelperTest extends UnitTestCase
     /**
      * @dataProvider dataProviderDecrypt
      *
-     * @param $key
-     * @param $cyphertext
-     * @param $plaintext
+     * @param array $key
+     * @param string $cyphertext
+     * @param string $plaintext
      *
      * @throws ScoutNetException
      */
-    public function testDecrypt($key, $cyphertext, $plaintext): void
+    public function testDecrypt(array $key, string $cyphertext, string $plaintext): void
     {
         $aes = new AESHelper($key['key'], $key['mode'], $key['iv']);
         $plain = $aes->decrypt(base64_decode($cyphertext));

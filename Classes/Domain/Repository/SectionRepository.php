@@ -44,6 +44,7 @@ class SectionRepository extends AbstractScoutnetRepository
      * @param int $uid
      *
      * @return Section|null returns Null if Section is not cached
+     * @api
      */
     public function findByUid(int $uid): ?Section
     {
@@ -56,10 +57,11 @@ class SectionRepository extends AbstractScoutnetRepository
      * @param int $categoryId
      *
      * @return Section|null returns Null if Section is not cached
+     * @api
      */
     public function findByCategoryId(int $categoryId): ?Section
     {
-        return $this->section_cache[$categoryId] ?? null; // return null if key does not exists
+        return $this->section_cache[$categoryId] ?? null; // return null if key does not exist
     }
 
     /**

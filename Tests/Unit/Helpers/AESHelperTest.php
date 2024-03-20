@@ -115,7 +115,7 @@ class AESHelperTest extends UnitTestCase
                     'mode' => 'CBC',
                 ],
                 'testtest',
-//                'FCbM1hpe5vAbYvq3LQv5yg==', // pkcs#7
+                //                'FCbM1hpe5vAbYvq3LQv5yg==', // pkcs#7
                 'ruIH7F3mHozAP9aU5cZD1A==', // zero padded
             ],
             'no padding' => [
@@ -134,7 +134,7 @@ class AESHelperTest extends UnitTestCase
                     'mode' => 'CBC',
                 ],
                 'testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest',
-//                'O4p8xIJFm5/EHinKjrB/U8ySfWjP9s0J3fTbi3/0LcXmNVWbRvcvaCin63IuFcOE9Cg6nQylpSabUfW9m/WO+8r87PO7U2P/JcqN8lSzoErLoVmPjYF3YM0AgAGTCk6ns5JWKJ/gvJC3FhmA8Tmw8OpbXuKosGDU2kZRrzHKMkk=', // pkcs#7
+                //                'O4p8xIJFm5/EHinKjrB/U8ySfWjP9s0J3fTbi3/0LcXmNVWbRvcvaCin63IuFcOE9Cg6nQylpSabUfW9m/WO+8r87PO7U2P/JcqN8lSzoErLoVmPjYF3YM0AgAGTCk6ns5JWKJ/gvJC3FhmA8Tmw8OpbXuKosGDU2kZRrzHKMkk=', // pkcs#7
                 'O4p8xIJFm5/EHinKjrB/U8ySfWjP9s0J3fTbi3/0LcXmNVWbRvcvaCin63IuFcOE9Cg6nQylpSabUfW9m/WO+8r87PO7U2P/JcqN8lSzoErLoVmPjYF3YM0AgAGTCk6ns5JWKJ/gvJC3FhmA8Tmw8LYp1olEN+pE8rhBu5yG328=', // zero padding
             ],
         ];
@@ -166,7 +166,7 @@ class AESHelperTest extends UnitTestCase
                     'iv' => '1234567890123456',
                     'mode' => 'CBC',
                 ],
-//                'FCbM1hpe5vAbYvq3LQv5yg==', // pkcs#7
+                //                'FCbM1hpe5vAbYvq3LQv5yg==', // pkcs#7
                 'ruIH7F3mHozAP9aU5cZD1A==', // zero padded
                 'testtest',
             ],
@@ -198,15 +198,15 @@ class AESHelperTest extends UnitTestCase
                 'O4p8xIJFm5/EHinKjrB/U8ySfWjP9s0J3fTbi3/0LcXmNVWbRvcvaCin63IuFcOE9Cg6nQylpSabUfW9m/WO+8r87PO7U2P/JcqN8lSzoErLoVmPjYF3YM0AgAGTCk6ns5JWKJ/gvJC3FhmA8Tmw8LYp1olEN+pE8rhBu5yG328=', // zero padding
                 'testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest',
             ],
-//            'broken length' => [
-//                [
-//                    'key' => '12345678901234567890123456789012',
-//                    'iv' => '1234567890123456',
-//                    'mode' => 'CBC',
-//                ],
-//                'O4p8xIJFm5/EHinKjrB/U8ySfWjP9s0J3fTbi3/0LcXmNVWbRvcvaCin63IuFcOE9Cg6nQylpSabUfW9m/WO+8r87PO7U2P/JcqN8lSzoErLoVmPjYF3YM0AgAGTCk6ns5JWKJ/gvJC3FhmA8Tmw8OpbXuKosGDU2kZRrzHKMk',
-//                false,
-//            ],
+            //            'broken length' => [
+            //                [
+            //                    'key' => '12345678901234567890123456789012',
+            //                    'iv' => '1234567890123456',
+            //                    'mode' => 'CBC',
+            //                ],
+            //                'O4p8xIJFm5/EHinKjrB/U8ySfWjP9s0J3fTbi3/0LcXmNVWbRvcvaCin63IuFcOE9Cg6nQylpSabUfW9m/WO+8r87PO7U2P/JcqN8lSzoErLoVmPjYF3YM0AgAGTCk6ns5JWKJ/gvJC3FhmA8Tmw8OpbXuKosGDU2kZRrzHKMk',
+            //                false,
+            //            ],
         ];
     }
 

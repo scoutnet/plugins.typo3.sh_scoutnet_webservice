@@ -19,6 +19,7 @@ class BackendUserTest extends UnitTestCase
      * @var string
      */
     protected string $testedClass = BackendUser::class;
+    protected array $map_classes = [];
 
     protected string $overriddenTCAFile = 'vendor/typo3/cms-core/Configuration/TCA/be_users.php';
 

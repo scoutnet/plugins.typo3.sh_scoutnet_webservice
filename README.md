@@ -1,4 +1,5 @@
 [![Build Status](https://jenkins.scoutnet.eu/buildStatus/icon?job=scoutnet/plugins.typo3.sh_scoutnet_webservice/main)](https://jenkins.scoutnet.eu/job/scoutnet/job/plugins.typo3.sh_scoutnet_webservice/job/main/)
+[![codecov](https://codecov.io/gh/scoutnet/plugins.typo3.sh_scoutnet_webservice/graph/badge.svg?token=48MWySyCz1)](https://codecov.io/gh/scoutnet/plugins.typo3.sh_scoutnet_webservice)
 [![Packagist](https://img.shields.io/packagist/v/scoutnet/sh-scoutnet-webservice.svg)](https://packagist.org/packages/scoutnet/sh-scoutnet-webservice)
 [![Packagist](https://img.shields.io/packagist/dt/scoutnet/sh-scoutnet-webservice.svg?label=packagist%20downloads)](https://packagist.org/packages/scoutnet/sh-scoutnet-webservice)
 [![Packagist](https://img.shields.io/packagist/l/scoutnet/sh-scoutnet-webservice.svg)](https://packagist.org/packages/scoutnet/sh-scoutnet-webservice)
@@ -44,13 +45,17 @@ To Run all the Tests call:
 
 `make test`
 
-you can use the -phpx suffix to indicate which php version you want to check e.g. `make test-php74`
+you can use the -phpx suffix to indicate which php version you want to check e.g. `make test-php81`
 
 for only testing a special function or php version there are different suffixes. For Example:
 
-- `make unitTest-php74`
-- `make unitTest-php80`
-- `make unitTest`        Will call Unit tests with php7.3 and php 7.4
+- `make lintTest-php81`
+- `make unitTest-php83`
+- `make unitTest`        Will call Unit tests with php 8.1 through php 8.3
+
+For running only certain tests use:
+
+- `TEST_FILE=$(pwd)/Tests/Functional/Plugins/WebringPluginTest.php EXTRA_TEST_OPTIONS='--filter testRedirect' make functionalTest-php80`
 
 Testing with PhpStorm: Setup new remote PHP interpreter.
 Docker-Compose:
@@ -66,7 +71,7 @@ Set up new Run Configuration for `Unit Tests`:
  - Test Scope: `<abs. Path to this dir>/Tests/Unit`
  - Custom Working Directory: `<abs. Path to this dir>/.Build/`
  - Test Runner options: `--coverage-filter <abs. Path to this dir>/Classes`
- 
+
 Set up new Run Configuration for `Functional Tests`:
  - Test Scope: `<abs. Path to this dir>/Tests/Functional`
  - Custom Working Directory: `<abs. Path to this dir>/.Build/`

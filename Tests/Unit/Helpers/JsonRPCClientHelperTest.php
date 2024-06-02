@@ -1,21 +1,19 @@
 <?php
 /**
- ************************************************************************
- * Copyright (c) 2005-2019 Stefan (Muetze) Horst                        *
- ************************************************************************
- * I don't have the time to read through all the licences to find out   *
- * what the exactly say. But it's simple. It's free for non commercial  *
- * projects, but as soon as you make money with it, i want my share :-) *
- * (License : Free for non-commercial use)                              *
- ************************************************************************
- * Authors: Stefan (Muetze) Horst <muetze@DPSG-Liblar.de>               *
- ************************************************************************
+ * Copyright (c) 2005-2024 Stefan (Mütze) Horst
+ *
+ * I don't have the time to read through all the licences to find out
+ * what they exactly say. But it's simple. It's free for non-commercial
+ * projects, but as soon as you make money with it, I want my share :-)
+ * (License: Free for non-commercial use)
+ *
+ * Authors: Stefan (Mütze) Horst <muetze@scoutnet.de>
  */
 
 namespace ScoutNet\ShScoutnetWebservice\Tests\Unit\Helpers;
 
 use Prophecy\Prophet;
-use ScoutNet\ShScoutnetWebservice\Helpers\JsonRPCClientHelper;
+use ScoutNet\Api\Helpers\JsonRPCClientHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class JsonRPCClientHelperTest extends UnitTestCase
@@ -38,7 +36,7 @@ class JsonRPCClientHelperTest extends UnitTestCase
         return [
             'unable to connect' => [
                 'no_connect',
-                [1572202683],
+                [1492679926],
             ],
             'error' => [
                 'error',
@@ -78,7 +76,7 @@ class JsonRPCClientHelperTest extends UnitTestCase
 
 // hooks for stream
 
-namespace ScoutNet\ShScoutnetWebservice\Helpers;
+namespace ScoutNet\Api\Helpers;
 
 function stream_context_create($opts): array
 {
@@ -91,7 +89,7 @@ function fopen($filename, $mode, $use_include_path = null, $context = null): boo
 {
     $param = json_decode($context['opts']['http']['content'], true);
 
-    if ($filename == 'no_connect') {
+    if ($filename === 'no_connect') {
         return false;
     }
 
@@ -113,12 +111,12 @@ function fgets(&$fp): bool|string
     if (!$fp['finished']) {
         $fp['finished'] = true;
 
-        if ($fp['filename'] == 'error') {
+        if ($fp['filename'] === 'error') {
             $ret = [
                 'id' => $id,
                 'error' => 'error',
             ];
-        } elseif ($fp['filename'] == 'correct') {
+        } elseif ($fp['filename'] === 'correct') {
             $ret = [
                 'id' => $id,
                 'result' => 'correct',

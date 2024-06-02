@@ -1,22 +1,20 @@
 <?php
 /**
- ************************************************************************
- * Copyright (c) 2005-2019 Stefan (Muetze) Horst                        *
- ************************************************************************
- * I don't have the time to read through all the licences to find out   *
- * what the exactly say. But it's simple. It's free for non commercial  *
- * projects, but as soon as you make money with it, i want my share :-) *
- * (License : Free for non-commercial use)                              *
- ************************************************************************
- * Authors: Stefan (Muetze) Horst <muetze@DPSG-Liblar.de>               *
- ************************************************************************
+ * Copyright (c) 2005-2024 Stefan (Mütze) Horst
+ *
+ * I don't have the time to read through all the licences to find out
+ * what they exactly say. But it's simple. It's free for non-commercial
+ * projects, but as soon as you make money with it, I want my share :-)
+ * (License: Free for non-commercial use)
+ *
+ * Authors: Stefan (Mütze) Horst <muetze@scoutnet.de>
  */
 
 namespace ScoutNet\ShScoutnetWebservice\Tests\Unit\Helpers;
 
 use Prophecy\Prophet;
-use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetException;
-use ScoutNet\ShScoutnetWebservice\Helpers\AESHelper;
+use ScoutNet\Api\Exceptions\ScoutNetException;
+use ScoutNet\Api\Helpers\AESHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AESHelperTest extends UnitTestCase
@@ -53,7 +51,7 @@ class AESHelperTest extends UnitTestCase
 
         $aes = new AESHelper($key['key'], $key['mode'], $key['iv']);
 
-        self::assertEquals($aes->decrypt($crypt), $pt);
+        self::assertEquals($pt, $aes->decrypt($crypt));
     }
 
     public static function dataProviderCorrectKeyLength(): array
@@ -106,7 +104,8 @@ class AESHelperTest extends UnitTestCase
                     'mode' => 'CBC',
                 ],
                 'testtest',
-                'zckkIjpRYuWW19m0QtvxTw==', // zero padded
+                'CZSjsb+lRidyF3vAYKbbzA==', // pkcs#7
+                // 'zckkIjpRYuWW19m0QtvxTw==', // zero padded
             ],
             'short block' => [ // should be padded with 0x00
                 [
@@ -115,8 +114,8 @@ class AESHelperTest extends UnitTestCase
                     'mode' => 'CBC',
                 ],
                 'testtest',
-                //                'FCbM1hpe5vAbYvq3LQv5yg==', // pkcs#7
-                'ruIH7F3mHozAP9aU5cZD1A==', // zero padded
+                'FCbM1hpe5vAbYvq3LQv5yg==', // pkcs#7
+                // 'ruIH7F3mHozAP9aU5cZD1A==', // zero padded
             ],
             'no padding' => [
                 [
@@ -125,7 +124,8 @@ class AESHelperTest extends UnitTestCase
                     'mode' => 'CBC',
                 ],
                 'testtesttesttest',
-                'O4p8xIJFm5/EHinKjrB/Uw==', // no padding
+                'O4p8xIJFm5/EHinKjrB/U5WyJAFMhVe4NbeHe514eOw=', // pkcs#7
+                // 'O4p8xIJFm5/EHinKjrB/Uw==', // no padding
             ],
             'more than one block' => [
                 [
@@ -134,8 +134,8 @@ class AESHelperTest extends UnitTestCase
                     'mode' => 'CBC',
                 ],
                 'testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest',
-                //                'O4p8xIJFm5/EHinKjrB/U8ySfWjP9s0J3fTbi3/0LcXmNVWbRvcvaCin63IuFcOE9Cg6nQylpSabUfW9m/WO+8r87PO7U2P/JcqN8lSzoErLoVmPjYF3YM0AgAGTCk6ns5JWKJ/gvJC3FhmA8Tmw8OpbXuKosGDU2kZRrzHKMkk=', // pkcs#7
-                'O4p8xIJFm5/EHinKjrB/U8ySfWjP9s0J3fTbi3/0LcXmNVWbRvcvaCin63IuFcOE9Cg6nQylpSabUfW9m/WO+8r87PO7U2P/JcqN8lSzoErLoVmPjYF3YM0AgAGTCk6ns5JWKJ/gvJC3FhmA8Tmw8LYp1olEN+pE8rhBu5yG328=', // zero padding
+                'O4p8xIJFm5/EHinKjrB/U8ySfWjP9s0J3fTbi3/0LcXmNVWbRvcvaCin63IuFcOE9Cg6nQylpSabUfW9m/WO+8r87PO7U2P/JcqN8lSzoErLoVmPjYF3YM0AgAGTCk6ns5JWKJ/gvJC3FhmA8Tmw8OpbXuKosGDU2kZRrzHKMkk=', // pkcs#7
+                // 'O4p8xIJFm5/EHinKjrB/U8ySfWjP9s0J3fTbi3/0LcXmNVWbRvcvaCin63IuFcOE9Cg6nQylpSabUfW9m/WO+8r87PO7U2P/JcqN8lSzoErLoVmPjYF3YM0AgAGTCk6ns5JWKJ/gvJC3FhmA8Tmw8LYp1olEN+pE8rhBu5yG328=', // zero padding
             ],
         ];
     }
@@ -166,8 +166,8 @@ class AESHelperTest extends UnitTestCase
                     'iv' => '1234567890123456',
                     'mode' => 'CBC',
                 ],
-                //                'FCbM1hpe5vAbYvq3LQv5yg==', // pkcs#7
-                'ruIH7F3mHozAP9aU5cZD1A==', // zero padded
+                'FCbM1hpe5vAbYvq3LQv5yg==', // pkcs#7
+                // 'ruIH7F3mHozAP9aU5cZD1A==', // zero padded
                 'testtest',
             ],
             'not aligned - less than one block' => [
@@ -177,7 +177,8 @@ class AESHelperTest extends UnitTestCase
                     'mode' => 'CBC',
                 ],
                 'ruIH7F3mHozAP9aU5cZD', // missing chars
-                base64_decode('bih5rTSfnoaUeGjstwajBA=='),
+                '', // error in decoding
+                // base64_decode('bih5rTSfnoaUeGjstwajBA=='),
             ],
             'exact one block' => [
                 [
@@ -185,7 +186,8 @@ class AESHelperTest extends UnitTestCase
                     'iv' => '1234567890123456',
                     'mode' => 'CBC',
                 ],
-                'O4p8xIJFm5/EHinKjrB/Uw==', // no padding
+                'O4p8xIJFm5/EHinKjrB/U5WyJAFMhVe4NbeHe514eOw=', // pkcs#7
+                // 'O4p8xIJFm5/EHinKjrB/Uw==', // no padding
                 'testtesttesttest',
             ],
             'more than one block' => [
@@ -194,8 +196,8 @@ class AESHelperTest extends UnitTestCase
                     'iv' => '1234567890123456',
                     'mode' => 'CBC',
                 ],
-                //'O4p8xIJFm5/EHinKjrB/U8ySfWjP9s0J3fTbi3/0LcXmNVWbRvcvaCin63IuFcOE9Cg6nQylpSabUfW9m/WO+8r87PO7U2P/JcqN8lSzoErLoVmPjYF3YM0AgAGTCk6ns5JWKJ/gvJC3FhmA8Tmw8OpbXuKosGDU2kZRrzHKMkk=', // pkcs#7 padding
-                'O4p8xIJFm5/EHinKjrB/U8ySfWjP9s0J3fTbi3/0LcXmNVWbRvcvaCin63IuFcOE9Cg6nQylpSabUfW9m/WO+8r87PO7U2P/JcqN8lSzoErLoVmPjYF3YM0AgAGTCk6ns5JWKJ/gvJC3FhmA8Tmw8LYp1olEN+pE8rhBu5yG328=', // zero padding
+                'O4p8xIJFm5/EHinKjrB/U8ySfWjP9s0J3fTbi3/0LcXmNVWbRvcvaCin63IuFcOE9Cg6nQylpSabUfW9m/WO+8r87PO7U2P/JcqN8lSzoErLoVmPjYF3YM0AgAGTCk6ns5JWKJ/gvJC3FhmA8Tmw8OpbXuKosGDU2kZRrzHKMkk=', // pkcs#7 padding
+                // 'O4p8xIJFm5/EHinKjrB/U8ySfWjP9s0J3fTbi3/0LcXmNVWbRvcvaCin63IuFcOE9Cg6nQylpSabUfW9m/WO+8r87PO7U2P/JcqN8lSzoErLoVmPjYF3YM0AgAGTCk6ns5JWKJ/gvJC3FhmA8Tmw8LYp1olEN+pE8rhBu5yG328=', // zero padding
                 'testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest',
             ],
             //            'broken length' => [

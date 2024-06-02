@@ -1,22 +1,20 @@
 <?php
 /**
- ************************************************************************
- * Copyright (c) 2005-2019 Stefan (Muetze) Horst                        *
- ************************************************************************
- * I don't have the time to read through all the licences to find out   *
- * what the exactly say. But it's simple. It's free for non commercial  *
- * projects, but as soon as you make money with it, i want my share :-) *
- * (License : Free for non-commercial use)                              *
- ************************************************************************
- * Authors: Stefan (Muetze) Horst <muetze@DPSG-Liblar.de>               *
- ************************************************************************
+ * Copyright (c) 2005-2024 Stefan (Mütze) Horst
+ *
+ * I don't have the time to read through all the licences to find out
+ * what they exactly say. But it's simple. It's free for non-commercial
+ * projects, but as soon as you make money with it, I want my share :-)
+ * (License: Free for non-commercial use)
+ *
+ * Authors: Stefan (Mütze) Horst <muetze@scoutnet.de>
  */
 
 namespace ScoutNet\ShScoutnetWebservice\Tests\Unit\Helpers;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophet;
-use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar;
+use ScoutNet\Api\Exceptions\ScoutNetExceptionMissingConfVar;
 use ScoutNet\ShScoutnetWebservice\Helpers\ScoutNetConnectHelper;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;

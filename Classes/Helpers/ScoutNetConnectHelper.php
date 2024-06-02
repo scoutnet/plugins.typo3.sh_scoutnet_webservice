@@ -1,37 +1,24 @@
 <?php
+/**
+ * Copyright (c) 2009-2024 Stefan (Mütze) Horst
+ *
+ * I don't have the time to read through all the licences to find out
+ * what they exactly say. But it's simple. It's free for non-commercial
+ * projects, but as soon as you make money with it, I want my share :-)
+ * (License: Free for non-commercial use)
+ *
+ * Authors: Stefan (Mütze) Horst <muetze@scoutnet.de>
+ */
 
 namespace ScoutNet\ShScoutnetWebservice\Helpers;
 
-use ScoutNet\ShScoutnetWebservice\Exceptions\ScoutNetExceptionMissingConfVar;
+use ScoutNet\Api\Exceptions\ScoutNetExceptionMissingConfVar;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-
-/***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Stefan Horst <s.horst@dpsg-koeln.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
 
 /**
  * Service "SN" for the "sh_scoutnet_webservice" extension.
@@ -49,7 +36,7 @@ class ScoutNetConnectHelper
      * @throws ExtensionConfigurationExtensionNotConfiguredException
      * @throws ExtensionConfigurationPathDoesNotExistException
      */
-    public function getScoutNetConnectLoginButton(string $returnUrl = '', bool $requestApiKey = false): string
+    public static function getScoutNetConnectLoginButton(string $returnUrl = '', bool $requestApiKey = false): string
     {
         // TODO: use a template here!!
         //		$lang = $GLOBALS['LANG']->lang;
@@ -67,7 +54,7 @@ class ScoutNetConnectHelper
             $lang = 'en';
         }
 
-        $this->_checkConfigValues($extConfig);
+        self::_checkConfigValues($extConfig);
         $button = '<form action="' . $extConfig['ScoutnetLoginPage'] . '" id="scoutnetLogin" method="post" target="_self">';
 
         $button .= $returnUrl == '' ? '' : '<input type="hidden" name="redirect_url" value="' . $returnUrl . '" />';
@@ -92,12 +79,12 @@ class ScoutNetConnectHelper
      *
      * @throws ScoutNetExceptionMissingConfVar
      */
-    private function _checkConfigValues(array $config): void
+    private static function _checkConfigValues(array $config): void
     {
         $configVars = ['AES_key', 'AES_iv', 'ScoutnetLoginPage', 'ScoutnetProviderName'];
 
         foreach ($configVars as $configVar) {
-            if (trim($config[$configVar]) == '') {
+            if (trim($config[$configVar] ?? '') === '') {
                 throw new ScoutNetExceptionMissingConfVar($configVar);
             }
         }

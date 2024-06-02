@@ -31,7 +31,7 @@ If you want to contribute, feel free to do so. The Repo is located here:
 
 https://github.com/scoutnet/plugins.typo3.sh_scoutnet_webservice
 
-just run `make composerInstall`
+just run `make init`
 
 ### Testing
 
@@ -55,18 +55,18 @@ for only testing a special function or php version there are different suffixes.
 
 For running only certain tests use:
 
-- `TEST_FILE=$(pwd)/Tests/Functional/Plugins/WebringPluginTest.php EXTRA_TEST_OPTIONS='--filter testRedirect' make functionalTest-php80`
+- `TEST_FILE=$(pwd)/Tests/Functional/Plugins/WebringPluginTest.php EXTRA_TEST_OPTIONS='--filter testRedirect' make functionalTest-php83`
 
 Testing with PhpStorm: Setup new remote PHP interpreter.
 Docker-Compose:
  - compose file: `Tests/Build/docker-compose.yml`
  - service: ` functional_mariadb`
- 
+
 Set up new Test Framework:
  - path to phpunit: `bin/phpunit`
  - default config: `vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml`
  - add path mappings: `<abs. Path to this dir>` -> `<abs. Path to this dir>` (all paths mapped like on your host)
- 
+
 Set up new Run Configuration for `Unit Tests`:
  - Test Scope: `<abs. Path to this dir>/Tests/Unit`
  - Custom Working Directory: `<abs. Path to this dir>/.Build/`
@@ -78,7 +78,7 @@ Set up new Run Configuration for `Functional Tests`:
  - Use alternative configuration File: `<aps. Path to this dir>/.Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml`
  - Test Runner options: `--coverage-filter <abs. Path to this dir>/Classes`
  - Environment variables: `typo3DatabaseUsername=root;typo3DatabasePassword=funcp;typo3DatabaseHost=mariadb10;typo3DatabaseName=func_test`
- 
+
 Happy Testing
 
 #### Without docker:

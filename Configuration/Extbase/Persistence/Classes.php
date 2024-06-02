@@ -12,7 +12,6 @@
  ************************************************************************
  */
 
-
 use ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser;
 
 return [

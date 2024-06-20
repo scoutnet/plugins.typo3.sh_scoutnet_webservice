@@ -27,7 +27,7 @@
 		"typo3/cms-extensionmanager": "^12.4",
 		"ext-json": "*",
 		"ext-openssl": "*",
-		"scoutnet/sn-webservice": "^1.0"
+		"scoutnet/sn-webservice": "^2.0"
 	},
 	"config": {
 		"vendor-dir": ".Build/vendor",

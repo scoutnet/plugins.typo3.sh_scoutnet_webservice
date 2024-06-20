@@ -16,7 +16,6 @@ use DateTime;
 use Exception;
 use Prophecy\Prophet;
 use ScoutNet\Api\Exceptions\ScoutNetExceptionMissingConfVar;
-use ScoutNet\Api\Helpers\AESHelper;
 use ScoutNet\Api\Helpers\AuthHelper;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -95,20 +94,6 @@ class AuthHelperTest extends UnitTestCase
 
     public static function dataProviderGetApiKeyFromData(): array
     {
-        $aes = new AesHelper('12345678901234567890123456789012', 'CBC', '1234567890123456');
-
-        $auth = [
-            'your_domain' => 'wrong Site',
-            'user' => 'unitTest',
-            'time' => 1234,
-        ];
-        $sha1 = sha1(json_encode($auth, JSON_THROW_ON_ERROR));
-        $md5 = md5(json_encode($auth, JSON_THROW_ON_ERROR));
-        $auth['md5'] =  $md5;
-        $auth['sha1'] = $sha1;
-
-        $auth = json_encode($auth, JSON_THROW_ON_ERROR);
-
         return [
             'empty auth' => [
                 '',

@@ -59,7 +59,7 @@ class JsonRPCClientHelperTest extends UnitTestCase
      */
     public function testConnect(string $url, ?array $expectedExceptions, bool|string $expReturn = false): void
     {
-        if ($expectedExceptions and count($expectedExceptions) > 0) {
+        if ($expectedExceptions && count($expectedExceptions) > 0) {
             foreach ($expectedExceptions as $expExc) {
                 $this->expectExceptionCode($expExc);
             }

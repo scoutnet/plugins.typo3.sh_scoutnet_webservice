@@ -13,7 +13,6 @@
 namespace ScoutNet\ShScoutnetWebservice\Tests\Unit\Helpers;
 
 use Prophecy\Prophet;
-use ScoutNet\Api\Exceptions\ScoutNetException;
 use ScoutNet\Api\Helpers\AESHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -32,9 +31,6 @@ class AESHelperTest extends UnitTestCase
         $this->prophet->checkPredictions();
     }
 
-    /**
-     * @throws ScoutNetException
-     */
     public function testEncryptDecrypt(): void
     {
         $key = [
@@ -81,12 +77,11 @@ class AESHelperTest extends UnitTestCase
      * @param string $key
      * @param array $expExceptions
      *
-     * @throws ScoutNetException
      * @dataProvider dataProviderCorrectKeyLength
      */
     public function testCorrectKeyLength(string $key, array $expExceptions = []): void
     {
-        if ($expExceptions and count($expExceptions) > 0) {
+        if ($expExceptions && count($expExceptions) > 0) {
             foreach ($expExceptions as $expExc) {
                 $this->expectExceptionCode($expExc);
             }
@@ -146,8 +141,6 @@ class AESHelperTest extends UnitTestCase
      * @param array $key
      * @param string $plaintext
      * @param string $cyphertext
-     *
-     * @throws ScoutNetException
      */
     public function testEncrypt(array $key, string $plaintext, string $cyphertext): void
     {
@@ -218,8 +211,6 @@ class AESHelperTest extends UnitTestCase
      * @param array $key
      * @param string $cyphertext
      * @param string $plaintext
-     *
-     * @throws ScoutNetException
      */
     public function testDecrypt(array $key, string $cyphertext, string $plaintext): void
     {

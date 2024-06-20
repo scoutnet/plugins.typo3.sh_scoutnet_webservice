@@ -121,7 +121,7 @@ class CategoryRepositoryTest extends UnitTestCase
 
     public static function dataProviderFindByUid(): array
     {
-        list($cat1, $cat2) = self::generateCategories();
+        [$cat1, $cat2] = self::generateCategories();
 
         return [
             'cat1' => [
@@ -155,9 +155,9 @@ class CategoryRepositoryTest extends UnitTestCase
                 $uid = $req['categories']['uid'];
 
                 $cat = [];
-                if ($uid == 1) {
+                if ($uid === 1) {
                     $cat = self::CATEGORY_1_ARRAY;
-                } elseif ($uid == 2) {
+                } elseif ($uid === 2) {
                     $cat = self::CATEGORY_2_ARRAY;
                 }
 
@@ -193,7 +193,7 @@ class CategoryRepositoryTest extends UnitTestCase
 
     public static function dataProviderConvertToCategory(): array
     {
-        list($cat1, $cat2) = self::generateCategories();
+        [$cat1, $cat2] = self::generateCategories();
 
         return [
             'cat1' => [

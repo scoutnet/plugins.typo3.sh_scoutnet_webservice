@@ -109,8 +109,6 @@ class AuthHelperTest extends UnitTestCase
 
         $auth = json_encode($auth, JSON_THROW_ON_ERROR);
 
-        $auth = strtr(base64_encode($aes->encrypt('4444444444444444' . $auth)), '+/=', '-_~');
-        var_dump($auth);
         return [
             'empty auth' => [
                 '',

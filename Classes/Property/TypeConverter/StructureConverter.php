@@ -13,7 +13,7 @@
 namespace ScoutNet\ShScoutnetWebservice\Property\TypeConverter;
 
 use Exception;
-use ScoutNet\Api\Models\Structure;
+use ScoutNet\Api\Model\Structure;
 use ScoutNet\ShScoutnetWebservice\Domain\Repository\StructureRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;

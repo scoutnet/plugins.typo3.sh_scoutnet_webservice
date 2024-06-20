@@ -15,7 +15,7 @@ namespace ScoutNet\ShScoutnetWebservice\Tests\Unit\Domain\Repository;
 use Prophecy\Argument;
 use Prophecy\Prophet;
 use ScoutNet\Api\Helpers\JsonRPCClientHelper;
-use ScoutNet\Api\Models\Category;
+use ScoutNet\Api\Model\Category;
 use ScoutNet\ShScoutnetWebservice\Domain\Repository\CategoryRepository;
 use ScoutNet\ShScoutnetWebservice\Tests\Unit\Fixtures\JsonRPCClientHelperFixture;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;

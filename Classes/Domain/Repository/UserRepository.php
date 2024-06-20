@@ -12,7 +12,7 @@
 
 namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
-use ScoutNet\Api\Models\User;
+use ScoutNet\Api\Model\User;
 
 /**
  * The repository for User

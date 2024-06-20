@@ -12,7 +12,7 @@
 
 namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
-use ScoutNet\Api\Models\Section;
+use ScoutNet\Api\Model\Section;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**

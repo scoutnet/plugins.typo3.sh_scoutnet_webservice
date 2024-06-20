@@ -13,9 +13,9 @@
 namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
 use Exception;
-use ScoutNet\Api\Models\Category;
-use ScoutNet\Api\Models\Event;
-use ScoutNet\Api\Models\Structure;
+use ScoutNet\Api\Model\Category;
+use ScoutNet\Api\Model\Event;
+use ScoutNet\Api\Model\Structure;
 
 class CategoryRepository extends AbstractScoutnetRepository
 {

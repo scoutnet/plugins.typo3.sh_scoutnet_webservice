@@ -14,8 +14,8 @@ namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
 use DateTime;
 use Exception;
-use ScoutNet\Api\Models\Event;
-use ScoutNet\Api\Models\Structure;
+use ScoutNet\Api\Model\Event;
+use ScoutNet\Api\Model\Structure;
 use ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser;
 
 /**

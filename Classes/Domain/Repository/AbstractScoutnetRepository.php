@@ -12,8 +12,8 @@
 
 namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
-use ScoutNet\Api\Helpers\AuthHelper;
 use ScoutNet\Api\Helpers\JsonRPCClientHelper;
+use ScoutNet\Api\ScoutnetApi;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -26,28 +26,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AbstractScoutnetRepository
 {
-    /**
-     * @var AuthHelper
-     */
-    protected AuthHelper $authHelper;
-
-    /**
-     * @var BackendUserRepository
-     */
     protected BackendUserRepository $backendUserRepository;
 
-    /**
-     * @var JsonRPCClientHelper
-     */
-    public JsonRPCClientHelper $SN;
-
-    /**
-     * @param AuthHelper $authHelper
-     */
-    public function injectAuthHelper(AuthHelper $authHelper): void
-    {
-        $this->authHelper = $authHelper;
-    }
+    protected ScoutnetApi $SN;
+    protected JsonRPCClientHelper $json;
 
     /**
      * @param BackendUserRepository $backendUserRepository
@@ -69,17 +51,7 @@ class AbstractScoutnetRepository
 
         $api_url = $extConfig['ScoutnetJsonAPIUrl'] ?? 'localhost';
 
-        $this->SN = GeneralUtility::makeInstance(JsonRPCClientHelper::class, $api_url);
-    }
-
-    /**
-     * @param array|int|null $ids
-     * @param mixed $query
-     *
-     * @return array
-     */
-    protected function loadDataFromScoutnet(array|int|null $ids, mixed $query): array
-    {
-        return $this->SN->get_data_by_global_id($ids, $query);
+        $this->SN = GeneralUtility::makeInstance(ScoutnetApi::class, $api_url);
+        $this->json = GeneralUtility::makeInstance(JsonRPCClientHelper::class, $api_url);
     }
 }

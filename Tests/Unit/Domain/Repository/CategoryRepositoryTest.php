@@ -16,6 +16,7 @@ use Prophecy\Argument;
 use Prophecy\Prophet;
 use ScoutNet\Api\Helpers\JsonRPCClientHelper;
 use ScoutNet\Api\Model\Category;
+use ScoutNet\Api\ScoutnetApi;
 use ScoutNet\ShScoutnetWebservice\Domain\Repository\CategoryRepository;
 use ScoutNet\ShScoutnetWebservice\Tests\Unit\Fixtures\JsonRPCClientHelperFixture;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
@@ -147,28 +148,10 @@ class CategoryRepositoryTest extends UnitTestCase
     public function testFindByUid($uid, $exp): void
     {
         // mok json rpc client
-        $sn = $this->prophet->prophesize(JsonRPCClientHelperFixture::class);
-        $sn->get_data_by_global_id(null, Argument::any())->will(
-            function ($args) {
-                $req = $args[1];
+        $sn = $this->prophet->prophesize(ScoutnetApi::class);
+        $sn->get_categories_by_ids(Argument::any())->willReturn([$exp]);
 
-                $uid = $req['categories']['uid'];
-
-                $cat = [];
-                if ($uid === 1) {
-                    $cat = self::CATEGORY_1_ARRAY;
-                } elseif ($uid === 2) {
-                    $cat = self::CATEGORY_2_ARRAY;
-                }
-
-                return [[
-                    'type' => 'categorie',
-                    'content' => $cat,
-                ]];
-            }
-        );
-
-        GeneralUtility::addInstance(JsonRPCClientHelper::class, $sn->reveal());
+        GeneralUtility::addInstance(ScoutnetApi::class, $sn->reveal());
 
         // fix extension Configuration
         $em = $this->prophet->prophesize(ExtensionConfiguration::class);

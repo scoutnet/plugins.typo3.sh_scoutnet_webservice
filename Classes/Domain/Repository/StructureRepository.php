@@ -51,15 +51,7 @@ class StructureRepository extends AbstractScoutnetRepository
      */
     public function findKalenderByGlobalid(int|array $ids): array
     {
-        $calendars = [];
-        foreach ($this->loadDataFromScoutnet($ids, ['kalenders' => []]) as $record) {
-            if ($record['type'] === 'kalender') {
-                $kalender = $this->convertToStructure($record['content']);
-                $calendars[] = $kalender;
-            }
-        }
-
-        return $calendars;
+        return $this->findByUids($ids);
     }
 
     /**
@@ -85,10 +77,9 @@ class StructureRepository extends AbstractScoutnetRepository
         }
 
         if (count($uidsToLoad) > 0) {
-            foreach ($this->loadDataFromScoutnet($uidsToLoad, ['kalenders' => []]) as $record) {
-                if ($record['type'] === 'kalender') {
-                    $structures[] = $this->convertToStructure($record['content']);
-                }
+            foreach ($this->SN->get_kalender_by_global_id($uidsToLoad) as $structure) {
+                $this->structure_cache[$structure->getUid()] = $structure;
+                $structures[] = $structure;
             }
         }
 
@@ -121,11 +112,9 @@ class StructureRepository extends AbstractScoutnetRepository
         if ($be_user === null) {
             $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user['uid']);
         }
+        $this->SN->loginUser($be_user->getScoutnetUsername(), $be_user->getScoutnetApikey());
 
-        $type = 'event';
-        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetApikey(), $type . $structure->getUid() . $be_user->getTxShscoutnetUsername());
-
-        return $this->SN->checkPermission($type, $structure->getUid(), $be_user->getTxShscoutnetUsername(), $auth);
+        return $this->SN->has_write_permission_to_calender($structure->getUid());
     }
 
     /**
@@ -141,32 +130,8 @@ class StructureRepository extends AbstractScoutnetRepository
         if ($be_user === null) {
             $be_user = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user['uid']);
         }
+        $this->SN->loginUser($be_user->getScoutnetUsername(), $be_user->getScoutnetApikey());
 
-        $type = 'event';
-        $auth = $this->authHelper->generateAuth($be_user->getTxShscoutnetApikey(), $type . $structure->getUid() . $be_user->getTxShscoutnetUsername());
-        return $this->SN->requestPermission($type, $structure->getUid(), $be_user->getTxShscoutnetUsername(), $auth);
-    }
-
-    /**
-     * @param array $array
-     *
-     * @return Structure
-     */
-    public function convertToStructure(array $array): Structure
-    {
-        $structure = new Structure();
-
-        $structure->setUid($array['ID']);
-        $structure->setLevel($array['Ebene']);
-        $structure->setName($array['Name']);
-        $structure->setVerband($array['Verband']);
-        $structure->setIdent($array['Ident']);
-        $structure->setLevelId($array['Ebene_Id']);
-
-        $structure->setUsedCategories($array['Used_Kategories']);
-        $structure->setForcedCategories($array['Forced_Kategories']);
-
-        $this->structure_cache[$structure->getUid()] = $structure;
-        return $structure;
+        return $this->SN->request_write_permissions_for_calender($structure->getUid());
     }
 }

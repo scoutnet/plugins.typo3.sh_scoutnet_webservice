@@ -12,6 +12,10 @@
 
 namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
+use ScoutNet\ShScoutnetWebservice\Domain\Model\BackendUser;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
+/**
+ * @method BackendUser findByUid(int $uid)
+ */
 class BackendUserRepository extends Repository {}

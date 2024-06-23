@@ -31,23 +31,4 @@ class UserRepository extends AbstractScoutnetRepository
     {
         return $this->user_cache[$username] ?? null;
     }
-
-    /**
-     * @param array $array
-     *
-     * @return User
-     */
-    public function convertToUser(array $array): User
-    {
-        $user = new User();
-
-        $user->setUsername($array['userid']);
-        $user->setFirstName($array['firstname']);
-        $user->setLastName($array['surname']);
-        $user->setSex($array['sex']);
-
-        // save new object to cache
-        $this->user_cache[$user->getUsername()] = $user;
-        return $user;
-    }
 }

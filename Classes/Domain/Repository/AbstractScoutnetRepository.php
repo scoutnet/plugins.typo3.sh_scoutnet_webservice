@@ -12,7 +12,6 @@
 
 namespace ScoutNet\ShScoutnetWebservice\Domain\Repository;
 
-use ScoutNet\Api\Helpers\JsonRPCClientHelper;
 use ScoutNet\Api\ScoutnetApi;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
@@ -29,7 +28,6 @@ class AbstractScoutnetRepository
     protected BackendUserRepository $backendUserRepository;
 
     protected ScoutnetApi $SN;
-    protected JsonRPCClientHelper $json;
 
     /**
      * @param BackendUserRepository $backendUserRepository
@@ -52,6 +50,5 @@ class AbstractScoutnetRepository
         $api_url = $extConfig['ScoutnetJsonAPIUrl'] ?? 'localhost';
 
         $this->SN = GeneralUtility::makeInstance(ScoutnetApi::class, $api_url);
-        $this->json = GeneralUtility::makeInstance(JsonRPCClientHelper::class, $api_url);
     }
 }

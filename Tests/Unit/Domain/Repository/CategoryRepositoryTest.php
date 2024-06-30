@@ -14,11 +14,9 @@ namespace ScoutNet\ShScoutnetWebservice\Tests\Unit\Domain\Repository;
 
 use Prophecy\Argument;
 use Prophecy\Prophet;
-use ScoutNet\Api\Helpers\JsonRPCClientHelper;
 use ScoutNet\Api\Model\Category;
 use ScoutNet\Api\ScoutnetApi;
 use ScoutNet\ShScoutnetWebservice\Domain\Repository\CategoryRepository;
-use ScoutNet\ShScoutnetWebservice\Tests\Unit\Fixtures\JsonRPCClientHelperFixture;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -83,21 +81,10 @@ class CategoryRepositoryTest extends UnitTestCase
     {
         [$cat1, $cat2] = self::generateCategories();
 
-        // mock json rpc client
-        $sn = $this->prophet->prophesize(JsonRPCClientHelperFixture::class);
-        $sn->get_data_by_global_id(null, ['categories' => ['all' => true]])->willReturn([
-            // TODO: set correct ids like the API does
-            [
-                'type' => 'categorie',
-                'content' => self::CATEGORY_1_ARRAY,
-            ],
-            [
-                'type' => 'categorie',
-                'content' => self::CATEGORY_2_ARRAY,
-            ],
-        ]);
+        $sn = $this->prophet->prophesize(ScoutnetApi::class);
+        $sn->get_all_categories()->willReturn([$cat1, $cat2]);
 
-        GeneralUtility::addInstance(JsonRPCClientHelper::class, $sn->reveal());
+        GeneralUtility::addInstance(ScoutnetApi::class, $sn->reveal());
 
         // fix extension Configuration
         $em = $this->prophet->prophesize(ExtensionConfiguration::class);

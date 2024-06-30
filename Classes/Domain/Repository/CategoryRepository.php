@@ -54,16 +54,9 @@ class CategoryRepository extends AbstractScoutnetRepository
      */
     public function findAll(): array
     {
-        try {
-            // TODO: make work in scoutnetApi
-            foreach ($this->json->get_data_by_global_id(null, ['categories' => ['all' => true]]) as $record) {
-                if ($record['type'] === 'categorie') {
-                    // convert and save to cache
-                    $this->convertToCategory($record['content']);
-                }
-            }
-        } catch (Exception) {
-            return [];
+        // cache all Categories
+        foreach ($this->SN->get_all_categories() as $category) {
+            $this->categoriesCache[$category->getUid()] = $category;
         }
 
         // return local cache but without the keys
@@ -79,20 +72,7 @@ class CategoryRepository extends AbstractScoutnetRepository
      */
     public function getAllCategoriesForStructureAndEvent(Structure $structure, Event $event): array
     {
-        $generatedCategories = [];
-        try {
-            // TODO: make work in scoutnetApi
-            foreach ($this->json->get_data_by_global_id($structure->getUid(), ['categories' => ['generatedCategoriesForEventId' => $event->getUid() ?? -1]]) as $record) {
-                if ($record['type'] === 'categorie') {
-                    // convert and save to cache
-                    $generatedCategories[] = $this->convertToCategory($record['content']);
-                }
-            }
-        } catch (Exception) {
-            // if the ScoutNet Server is down, we use the Categories from the structure
-            $generatedCategories = $this->convertArrayToCategories($structure->getUsedCategories(), $event);
-        }
-        $categories['generatedCategories'] = $generatedCategories;
+        $categories['generatedCategories'] = $this->SN->get_all_categories_for_kalender_and_event($structure->getUid(), $event->getUid() ?? -1);
 
         $forcedCategoriesName = array_keys($structure->getForcedCategories())[1];
         $categories['allSectCategories'] = $this->convertArrayToCategories($structure->getForcedCategories()['sections/leaders'], $event);

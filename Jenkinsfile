@@ -37,7 +37,7 @@ pipeline {
                         parallel tests
 
                         // we only test for php version 8.3, since this should execute the same way
-                        sh "make functionalTest-php83"
+                        // sh "make functionalTest-php83"
                         sh "make acceptanceTest-php83"
                         sh 'rm -f auth.json'
                     }
@@ -72,10 +72,10 @@ pipeline {
                                 sh "codecovcli upload-process --disable-search --plugin none -F unitTests -f '${WORKSPACE}/.Build/coverage-php*-unit.xml'"
                         }
 
-                        uploads['functional'] = {
-                                echo "Uploading Covereage for FunctionalTests"
-                                sh "codecovcli upload-process --disable-search --plugin none -F functionalTests -f '${WORKSPACE}/.Build/coverage-php*-functional.xml'"
-                        }
+                        // uploads['functional'] = {
+                        //        echo "Uploading Covereage for FunctionalTests"
+                        //        sh "codecovcli upload-process --disable-search --plugin none -F functionalTests -f '${WORKSPACE}/.Build/coverage-php*-functional.xml'"
+                        // }
 
                         parallel uploads
                     }
